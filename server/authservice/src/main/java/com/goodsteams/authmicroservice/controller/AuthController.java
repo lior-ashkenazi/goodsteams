@@ -43,6 +43,11 @@ public class AuthController {
         return ResponseEntity.ok(jwtToken);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logoutUser() {
+        return ResponseEntity.ok("User logged out.");
+    }
+
     private boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
     }
