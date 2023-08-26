@@ -26,28 +26,28 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String registerUser(UserRegistrationDTO userRegistrationDTO) {
+    public String registerUser(String username, String email, String password, String repeatedPassword) {
 
-        if (userRegistrationDTO.password().length() < 6) {
+        if (password.length() < 6) {
             throw new UserRegistrationException("Password should be at least 6 characters long.");
         }
 
-        if (!userRegistrationDTO.password().equals(userRegistrationDTO.repeatedPassword())) {
+        if (!password.equals(repeatedPassword)) {
             throw new UserRegistrationException("Password do no match.");
         }
 
-        if (authRepository.existsByUsername(userRegistrationDTO.username())) {
+        if (authRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException();
         }
 
-        if (authRepository.existsByEmail(userRegistrationDTO.email())) {
+        if (authRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistsException();
         }
 
         User user = new User();
-        user.setUsername(userRegistrationDTO.username());
-        user.setEmail(userRegistrationDTO.email());
-        user.setPassword(passwordEncoder.encode(userRegistrationDTO.password()));
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
 
         authRepository.save(user);
 
@@ -62,14 +62,14 @@ public class AuthService {
         return tokenService.generateToken(auth);
     }
 
-    public String loginUser(UserLoginDTO userLoginDTO) {
+    public String loginUser(String username, String password) {
 
         // Fetch user from the database using the provided username
-        User user = authRepository.findByUsername(userLoginDTO.username())
-                .orElseThrow(() -> new UserNotFoundException(userLoginDTO.username()));
+        User user = authRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
 
         // Validate the provided password with the one in the database
-        if (!passwordEncoder.matches(userLoginDTO.password(), user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException();
         }
 

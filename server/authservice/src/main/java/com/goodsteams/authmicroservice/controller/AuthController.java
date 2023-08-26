@@ -28,7 +28,11 @@ public class AuthController {
             throw new UserRegistrationException("Invalid email address.");
         }
 
-        String jwtToken = authService.registerUser(userRegistrationDTO);
+        String jwtToken = authService.registerUser(
+                userRegistrationDTO.username(),
+                userRegistrationDTO.email(),
+                userRegistrationDTO.password(),
+                userRegistrationDTO.repeatedPassword());
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "User registered successfully.");
@@ -39,7 +43,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
-        String jwtToken = authService.loginUser(userLoginDTO);
+        String jwtToken = authService.loginUser(userLoginDTO.username(), userLoginDTO.password());
         return ResponseEntity.ok(jwtToken);
     }
 
