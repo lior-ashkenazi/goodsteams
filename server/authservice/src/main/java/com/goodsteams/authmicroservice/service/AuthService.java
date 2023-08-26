@@ -3,10 +3,13 @@ package com.goodsteams.authmicroservice.service;
 import com.goodsteams.authmicroservice.dao.AuthRepository;
 import com.goodsteams.authmicroservice.entity.User;
 import com.goodsteams.authmicroservice.exception.EmailAlreadyExistsException;
+import com.goodsteams.authmicroservice.exception.UserNotFoundException;
 import com.goodsteams.authmicroservice.exception.UserRegistrationException;
 import com.goodsteams.authmicroservice.exception.UsernameAlreadyExistsException;
+import com.goodsteams.authmicroservice.requestmodels.UserLoginDTO;
 import com.goodsteams.authmicroservice.requestmodels.UserRegistrationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -46,7 +49,7 @@ public class AuthService {
 
         User user = new User();
         user.setUsername(userRegistrationDTO.username());
-        user.setEmail(userRegistrationDTO.username());
+        user.setEmail(userRegistrationDTO.email());
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.password()));
 
         authRepository.save(user);
@@ -61,4 +64,25 @@ public class AuthService {
         // Use the TokenService to generate a JWT for the user
         return tokenService.generateToken(auth);
     }
+
+    public String loginUser(UserLoginDTO userLoginDTO) {
+
+        // Fetch user from the database using the provided username
+        User user = authRepository.findByUsername(userLoginDTO.username())
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userLoginDTO.username()));
+
+        // Validate the provided password with the one in the database
+        if (!passwordEncoder.matches(userLoginDTO.password(), user.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+
+        // If validation is successful, generate a JWT token
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                user.getUsername(),
+                null,
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        return tokenService.generateToken(auth);
+    }
+
 }

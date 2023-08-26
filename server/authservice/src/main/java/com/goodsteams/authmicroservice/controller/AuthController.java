@@ -1,6 +1,7 @@
 package com.goodsteams.authmicroservice.controller;
 
 import com.goodsteams.authmicroservice.exception.UserRegistrationException;
+import com.goodsteams.authmicroservice.requestmodels.UserLoginDTO;
 import com.goodsteams.authmicroservice.requestmodels.UserRegistrationDTO;
 import com.goodsteams.authmicroservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class AuthController {
         response.put("token", jwtToken);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+        String jwtToken = authService.loginUser(userLoginDTO);
+        return ResponseEntity.ok(jwtToken);
     }
 
     private boolean isValidEmail(String email) {
