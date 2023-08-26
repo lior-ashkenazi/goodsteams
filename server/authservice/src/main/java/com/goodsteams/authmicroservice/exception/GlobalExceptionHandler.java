@@ -1,4 +1,4 @@
-package com.goodsteams.authservice.exception;
+package com.goodsteams.authmicroservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

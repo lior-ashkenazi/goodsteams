@@ -1,4 +1,4 @@
-package com.goodsteams.authservice.entity;
+package com.goodsteams.authmicroservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

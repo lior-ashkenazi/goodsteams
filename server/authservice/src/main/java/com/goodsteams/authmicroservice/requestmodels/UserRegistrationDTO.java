@@ -1,4 +1,4 @@
-package com.goodsteams.authservice.requestmodels;
+package com.goodsteams.authmicroservice.requestmodels;
 
 public record UserRegistrationDTO(String username, String email, String password, String repeatedPassword) {
 }

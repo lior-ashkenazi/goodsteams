@@ -1,4 +1,4 @@
-package com.goodsteams.authservice.config;
+package com.goodsteams.authmicroservice.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
