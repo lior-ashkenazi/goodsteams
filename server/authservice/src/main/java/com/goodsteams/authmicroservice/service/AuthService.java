@@ -2,19 +2,16 @@ package com.goodsteams.authmicroservice.service;
 
 import com.goodsteams.authmicroservice.dao.AuthRepository;
 import com.goodsteams.authmicroservice.entity.User;
-import com.goodsteams.authmicroservice.exception.EmailAlreadyExistsException;
-import com.goodsteams.authmicroservice.exception.UserNotFoundException;
-import com.goodsteams.authmicroservice.exception.UserRegistrationException;
-import com.goodsteams.authmicroservice.exception.UsernameAlreadyExistsException;
+import com.goodsteams.authmicroservice.exception.*;
 import com.goodsteams.authmicroservice.requestmodels.UserLoginDTO;
 import com.goodsteams.authmicroservice.requestmodels.UserRegistrationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Collections;
 
@@ -69,11 +66,11 @@ public class AuthService {
 
         // Fetch user from the database using the provided username
         User user = authRepository.findByUsername(userLoginDTO.username())
-                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userLoginDTO.username()));
+                .orElseThrow(() -> new UserNotFoundException(userLoginDTO.username()));
 
         // Validate the provided password with the one in the database
         if (!passwordEncoder.matches(userLoginDTO.password(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid credentials");
+            throw new BadCredentialsException();
         }
 
         // If validation is successful, generate a JWT token

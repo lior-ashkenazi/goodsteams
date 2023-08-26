@@ -14,6 +14,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+    @ExceptionHandler(UserLoginException.class)
+    public ResponseEntity<String> handleUserLoginException(UserLoginException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
     // Handle other unexpected exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception e) {
