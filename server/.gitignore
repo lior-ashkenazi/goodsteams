@@ -1,0 +1,6 @@
+**/application.properties
+
+## RSA Encryption ##
+certs/
+
+*.ps1

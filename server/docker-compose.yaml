@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  auth-service:
+    build:
+      context: ./authservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-auth-service:latest
+
+  gateway-service:
+    build:
+      context: ./gatewayservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-gateway-service:latest

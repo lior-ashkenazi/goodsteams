@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: authService
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: file:/etc/rsa/public.pem
+allowed:
+  origins: "*"
+rsa:
+  private-key: file:/etc/rsa/private.pem
+  public-key: file:/etc/rsa/public.pem
+logging:
+  level:
+    org.springframework.security: DEBUG
