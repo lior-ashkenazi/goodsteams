@@ -31,8 +31,8 @@ public class AuthController {
         String jwtToken = authService.registerUser(
                 userRegistrationDTO.username(),
                 userRegistrationDTO.email(),
-                userRegistrationDTO.password(),
-                userRegistrationDTO.repeatedPassword());
+                userRegistrationDTO.password()
+        );
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "User registered successfully.");

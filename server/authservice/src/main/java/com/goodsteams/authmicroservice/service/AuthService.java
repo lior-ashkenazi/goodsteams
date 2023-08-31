@@ -26,14 +26,10 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String registerUser(String username, String email, String password, String repeatedPassword) {
+    public String registerUser(String username, String email, String password) {
 
         if (password.length() < 6) {
             throw new UserRegistrationException("Password should be at least 6 characters long.");
-        }
-
-        if (!password.equals(repeatedPassword)) {
-            throw new UserRegistrationException("Password do no match.");
         }
 
         if (authRepository.existsByUsername(username)) {
