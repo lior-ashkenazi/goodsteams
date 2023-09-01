@@ -57,6 +57,11 @@ public class SecurityConfig  {
     }
 
     @Bean
+    JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withPublicKey(jwtConfigProperties.publicKey()).build();
+    }
+
+    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*")); // Added gateway service as an example. Adjust as needed.

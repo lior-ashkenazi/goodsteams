@@ -10,19 +10,24 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 
+import java.time.Instant;
 import java.util.Collections;
 
 @Service
 public class AuthService {
 
-    @Autowired
-    private AuthRepository authRepository;
+    private final AuthRepository authRepository;
+    private final TokenService tokenService;
 
     @Autowired
-    private TokenService tokenService;
+    public AuthService(AuthRepository authRepository, TokenService tokenService) {
+        this.authRepository = authRepository;
+        this.tokenService = tokenService;
+    }
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -75,6 +80,35 @@ public class AuthService {
                 null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
+        return tokenService.generateToken(auth);
+    }
+
+    public String authenticateUser(String token) {
+
+        Jwt jwt = tokenService.decodeToken(token);
+
+        String username = jwt.getClaimAsString("sub");
+        Instant expirationDate = jwt.getExpiresAt();
+
+        // Verify if user exists in database
+        boolean userExists = authRepository.existsByUsername(username);
+        if (!userExists) {
+            throw new InvalidTokenException();
+        }
+
+        // Check if token is expired
+        assert expirationDate != null;
+        if (expirationDate.isBefore(Instant.now())) {
+            throw new TokenExpiredException();
+        }
+
+        // If validation is successful, generate a JWT token
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                username,
+                null,
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        // Generate a new JWT token if all verifications are successful
         return tokenService.generateToken(auth);
     }
 
