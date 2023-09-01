@@ -7,12 +7,14 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
 import App from "./App.tsx";
-import HomePage from "./pages/home/HomePage.tsx";
+import StorePage from "./pages/store/StorePage.tsx";
 import "./index.css";
 import { StyledEngineProvider } from "@mui/material";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
+import LoginPage from "./pages/login/LoginPage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -21,17 +23,19 @@ if (NODE_ENV === "production") disableReactDevTools();
 const router = createMemoryRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index={true} path="/" element={<HomePage />} />
-    </Route>
-  )
+      <Route index element={<Navigate replace to="/store" />} />
+      <Route path="store" element={<StorePage />} />
+      <Route path="login" element={<LoginPage />} />
+    </Route>,
+  ),
 );
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <Provider store={store}>
-  <React.StrictMode>
-    <StyledEngineProvider injectFirst>
-      <RouterProvider router={router} />
-    </StyledEngineProvider>
-  </React.StrictMode>
-  // </Provider>
+  <Provider store={store}>
+    <React.StrictMode>
+      <StyledEngineProvider injectFirst>
+        <RouterProvider router={router} />
+      </StyledEngineProvider>
+    </React.StrictMode>
+  </Provider>,
 );

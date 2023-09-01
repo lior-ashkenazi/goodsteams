@@ -42,14 +42,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         String jwtToken = authService.loginUser(userLoginDTO.username(), userLoginDTO.password());
-        return ResponseEntity.ok(jwtToken);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User logged in successfully.");
+        response.put("token", jwtToken);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logoutUser() {
-        return ResponseEntity.ok("User logged out.");
+    public ResponseEntity<Map<String, String>> logoutUser() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User logged out.");
+
+        return ResponseEntity.ok(response);
     }
 
     private boolean isValidEmail(String email) {

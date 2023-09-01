@@ -4,6 +4,8 @@ import {
   RegisterUserResponse,
   LoginUserRequest,
   LoginUserResponse,
+  AuthUserRequest,
+  AuthUserResponse,
   LogoutUserRequest,
   LogoutUserResponse,
 } from "../../../types/endpoints/authEndpoints";
@@ -23,6 +25,9 @@ export const authEndpoints = apiSlice.injectEndpoints({
         method: "POST",
         body: userCredentials,
       }),
+    }),
+    authUser: builder.query<AuthUserResponse, AuthUserRequest>({
+      query: () => "auth/",
     }),
     logoutUser: builder.mutation<LogoutUserResponse, LogoutUserRequest>({
       query: () => ({

@@ -4,6 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 import authReducer from "./slices/authSlice";
 
 import { apiSlice } from "./apis/apiSlice";
+import { authEndpoints } from "./apis/endpoints/authEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -12,7 +13,8 @@ const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: NODE_ENV === "development",
 });
 
@@ -23,3 +25,10 @@ export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
 export default store;
+
+export const {
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useAuthUserQuery,
+  useLogoutUserMutation,
+} = authEndpoints;
