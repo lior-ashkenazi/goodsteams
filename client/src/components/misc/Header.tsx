@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState, useAuthUserQuery } from "../../store";
+import { RootState } from "../../store";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -19,7 +19,6 @@ const Header = ({ headerRef }: HeaderProps) => {
   const location = useLocation();
   const currentPage = location.pathname.split("/")[1];
 
-  const { isLoading } = useAuthUserQuery();
   const isAuthenticated: boolean | null = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
