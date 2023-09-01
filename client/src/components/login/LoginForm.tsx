@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,11 +15,6 @@ const loginFormValidationSchema = z.object({
 
 type LoginFormValidationSchema = z.infer<typeof loginFormValidationSchema>;
 
-interface LoginFormsProps {
-  onSubmit: () => void;
-  // onClickChangeForm: () => void;
-}
-
 const textFieldTheme = createTheme({
   palette: {
     primary: {
@@ -27,8 +23,9 @@ const textFieldTheme = createTheme({
   },
 });
 
-const LoginForm = ({ onSubmit }: LoginFormsProps) => {
+const LoginForm = () => {
   const [loginUser] = useLoginUserMutation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -47,7 +44,7 @@ const LoginForm = ({ onSubmit }: LoginFormsProps) => {
     const userCredentials = { username, password };
     try {
       await loginUser(userCredentials).unwrap();
-      onSubmit();
+      navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {
         const msg = error.data.message;
@@ -62,7 +59,7 @@ const LoginForm = ({ onSubmit }: LoginFormsProps) => {
 
   return (
     <form
-      className="flex w-96 flex-col gap-y-16 rounded bg-green-500 p-8"
+      className="flex w-[28rem] flex-col gap-y-16 rounded bg-green-500 p-10"
       onSubmit={handleSubmit(onSubmitHandler)}
     >
       <h2 className="text-5xl font-semibold">Sign In</h2>
@@ -74,7 +71,7 @@ const LoginForm = ({ onSubmit }: LoginFormsProps) => {
               className="rounded-sm bg-white"
               id="username-input"
               label="Username"
-              autoComplete="off"
+              autoComplete="on"
               placeholder="Enter Username"
               {...register("username")}
               helperText={errors.username ? errors.username?.message : " "}
@@ -113,7 +110,7 @@ const LoginForm = ({ onSubmit }: LoginFormsProps) => {
         <span className="flex justify-center">
           <Button
             variant="contained"
-            className="h-14 w-28 bg-amber-400 text-lg hover:bg-amber-500"
+            className="h-16 w-40 bg-amber-400 text-lg hover:bg-amber-500"
             type="submit"
             disabled={isSubmitting}
           >
@@ -125,6 +122,7 @@ const LoginForm = ({ onSubmit }: LoginFormsProps) => {
           <Button
             variant="text"
             className="py-0 pl-2 pr-0 text-lg text-amber-200"
+            onClick={() => navigate("/register")}
           >
             Sign Up
           </Button>
