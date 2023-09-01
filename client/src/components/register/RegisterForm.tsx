@@ -1,11 +1,23 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { TextField, Button, ThemeProvider, createTheme } from "@mui/material";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { useRegisterUserMutation } from "../../store";
-
 import { isAuthError } from "../../types/errors/authErrors";
 
 const registerFormValidationSchema = z
@@ -45,7 +57,7 @@ const textFieldTheme = createTheme({
   },
 });
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [registerUser] = useRegisterUserMutation();
   const navigate = useNavigate();
 
@@ -58,6 +70,10 @@ const LoginForm = () => {
     resolver: zodResolver(registerFormValidationSchema),
     mode: "onBlur",
   });
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
 
   const onSubmitHandler: SubmitHandler<RegisterFormValidationSchema> = async (
     data,
@@ -126,48 +142,96 @@ const LoginForm = () => {
                 },
               }}
             />
-            <TextField
-              {...(errors.password ? { error: true } : {})}
-              className="rounded-sm bg-white"
-              id="password-input"
-              label="Password"
-              type="password"
-              autoComplete="off"
-              placeholder="Enter Password"
-              {...register("password")}
-              helperText={errors.password ? errors.password?.message : " "}
-              FormHelperTextProps={{
-                style: {
+
+            <FormControl variant="outlined">
+              <InputLabel
+                {...(errors.password ? { error: true } : {})}
+                htmlFor="outlined-adornment-password"
+              >
+                Password
+              </InputLabel>
+              <OutlinedInput
+                {...(errors.password ? { error: true } : {})}
+                className="rounded-sm bg-white"
+                id="password-input"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="off"
+                placeholder="Enter Password"
+                {...register("password")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword((show) => !show)}
+                      onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                      }}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <FormHelperText
+                style={{
                   background: "#22c55e",
                   margin: 0, // Cancel the margin
                   paddingTop: "3px", // Set the upper padding to 3px
                   paddingLeft: "14px", // Set the left padding to 14px
                   paddingRight: "14px", // Set the right padding to 14px
-                },
-              }}
-            />
-            <TextField
-              {...(errors.confirmPassword ? { error: true } : {})}
-              className="rounded-sm bg-white"
-              id="confirm-password-input"
-              label="Confirm Password"
-              type="password"
-              autoComplete="off"
-              placeholder="Confirm Password"
-              {...register("confirmPassword")}
-              helperText={
-                errors.confirmPassword ? errors.confirmPassword?.message : " "
-              }
-              FormHelperTextProps={{
-                style: {
+                }}
+                error
+              >
+                {errors.password ? errors.password?.message : " "}
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl variant="outlined">
+              <InputLabel
+                {...(errors.confirmPassword ? { error: true } : {})}
+                htmlFor="outlined-adornment-confirm-password"
+              >
+                Confirm Password
+              </InputLabel>
+              <OutlinedInput
+                {...(errors.confirmPassword ? { error: true } : {})}
+                className="rounded-sm bg-white"
+                id="confirm-password-input"
+                label="Confirm Password"
+                type={showConfirmPassword ? "text" : "password"}
+                autoComplete="off"
+                placeholder="Enter Confirm Password"
+                {...register("confirmPassword")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowConfirmPassword((show) => !show)}
+                      onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                      }}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <FormHelperText
+                style={{
                   background: "#22c55e",
                   margin: 0, // Cancel the margin
                   paddingTop: "3px", // Set the upper padding to 3px
                   paddingLeft: "14px", // Set the left padding to 14px
                   paddingRight: "14px", // Set the right padding to 14px
-                },
-              }}
-            />
+                }}
+                error
+              >
+                {errors.confirmPassword ? errors.confirmPassword?.message : " "}
+              </FormHelperText>
+            </FormControl>
           </ThemeProvider>
         </div>
         <span className="flex justify-center">
@@ -195,4 +259,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
