@@ -104,7 +104,7 @@ const LoginForm = () => {
             <FormControl variant="outlined">
               <InputLabel
                 {...(errors.password ? { error: true } : {})}
-                htmlFor="outlined-adornment-password"
+                htmlFor="password-input"
               >
                 Password
               </InputLabel>

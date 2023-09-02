@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./components/misc/Header";
+import { useAuthUserQuery } from "./store";
 
 const App = () => {
+  useAuthUserQuery();
+
   const navigate = useNavigate();
 
   const headerRef = useRef<HTMLDivElement | null>(null);

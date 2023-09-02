@@ -146,7 +146,7 @@ const RegisterForm = () => {
             <FormControl variant="outlined">
               <InputLabel
                 {...(errors.password ? { error: true } : {})}
-                htmlFor="outlined-adornment-password"
+                htmlFor="password-input"
               >
                 Password
               </InputLabel>
@@ -191,7 +191,7 @@ const RegisterForm = () => {
             <FormControl variant="outlined">
               <InputLabel
                 {...(errors.confirmPassword ? { error: true } : {})}
-                htmlFor="outlined-adornment-confirm-password"
+                htmlFor="confirm-password-input"
               >
                 Confirm Password
               </InputLabel>

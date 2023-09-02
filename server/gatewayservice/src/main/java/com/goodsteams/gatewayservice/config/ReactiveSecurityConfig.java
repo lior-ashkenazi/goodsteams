@@ -36,8 +36,7 @@ public class ReactiveSecurityConfig {
                 .csrf().disable()
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                        .pathMatchers("/api/auth/logout").authenticated()
-                        .anyExchange().denyAll())
+                        .anyExchange().authenticated())
                 .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
                 .exceptionHandling(exHandling -> {
                     exHandling.authenticationEntryPoint((exchange, ex) -> exchange.getResponse().setComplete().then(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not Authenticated"))));
