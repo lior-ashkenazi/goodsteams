@@ -4,7 +4,8 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 import authReducer from "./slices/authSlice";
 
 import { apiSlice } from "./apis/apiSlice";
-import { authEndpoints } from "./apis/endpoints/authEndpoints";
+import { authServiceEndpoints } from "./apis/endpoints/authServiceEndpoints";
+import { profileServiceEndpoints } from "./apis/endpoints/profileServiceEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -31,4 +32,10 @@ export const {
   useLoginUserMutation,
   useAuthUserQuery,
   useLogoutUserMutation,
-} = authEndpoints;
+} = authServiceEndpoints;
+
+export const {
+  useCreateProfileMutation,
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} = profileServiceEndpoints;

@@ -23,12 +23,12 @@ public class ProfileService {
         this.tokenService = tokenService;
     }
 
-    public void saveProfileByToken(String token) {
+    public Profile saveProfileByToken(String token) {
         String username = decodeToken(token);
 
         Profile profile = new Profile(username);
 
-        profileRepository.save(profile);
+        return profileRepository.save(profile);
     }
 
     public Profile findProfileByToken(String token) {

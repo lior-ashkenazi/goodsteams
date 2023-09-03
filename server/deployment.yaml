@@ -32,7 +32,7 @@ kind: Deployment
 metadata:
   name: auth-service-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: auth-service
@@ -60,7 +60,7 @@ kind: Deployment
 metadata:
   name: profile-service-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: profile-service

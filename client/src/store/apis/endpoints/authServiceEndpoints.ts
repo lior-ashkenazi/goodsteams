@@ -8,9 +8,9 @@ import {
   AuthUserResponse,
   LogoutUserRequest,
   LogoutUserResponse,
-} from "../../../types/endpoints/authEndpoints";
+} from "../../../types/endpoints/authServiceEndpoints";
 
-export const authEndpoints = apiSlice.injectEndpoints({
+export const authServiceEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>({
       query: (userCredentials) => ({

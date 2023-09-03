@@ -25,13 +25,14 @@ public class ProfileController {
 
 
     @PostMapping("/")
-    public ResponseEntity<Map<String, String>> createProfile(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<ProfileResponseDTO> createProfile(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
-        profileService.saveProfileByToken(token);
+        Profile profile = profileService.saveProfileByToken(token);
 
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Profile was created for user.");
+        ProfileResponseDTO response = new ProfileResponseDTO();
+        response.setMessage("Profile was created for user.");
+        response.setProfile(profile);
 
         return ResponseEntity.ok(response);
     }

@@ -19,7 +19,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { useLoginUserMutation } from "../../store";
 
-import { isAuthError } from "../../types/errors/authErrors";
+import { isAuthError } from "../../types/errors/authServiceErrors";
 
 const loginFormValidationSchema = z.object({
   username: z.string().min(1, { message: "Username is required" }),

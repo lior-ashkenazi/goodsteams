@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authEndpoints } from "../apis/endpoints/authEndpoints";
+import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 
 interface AuthState {
   token: string | null;
@@ -26,26 +26,38 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(authEndpoints.endpoints.registerUser.matchFulfilled, (state, action) => {
-        const token = action.payload.token;
-        state.token = token;
-        state.isAuthenticated = true;
-        localStorage.setItem("goodsteams-jwt", token);
-      })
-      .addMatcher(authEndpoints.endpoints.loginUser.matchFulfilled, (state, action) => {
-        const token = action.payload.token;
-        state.token = token;
-        state.isAuthenticated = true;
-        localStorage.setItem("goodsteams-jwt", token);
-      })
-      .addMatcher(authEndpoints.endpoints.authUser.matchFulfilled, (state) => {
-        state.isAuthenticated = true;
-      })
-      .addMatcher(authEndpoints.endpoints.logoutUser.matchFulfilled, (state) => {
-        state.token = null;
-        state.isAuthenticated = false;
-        localStorage.removeItem("goodsteams-jwt");
-      });
+      .addMatcher(
+        authServiceEndpoints.endpoints.registerUser.matchFulfilled,
+        (state, action) => {
+          const token = action.payload.token;
+          state.token = token;
+          state.isAuthenticated = true;
+          localStorage.setItem("goodsteams-jwt", token);
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.loginUser.matchFulfilled,
+        (state, action) => {
+          const token = action.payload.token;
+          state.token = token;
+          state.isAuthenticated = true;
+          localStorage.setItem("goodsteams-jwt", token);
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.authUser.matchFulfilled,
+        (state) => {
+          state.isAuthenticated = true;
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
+        (state) => {
+          state.token = null;
+          state.isAuthenticated = false;
+          localStorage.removeItem("goodsteams-jwt");
+        },
+      );
   },
 });
 

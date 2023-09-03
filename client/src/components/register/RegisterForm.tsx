@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { useRegisterUserMutation } from "../../store";
-import { isAuthError } from "../../types/errors/authErrors";
+import { useRegisterUserMutation, useCreateProfileMutation } from "../../store";
+import { isAuthError } from "../../types/errors/authServiceErrors";
 
 const registerFormValidationSchema = z
   .object({
@@ -54,8 +54,10 @@ const textFieldTheme = createTheme({
 });
 
 const RegisterForm = () => {
-  const [registerUser] = useRegisterUserMutation();
   const navigate = useNavigate();
+
+  const [registerUser] = useRegisterUserMutation();
+  const [createProfile] = useCreateProfileMutation();
 
   const {
     register,
@@ -78,6 +80,7 @@ const RegisterForm = () => {
     const userCredentials = { username, password };
     try {
       await registerUser(userCredentials).unwrap();
+      await createProfile().unwrap();
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {
