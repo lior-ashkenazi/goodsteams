@@ -29,10 +29,6 @@ const registerFormValidationSchema = z
       .refine((username) => !/\s/.test(username), {
         message: "Username cannot contain whitespace characters",
       }),
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Email is not valid" }),
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters" }),
@@ -78,8 +74,8 @@ const RegisterForm = () => {
   const onSubmitHandler: SubmitHandler<RegisterFormValidationSchema> = async (
     data,
   ) => {
-    const { username, email, password } = data;
-    const userCredentials = { username, email, password };
+    const { username, password } = data;
+    const userCredentials = { username, password };
     try {
       await registerUser(userCredentials).unwrap();
       navigate("/store");
@@ -88,8 +84,6 @@ const RegisterForm = () => {
         const msg = error.data.message;
         if (error.data.message.startsWith("Username")) {
           setError("username", { type: "manual", message: msg });
-        } else if (error.data.message.startsWith("Email")) {
-          setError("email", { type: "manual", message: msg });
         }
       }
     }
@@ -113,25 +107,6 @@ const RegisterForm = () => {
               placeholder="Enter Username"
               {...register("username")}
               helperText={errors.username ? errors.username?.message : " "}
-              FormHelperTextProps={{
-                style: {
-                  background: "#22c55e",
-                  margin: 0, // Cancel the margin
-                  paddingTop: "3px", // Set the upper padding to 3px
-                  paddingLeft: "14px", // Set the left padding to 14px
-                  paddingRight: "14px", // Set the right padding to 14px
-                },
-              }}
-            />
-            <TextField
-              {...(errors.email ? { error: true } : {})}
-              className="rounded-sm bg-white"
-              id="email-input"
-              label="Email"
-              autoComplete="on"
-              placeholder="Enter Email"
-              {...register("email")}
-              helperText={errors.email ? errors.email?.message : " "}
               FormHelperTextProps={{
                 style: {
                   background: "#22c55e",
