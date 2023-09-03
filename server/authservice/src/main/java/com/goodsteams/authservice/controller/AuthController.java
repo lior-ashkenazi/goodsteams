@@ -54,7 +54,7 @@ public class AuthController {
         String token = authHeader.substring(7);
 
         // Delegate to AuthService
-        String newToken = authService.authenticateUser(token);
+        String newToken = authService.authenticateUserToken(token);
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "User is authenticated.");

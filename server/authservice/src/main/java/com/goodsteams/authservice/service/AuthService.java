@@ -74,7 +74,7 @@ public class AuthService {
         return tokenService.generateToken(auth);
     }
 
-    public String authenticateUser(String token) {
+    public String authenticateUserToken(String token) {
 
         Jwt jwt = tokenService.decodeToken(token);
 
