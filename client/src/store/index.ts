@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 
 import authReducer from "./slices/authSlice";
+import profileReducer from "./slices/profileSlice";
 
 import { apiSlice } from "./apis/apiSlice";
 import { authServiceEndpoints } from "./apis/endpoints/authServiceEndpoints";
@@ -13,6 +14,7 @@ const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
+    profile: profileReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
@@ -30,12 +32,14 @@ export default store;
 export const {
   useRegisterUserMutation,
   useLoginUserMutation,
+  useLazyAuthUserQuery,
   useAuthUserQuery,
   useLogoutUserMutation,
 } = authServiceEndpoints;
 
 export const {
   useCreateProfileMutation,
+  useLazyGetProfileQuery,
   useGetProfileQuery,
   useUpdateProfileMutation,
 } = profileServiceEndpoints;

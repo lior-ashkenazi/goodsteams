@@ -3,12 +3,18 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import Button from "@mui/material/Button";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ClickAwayListener } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Avatar from "@mui/material/Avatar";
 
 interface HeaderProps {
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -23,57 +29,26 @@ const Header = ({ headerRef }: HeaderProps) => {
     (state: RootState) => state.auth.isAuthenticated,
   );
 
+  const username: string | null = useSelector(
+    (state: RootState) => state.profile.username,
+  );
+
+  const avatarUrl: string | null = useSelector(
+    (state: RootState) => state.profile.avatarUrl,
+  );
+
   // New state & refs for store and community
-  const [openStoreButton, setOpenStoreButton] = useState<boolean>(false);
-  const [openDiscussionsButton, setOpenDiscussionsButton] =
+  const [openStoreMenu, setOpenStoreMenu] = useState<boolean>(false);
+  const [openDiscussionsMenu, setOpenDiscussionsMenu] =
     useState<boolean>(false);
-  const [openProfileButton, setOpenProfileButton] = useState<boolean>(false);
+  const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false);
+
+  const [openLoginMenu, setOpenLoginMenu] = useState<boolean>(false);
 
   const storeButtonRef = useRef<HTMLButtonElement>(null);
   const discussionsButtonRef = useRef<HTMLButtonElement>(null);
   const profileButtonRef = useRef<HTMLButtonElement>(null);
-
-  const onClickStoreButton = () => {
-    setOpenStoreButton((prevOpen) => !prevOpen);
-  };
-
-  const onClickDiscussionsButton = () => {
-    setOpenDiscussionsButton((prevOpen) => !prevOpen);
-  };
-
-  const onClickProfileButton = () => {
-    setOpenProfileButton((prevOpen) => !prevOpen);
-  };
-
-  const onClickAwayStoreButton = (event: MouseEvent | TouchEvent) => {
-    if (
-      storeButtonRef.current &&
-      storeButtonRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    setOpenStoreButton(false);
-  };
-
-  const onClickAwayDiscussionsButton = (event: MouseEvent | TouchEvent) => {
-    if (
-      discussionsButtonRef.current &&
-      discussionsButtonRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    setOpenDiscussionsButton(false);
-  };
-
-  const onClickAwayProfileButton = (event: MouseEvent | TouchEvent) => {
-    if (
-      profileButtonRef.current &&
-      profileButtonRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    setOpenProfileButton(false);
-  };
+  const loginButtonRef = useRef<HTMLButtonElement>(null);
 
   const renderStoreButton = () => {
     return (
@@ -84,18 +59,22 @@ const Header = ({ headerRef }: HeaderProps) => {
             currentPage === "store" &&
             "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
           }`}
-          onClick={onClickStoreButton}
+          onClick={() => navigate("/store")}
+          onMouseEnter={() => setOpenStoreMenu(true)}
+          onMouseLeave={() => setOpenStoreMenu(false)}
           disableRipple
         >
           Store
         </Button>
         <Popper
-          open={openStoreButton}
+          open={openStoreMenu}
           anchorEl={storeButtonRef.current}
           role={undefined}
           placement="bottom-start"
           transition
           disablePortal
+          onMouseEnter={() => setOpenStoreMenu(true)}
+          onMouseLeave={() => setOpenStoreMenu(false)}
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -106,28 +85,26 @@ const Header = ({ headerRef }: HeaderProps) => {
               }}
             >
               <Paper>
-                <ClickAwayListener onClickAway={onClickAwayStoreButton}>
-                  <MenuList autoFocusItem={openStoreButton}>
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/store");
-                        setOpenStoreButton(false);
-                      }}
-                      disableRipple
-                    >
-                      Featured
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/");
-                        setOpenStoreButton(false);
-                      }}
-                      disableRipple
-                    >
-                      Wishlist
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
+                <MenuList autoFocusItem={openStoreMenu}>
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/store");
+                      setOpenStoreMenu(false);
+                    }}
+                    disableRipple
+                  >
+                    Featured
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/");
+                      setOpenStoreMenu(false);
+                    }}
+                    disableRipple
+                  >
+                    Wishlist
+                  </MenuItem>
+                </MenuList>
               </Paper>
             </Grow>
           )}
@@ -145,18 +122,22 @@ const Header = ({ headerRef }: HeaderProps) => {
             currentPage === "discussions" &&
             "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
           }`}
-          onClick={onClickDiscussionsButton}
+          onClick={() => navigate("/")}
+          onMouseEnter={() => setOpenDiscussionsMenu(true)}
+          onMouseLeave={() => setOpenDiscussionsMenu(false)}
           disableRipple
         >
           Discussions
         </Button>
         <Popper
-          open={openDiscussionsButton}
+          open={openDiscussionsMenu}
           anchorEl={discussionsButtonRef.current}
           role={undefined}
           placement="bottom-start"
           transition
           disablePortal
+          onMouseEnter={() => setOpenDiscussionsMenu(true)}
+          onMouseLeave={() => setOpenDiscussionsMenu(false)}
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -167,28 +148,26 @@ const Header = ({ headerRef }: HeaderProps) => {
               }}
             >
               <Paper>
-                <ClickAwayListener onClickAway={onClickAwayDiscussionsButton}>
-                  <MenuList autoFocusItem={openDiscussionsButton}>
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/");
-                        setOpenDiscussionsButton(false);
-                      }}
-                      disableRipple
-                    >
-                      Home
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/");
-                        setOpenDiscussionsButton(false);
-                      }}
-                      disableRipple
-                    >
-                      General Discussion
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
+                <MenuList autoFocusItem={openDiscussionsMenu}>
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/");
+                      setOpenDiscussionsMenu(false);
+                    }}
+                    disableRipple
+                  >
+                    Home
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/");
+                      setOpenDiscussionsMenu(false);
+                    }}
+                    disableRipple
+                  >
+                    General Discussion
+                  </MenuItem>
+                </MenuList>
               </Paper>
             </Grow>
           )}
@@ -200,7 +179,7 @@ const Header = ({ headerRef }: HeaderProps) => {
   const renderLibraryButton = () => {
     return (
       <>
-        {isAuthenticated && (
+        {isAuthenticated && username && (
           <Button
             className={`text-lg font-medium text-amber-50 hover:text-white ${
               currentPage === "discussions" &&
@@ -219,26 +198,29 @@ const Header = ({ headerRef }: HeaderProps) => {
   const renderProfileButton = () => {
     return (
       <>
-        {isAuthenticated && (
+        {isAuthenticated && username && (
           <>
             <Button
               ref={profileButtonRef}
               className={`text-lg font-medium text-amber-50 hover:text-white ${
                 currentPage === "discussions" &&
-                "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+                "truncate font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
               }`}
-              onClick={onClickProfileButton}
+              onMouseEnter={() => setOpenProfileMenu(true)}
+              onMouseLeave={() => setOpenProfileMenu(false)}
               disableRipple
             >
-              Username
+              {username}
             </Button>
             <Popper
-              open={openProfileButton}
+              open={openProfileMenu}
               anchorEl={profileButtonRef.current}
               role={undefined}
               placement="bottom-start"
               transition
               disablePortal
+              onMouseEnter={() => setOpenProfileMenu(true)}
+              onMouseLeave={() => setOpenProfileMenu(false)}
             >
               {({ TransitionProps, placement }) => (
                 <Grow
@@ -249,37 +231,35 @@ const Header = ({ headerRef }: HeaderProps) => {
                   }}
                 >
                   <Paper>
-                    <ClickAwayListener onClickAway={onClickAwayProfileButton}>
-                      <MenuList autoFocusItem={openProfileButton}>
-                        <MenuItem
-                          onClick={() => {
-                            navigate("/");
-                            setOpenProfileButton(false);
-                          }}
-                          disableRipple
-                        >
-                          Activity
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            navigate("/");
-                            setOpenProfileButton(false);
-                          }}
-                          disableRipple
-                        >
-                          Profile
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            navigate("/");
-                            setOpenProfileButton(false);
-                          }}
-                          disableRipple
-                        >
-                          Friends
-                        </MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
+                    <MenuList autoFocusItem={openProfileMenu}>
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/");
+                          setOpenProfileMenu(false);
+                        }}
+                        disableRipple
+                      >
+                        Activity
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/");
+                          setOpenProfileMenu(false);
+                        }}
+                        disableRipple
+                      >
+                        Profile
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/");
+                          setOpenProfileMenu(false);
+                        }}
+                        disableRipple
+                      >
+                        Friends
+                      </MenuItem>
+                    </MenuList>
                   </Paper>
                 </Grow>
               )}
@@ -290,12 +270,135 @@ const Header = ({ headerRef }: HeaderProps) => {
     );
   };
 
+  const renderCartIcon = () => {
+    return (
+      isAuthenticated &&
+      username && (
+        <IconButton aria-label={"cart"}>
+          <Badge
+            badgeContent={4}
+            color="error" // Using this to ensure default colors are overridden
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            sx={{
+              "& .MuiBadge-badge": {
+                backgroundColor: "#22c55e",
+                color: "#fffbeb",
+              },
+            }}
+          >
+            <ShoppingCartIcon style={{ color: "#fffbeb" }} />
+          </Badge>
+        </IconButton>
+      )
+    );
+  };
+
+  const renderLoginButton = () => {
+    return isAuthenticated && username ? (
+      <>
+        <Button
+          ref={loginButtonRef}
+          className={`font-medium text-amber-50 hover:text-white ${
+            (currentPage === "login" || currentPage === "register") &&
+            "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+          }`}
+          disableRipple
+          onClick={() => setOpenLoginMenu(true)}
+          endIcon={<ExpandMoreIcon />}
+        >
+          {username}
+        </Button>
+        <Popper
+          open={openLoginMenu}
+          anchorEl={loginButtonRef.current}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom-start" ? "left top" : "left bottom",
+              }}
+            >
+              <Paper>
+                <ClickAwayListener
+                  onClickAway={(event: MouseEvent | TouchEvent) => {
+                    if (
+                      storeButtonRef.current &&
+                      storeButtonRef.current.contains(
+                        event.target as HTMLElement,
+                      )
+                    ) {
+                      return;
+                    }
+                    setOpenLoginMenu(false);
+                  }}
+                >
+                  <MenuList autoFocusItem={openLoginMenu}>
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/");
+                        setOpenLoginMenu(false);
+                      }}
+                      disableRipple
+                    >
+                      View profile
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/");
+                        setOpenLoginMenu(false);
+                      }}
+                      disableRipple
+                    >
+                      Logout
+                    </MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </>
+    ) : (
+      <Button
+        className={`text-lg font-medium text-amber-50 hover:text-white ${
+          (currentPage === "login" || currentPage === "register") &&
+          "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+        }`}
+        disableRipple
+        onClick={() => navigate("/login")}
+      >
+        Login
+      </Button>
+    );
+  };
+
+  const renderAvatar = () => {
+    return (
+      isAuthenticated &&
+      avatarUrl && (
+        <button onClick={() => navigate("/")}>
+          <Avatar alt="Profile Avatar" src={avatarUrl} />
+        </button>
+      )
+    );
+  };
+
   return (
     <header
       ref={headerRef}
       className="flex w-full items-center justify-center bg-green-800 p-4"
     >
-      <div className="flex w-[52rem] items-center justify-between rounded">
+      <div className="flex w-[64rem] items-center justify-between rounded">
         <span className="flex justify-between gap-x-6">
           <Button onClick={() => navigate("/")} disableRipple>
             <h1 className="text-3xl font-medium tracking-tight text-amber-50">
@@ -309,16 +412,11 @@ const Header = ({ headerRef }: HeaderProps) => {
             <li>{renderProfileButton()}</li>
           </ul>
         </span>
-        <Button
-          className={`text-lg font-medium text-amber-50 hover:text-white ${
-            (currentPage === "login" || currentPage === "register") &&
-            "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
-          }`}
-          disableRipple
-          onClick={() => navigate("/login")}
-        >
-          Login
-        </Button>
+        <span className="flex gap-x-2">
+          {renderCartIcon()}
+          {renderLoginButton()}
+          {renderAvatar()}
+        </span>
       </div>
     </header>
   );

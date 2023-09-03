@@ -15,9 +15,9 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ExpandMore, Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { useLoginUserMutation } from "../../store";
+import { useLazyGetProfileQuery, useLoginUserMutation } from "../../store";
 
 import { isAuthError } from "../../types/errors/authServiceErrors";
 
@@ -38,6 +38,7 @@ const textFieldTheme = createTheme({
 
 const LoginForm = () => {
   const [loginUser] = useLoginUserMutation();
+  const [getProfile] = useLazyGetProfileQuery();
   const navigate = useNavigate();
 
   const {
@@ -59,6 +60,7 @@ const LoginForm = () => {
     const userCredentials = { username, password };
     try {
       await loginUser(userCredentials).unwrap();
+      await getProfile().unwrap();
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {
@@ -153,6 +155,7 @@ const LoginForm = () => {
             className="h-16 w-40 bg-amber-400 text-lg hover:bg-amber-500"
             type="submit"
             disabled={isSubmitting}
+            endIcon={<ExpandMore />}
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
           </Button>

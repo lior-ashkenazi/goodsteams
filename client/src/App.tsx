@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useLazyAuthUserQuery, useLazyGetProfileQuery } from "./store";
 import Header from "./components/misc/Header";
-import { useAuthUserQuery } from "./store";
 
 const App = () => {
-  useAuthUserQuery();
+  const [authQuery] = useLazyAuthUserQuery();
+  const [getProfile] = useLazyGetProfileQuery();
 
   const navigate = useNavigate();
 
@@ -12,6 +13,17 @@ const App = () => {
   const [headerHeight, setHeaderHeight] = useState(0);
 
   useEffect(() => {
+    const fetchData = async () => {
+      await authQuery().unwrap();
+      await getProfile().unwrap();
+    };
+
+    fetchData();
+  }, [authQuery, getProfile]);
+
+  useEffect(() => {
+    // this is an edge case handling when web-app
+    // is opened in multiple windows and a logout occurs
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "token") {
         if (!e.newValue) {

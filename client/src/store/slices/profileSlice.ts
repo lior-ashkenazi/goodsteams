@@ -36,6 +36,15 @@ const profileSlice = createSlice({
         },
       )
       .addMatcher(
+        profileServiceEndpoints.endpoints.getProfile.matchFulfilled,
+        (state, action) => {
+          const username = action.payload.profile.username;
+          const avatarUrl = action.payload.profile.avatarUrl;
+          state.username = username;
+          state.avatarUrl = avatarUrl;
+        },
+      )
+      .addMatcher(
         profileServiceEndpoints.endpoints.updateProfile.matchFulfilled,
         (state, action) => {
           const username = action.payload.profile.username;
