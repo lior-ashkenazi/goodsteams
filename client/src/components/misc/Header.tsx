@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState, useLogoutUserMutation } from "../../store";
 import Button from "@mui/material/Button";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
@@ -25,14 +25,14 @@ const Header = ({ headerRef }: HeaderProps) => {
   const location = useLocation();
   const currentPage = location.pathname.split("/")[1];
 
+  const [logoutUser] = useLogoutUserMutation();
+
   const isAuthenticated: boolean | null = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
-
   const username: string | null = useSelector(
     (state: RootState) => state.profile.username,
   );
-
   const avatarUrl: string | null = useSelector(
     (state: RootState) => state.profile.avatarUrl,
   );
@@ -49,6 +49,11 @@ const Header = ({ headerRef }: HeaderProps) => {
   const discussionsButtonRef = useRef<HTMLButtonElement>(null);
   const profileButtonRef = useRef<HTMLButtonElement>(null);
   const loginButtonRef = useRef<HTMLButtonElement>(null);
+
+  const handleLogout = async () => {
+    await logoutUser().unwrap();
+    navigate("/");
+  };
 
   const renderStoreButton = () => {
     return (
@@ -354,8 +359,8 @@ const Header = ({ headerRef }: HeaderProps) => {
                     <Divider />
                     <MenuItem
                       onClick={() => {
-                        navigate("/");
                         setOpenLoginMenu(false);
+                        handleLogout();
                       }}
                       disableRipple
                     >
