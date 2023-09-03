@@ -1,14 +1,20 @@
 version: '3'
 
 services:
+  gateway-service:
+    build:
+      context: ./gatewayservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-gateway-service:latest
+
   auth-service:
     build:
       context: ./authservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-auth-service:latest
 
-  gateway-service:
+  profile-service:
     build:
-      context: ./gatewayservice
+      context: ./profileservice
       dockerfile: Dockerfile
-    image: liorash7/goodsteams-gateway-service:latest
+    image: liorash7/goodsteams-profile-service:latest

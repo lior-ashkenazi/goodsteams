@@ -18,19 +18,19 @@ public class Profile {
     private String username;
 
     @Column(nullable = false)
-    private String firstName = "";
+    private String firstName;
 
     @Column(nullable = false)
-    private String lastName = "";
+    private String lastName;
 
     @Column(nullable = false)
-    private String gender = "";
+    private String gender;
 
     @Column(nullable = false)
-    private LocalDate birthDate = LocalDate.of(2020, 1, 1);
+    private LocalDate birthDate;
 
     @Column(nullable = false)
-    private String avatarUrl = "http://www.gravatar.com/avatar/?d=mp";
+    private String avatarUrl;
 
     public Profile() {
     }

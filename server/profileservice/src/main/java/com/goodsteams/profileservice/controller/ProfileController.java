@@ -28,7 +28,7 @@ public class ProfileController {
     public ResponseEntity<Map<String, String>> createProfile(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
-        profileService.saveProfileByUsername(token);
+        profileService.saveProfileByToken(token);
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "Profile was created for user.");
@@ -40,41 +40,27 @@ public class ProfileController {
     public ResponseEntity<ProfileResponseDTO> getProfile(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
-        Optional<Profile> profile = profileService.getProfileByUsername(token);
-
-        if (profile.isEmpty()) {
-            throw new ProfileNotFoundException();
-        }
+        Profile profile = profileService.findProfileByToken(token);
 
         ProfileResponseDTO response = new ProfileResponseDTO();
         response.setMessage("Profile retrieved successfully.");
-        response.setProfile(profile.get());
+        response.setProfile(profile);
 
         return ResponseEntity.ok(response);
 
     }
 
     @PutMapping("/")
-    public ResponseEntity<Map<String, String>> authenticateUser(@RequestHeader("Authorization") String authHeader, @RequestBody Profile profile) {
+    public ResponseEntity<ProfileResponseDTO> authenticateUser(@RequestHeader("Authorization") String authHeader, @RequestBody Profile profile) {
         String token = authHeader.substring(7);
 
-        Optional<Profile> existingProfile = profileService.getProfileByUsername(token);
+        Profile updatedProfile = profileService.saveProfileByToken(token, profile);
 
-        if (existingProfile.isEmpty()) {
-            throw new ProfileNotFoundException();
-        }
-
-        profileService.updateProfile(profile);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User is authenticated.");
-        response.put("token", newToken);
+        ProfileResponseDTO response = new ProfileResponseDTO();
+        response.setMessage("Profile updated.");
+        response.setProfile(updatedProfile);
 
         return ResponseEntity.ok(response);
     }
 
-
-    private boolean isValidEmail(String email) {
-        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-    }
 }

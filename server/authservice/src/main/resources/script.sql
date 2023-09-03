@@ -8,10 +8,11 @@ USE authdb;
 DROP TABLE IF EXISTS user;
 
 -- 4. Create the User table
-CREATE TABLE user (
-                      id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                      username VARCHAR(255) NOT NULL UNIQUE,
-                      password VARCHAR(255) NOT NULL
+CREATE TABLE user
+(
+    id       BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 
 -- 5. Create a dedicated user for the auth-service to connect from a specific IP
