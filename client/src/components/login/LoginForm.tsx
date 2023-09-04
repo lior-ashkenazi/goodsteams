@@ -37,9 +37,10 @@ const textFieldTheme = createTheme({
 });
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [loginUser] = useLoginUserMutation();
   const [getProfile] = useLazyGetProfileQuery();
-  const navigate = useNavigate();
 
   const {
     register,
