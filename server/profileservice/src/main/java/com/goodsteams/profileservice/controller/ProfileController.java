@@ -23,20 +23,6 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-
-    @PostMapping("/")
-    public ResponseEntity<ProfileResponseDTO> createProfile(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.substring(7);
-
-        Profile profile = profileService.saveProfileByToken(token);
-
-        ProfileResponseDTO response = new ProfileResponseDTO();
-        response.setMessage("Profile was created for user.");
-        response.setProfile(profile);
-
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/")
     public ResponseEntity<ProfileResponseDTO> getProfile(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);

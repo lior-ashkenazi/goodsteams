@@ -1,6 +1,7 @@
 package com.goodsteams.authservice.controller;
 
 import com.goodsteams.authservice.exception.UserRegistrationException;
+import com.goodsteams.authservice.producer.UserRegistrationEventProducer;
 import com.goodsteams.authservice.requestmodels.UserLoginDTO;
 import com.goodsteams.authservice.requestmodels.UserRegistrationDTO;
 import com.goodsteams.authservice.service.AuthService;
@@ -16,10 +17,12 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserRegistrationEventProducer userRegistrationEventProducer;
 
     @Autowired
-    public AuthController (AuthService authService) {
+    public AuthController (AuthService authService, UserRegistrationEventProducer userRegistrationEventProducer) {
         this.authService = authService;
+        this.userRegistrationEventProducer = userRegistrationEventProducer;
     }
 
 
@@ -35,6 +38,8 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "User registered successfully.");
         response.put("token", jwtToken);
+
+        userRegistrationEventProducer.sendRegistrationEvent(jwtToken);
 
         return ResponseEntity.ok(response);
     }
