@@ -1,7 +1,12 @@
+### Application Configuration ###
 **/application.properties
 **/application.yaml
 
-## RSA Encryption ##
+### RSA Encryption ###
 certs/
 
+### PowerShell Scripts ###
 *.ps1
+
+### SQL Scripts ###
+*.sql
