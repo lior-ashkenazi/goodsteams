@@ -60,9 +60,13 @@ const Header = ({ headerRef }: HeaderProps) => {
       <>
         <Button
           ref={storeButtonRef}
-          className={`text-lg font-medium text-amber-50 hover:text-white ${
+          className={`text-lg font-medium ${
+            currentPage !== "store"
+              ? "text-yellow-50 hover:text-white"
+              : "text-green-950 hover:text-green-950"
+          } ${
             currentPage === "store" &&
-            "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+            "font-semibold  underline decoration-2 underline-offset-4"
           }`}
           onClick={() => navigate("/store")}
           onMouseEnter={() => setOpenStoreMenu(true)}
@@ -80,6 +84,7 @@ const Header = ({ headerRef }: HeaderProps) => {
           disablePortal
           onMouseEnter={() => setOpenStoreMenu(true)}
           onMouseLeave={() => setOpenStoreMenu(false)}
+          className="z-10"
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -109,6 +114,8 @@ const Header = ({ headerRef }: HeaderProps) => {
                   >
                     Wishlist
                   </MenuItem>
+                  <MenuItem disableRipple>News</MenuItem>
+                  <MenuItem disableRipple>About</MenuItem>
                 </MenuList>
               </Paper>
             </Grow>
@@ -123,9 +130,13 @@ const Header = ({ headerRef }: HeaderProps) => {
       <>
         <Button
           ref={discussionsButtonRef}
-          className={`text-lg font-medium text-amber-50 hover:text-white ${
+          className={`text-lg font-medium ${
+            currentPage !== "discussions"
+              ? "text-yellow-50 hover:text-white"
+              : "text-green-950 hover:text-green-950"
+          } ${
             currentPage === "discussions" &&
-            "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+            "font-semibold  underline decoration-2 underline-offset-4"
           }`}
           onClick={() => navigate("/")}
           onMouseEnter={() => setOpenDiscussionsMenu(true)}
@@ -143,6 +154,7 @@ const Header = ({ headerRef }: HeaderProps) => {
           disablePortal
           onMouseEnter={() => setOpenDiscussionsMenu(true)}
           onMouseLeave={() => setOpenDiscussionsMenu(false)}
+          className="z-10"
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -186,9 +198,13 @@ const Header = ({ headerRef }: HeaderProps) => {
       <>
         {isAuthenticated && username && (
           <Button
-            className={`text-lg font-medium text-amber-50 hover:text-white ${
-              currentPage === "discussions" &&
-              "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+            className={`text-lg font-medium ${
+              currentPage !== "library"
+                ? "text-yellow-50 hover:text-white"
+                : "text-green-950 hover:text-green-950"
+            } ${
+              currentPage === "library" &&
+              "font-semibold  underline decoration-2 underline-offset-4"
             }`}
             onClick={() => navigate("/")}
             disableRipple
@@ -207,9 +223,13 @@ const Header = ({ headerRef }: HeaderProps) => {
           <>
             <Button
               ref={profileButtonRef}
-              className={`text-lg font-medium text-amber-50 hover:text-white ${
-                currentPage === "discussions" &&
-                "truncate font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+              className={`text-lg font-medium ${
+                currentPage !== "profile"
+                  ? "text-yellow-50 hover:text-white"
+                  : "text-green-950 hover:text-green-950"
+              } ${
+                currentPage === "profile" &&
+                "font-semibold  underline decoration-2 underline-offset-4"
               }`}
               onMouseEnter={() => setOpenProfileMenu(true)}
               onMouseLeave={() => setOpenProfileMenu(false)}
@@ -226,6 +246,7 @@ const Header = ({ headerRef }: HeaderProps) => {
               disablePortal
               onMouseEnter={() => setOpenProfileMenu(true)}
               onMouseLeave={() => setOpenProfileMenu(false)}
+              className="z-10"
             >
               {({ TransitionProps, placement }) => (
                 <Grow
@@ -290,11 +311,11 @@ const Header = ({ headerRef }: HeaderProps) => {
             sx={{
               "& .MuiBadge-badge": {
                 backgroundColor: "#22c55e",
-                color: "#fffbeb",
+                color: "#fefce8",
               },
             }}
           >
-            <ShoppingCartIcon style={{ color: "#fffbeb" }} />
+            <ShoppingCartIcon style={{ color: "#fefce8" }} />
           </Badge>
         </IconButton>
       )
@@ -306,9 +327,14 @@ const Header = ({ headerRef }: HeaderProps) => {
       <>
         <Button
           ref={loginButtonRef}
-          className={`font-medium text-amber-50 hover:text-white ${
-            (currentPage === "login" || currentPage === "register") &&
-            "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
+          className={`text-lg font-medium ${
+            currentPage !== "login" && currentPage !== "register"
+              ? "text-yellow-50 hover:text-white"
+              : "text-green-950 hover:text-green-950"
+          } ${
+            currentPage !== "login" &&
+            currentPage !== "register" &&
+            "font-semibold  underline decoration-2 underline-offset-4"
           }`}
           disableRipple
           onClick={() => setOpenLoginMenu(true)}
@@ -323,6 +349,7 @@ const Header = ({ headerRef }: HeaderProps) => {
           placement="bottom-start"
           transition
           disablePortal
+          className="z-10"
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -406,7 +433,7 @@ const Header = ({ headerRef }: HeaderProps) => {
       <div className="flex w-[64rem] items-center justify-between rounded">
         <span className="flex justify-between gap-x-6">
           <Button onClick={() => navigate("/")} disableRipple>
-            <h1 className="text-3xl font-medium tracking-tight text-amber-50">
+            <h1 className="text-3xl font-medium tracking-tight text-yellow-50">
               Good<span className="font-semibold">Steams</span>
             </h1>
           </Button>

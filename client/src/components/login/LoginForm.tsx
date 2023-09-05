@@ -31,7 +31,7 @@ type LoginFormValidationSchema = z.infer<typeof loginFormValidationSchema>;
 const textFieldTheme = createTheme({
   palette: {
     primary: {
-      main: "#451a03",
+      main: "#422006",
     },
   },
 });
@@ -77,7 +77,7 @@ const LoginForm = () => {
 
   return (
     <form
-      className="flex w-[28rem] flex-col gap-y-16 rounded bg-green-500 p-10"
+      className="flex w-[28rem] flex-col gap-y-16 rounded bg-green-500 p-10 shadow-md"
       onSubmit={handleSubmit(onSubmitHandler)}
     >
       <h2 className="text-5xl font-semibold">Sign In</h2>
@@ -153,7 +153,7 @@ const LoginForm = () => {
         <span className="flex justify-center">
           <Button
             variant="contained"
-            className="h-16 w-40 bg-amber-400 text-lg hover:bg-amber-500"
+            className="h-16 w-40 bg-yellow-400 text-lg hover:bg-yellow-500"
             type="submit"
             disabled={isSubmitting}
             endIcon={<ExpandMore />}
@@ -165,7 +165,7 @@ const LoginForm = () => {
           Don't have an account yet?{" "}
           <Button
             variant="text"
-            className="py-0 pl-2 pr-0 text-lg text-amber-200"
+            className="py-0 pl-2 pr-0 text-lg text-yellow-200"
             onClick={() => navigate("/register")}
           >
             Sign Up

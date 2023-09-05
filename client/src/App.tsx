@@ -50,7 +50,7 @@ const App = () => {
     <div className="h-screen w-screen min-w-[75rem] bg-gradient-to-b from-emerald-600 to-amber-100 text-white">
       <Header headerRef={headerRef} />
       <div
-        className="flex w-full items-center justify-center overflow-y-auto"
+        className="overflow-y-auto"
         style={{ height: `calc(100% - ${headerHeight}px)` }}
       >
         <Outlet />
