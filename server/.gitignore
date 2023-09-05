@@ -10,3 +10,5 @@ certs/
 
 ### SQL Scripts ###
 *.sql
+
+security fix
