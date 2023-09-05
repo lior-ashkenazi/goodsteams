@@ -18,3 +18,9 @@ services:
       context: ./profileservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-profile-service:latest
+
+  book-service:
+    build:
+      context: ./bookservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-book-service:latest

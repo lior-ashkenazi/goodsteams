@@ -82,3 +82,24 @@ spec:
         - name: rsa-keys
           secret:
             secretName: rsa-keys-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-service
+  template:
+    metadata:
+      labels:
+        app: book-service
+    spec:
+      containers:
+        - name: book-service
+          image: liorash7/goodsteams-book-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
