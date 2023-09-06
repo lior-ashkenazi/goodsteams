@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    // For searching by title with sorting and pagination
     Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
     @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.genreName = :genreName")

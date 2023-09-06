@@ -34,7 +34,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Book>> searchBooksByTitle(
+    public ResponseEntity<Page<Book>> getBooksByTitle(
             @RequestParam String title,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -47,7 +47,7 @@ public class BookController {
             sortOrder = sortOrder.descending();
         }
 
-        Page<Book> result = bookService.searchBooksByTitle(title, page, size, sortOrder);
+        Page<Book> result = bookService.getBooksByTitle(title, page, size, sortOrder);
         return ResponseEntity.ok(result);
     }
 

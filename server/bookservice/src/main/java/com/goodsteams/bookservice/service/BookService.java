@@ -2,7 +2,6 @@ package com.goodsteams.bookservice.service;
 
 import com.goodsteams.bookservice.dao.BookRepository;
 import com.goodsteams.bookservice.entity.Book;
-import com.goodsteams.bookservice.entity.Genre;
 import com.goodsteams.bookservice.exception.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +32,7 @@ public class BookService {
         return book.get();
     }
 
-    public Page<Book> searchBooksByTitle(String title, int page, int size, Sort sort) {
+    public Page<Book> getBooksByTitle(String title, int page, int size, Sort sort) {
         Pageable pageable = PageRequest.of(page, size, sort);
         return bookRepository.findByTitleContainingIgnoreCase(title, pageable);
     }
