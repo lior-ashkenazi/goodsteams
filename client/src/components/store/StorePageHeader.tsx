@@ -47,7 +47,7 @@ const StorePageHeader = () => {
                 id="outlined-search-bar"
                 endAdornment={
                   <InputAdornment position="end">
-                    <SearchIcon />
+                    <SearchIcon className="text-yellow-950" />
                   </InputAdornment>
                 }
               />
