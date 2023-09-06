@@ -54,6 +54,7 @@ public class BookController {
         } else {
             result = bookService.getBooksByAuthor(term, page, size, sortOrder);
         }
+
         return ResponseEntity.ok(result);
     }
 
