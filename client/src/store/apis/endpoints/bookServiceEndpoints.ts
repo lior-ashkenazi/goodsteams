@@ -17,8 +17,8 @@ export const profileServiceEndpoints = apiSlice.injectEndpoints({
       GetBooksByTitleResponse,
       GetBooksByTitleRequest
     >({
-      query: ({ title, page = 0, size = 10, sort = "title,asc" }) => {
-        return `book/search?title=${title}&page=${page}&size=${size}&sort=${sort}`;
+      query: ({ term, page = 0, size = 10, sort = "title,asc" }) => {
+        return `book/search?term=${term}&page=${page}&size=${size}&sort=${sort}`;
       },
     }),
     getBooksByGenre: builder.query<

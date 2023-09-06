@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Button,
   FormControl,
@@ -18,6 +21,12 @@ const searchBarTheme = createTheme({
 });
 
 const StorePageHeader = () => {
+  const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const handleSearch = () => navigate(`/store/search?term=${searchTerm}`);
+
   return (
     <div className="my-8 flex w-full flex-col">
       <Button
@@ -45,9 +54,17 @@ const StorePageHeader = () => {
               <OutlinedInput
                 className="h-10 bg-green-200 text-yellow-950"
                 id="outlined-search-bar"
+                placeholder="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 endAdornment={
                   <InputAdornment position="end">
-                    <SearchIcon className="text-yellow-950" />
+                    <SearchIcon
+                      className="text-yellow-950"
+                      onClick={handleSearch}
+                      style={{ cursor: "pointer" }}
+                    />
                   </InputAdornment>
                 }
               />

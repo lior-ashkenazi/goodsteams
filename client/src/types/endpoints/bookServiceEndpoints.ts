@@ -5,7 +5,7 @@ export type GetBookByIdRequest = number;
 export type GetBookByIdResponse = Book;
 
 export type GetBooksByTitleRequest = {
-  title: string;
+  term: string;
   page?: number;
   size?: number;
   sort?: string;
