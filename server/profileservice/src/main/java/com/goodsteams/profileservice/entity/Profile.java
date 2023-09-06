@@ -24,19 +24,19 @@ public class Profile {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName = EMPTY_STRING;
 
-    @Column(nullable = false)
+    @Column(name ="last_name", nullable = false)
     private String lastName = EMPTY_STRING;
 
     @Column(nullable = false)
     private String gender = EMPTY_STRING;
 
-    @Column(nullable = false)
+    @Column(name="birth_date", nullable = false)
     private LocalDate birthDate = DEFAULT_BIRTHDATE;
 
-    @Column(nullable = false)
+    @Column(name="avatar_url", nullable = false)
     private String avatarUrl = DEFAULT_AVATAR;
 
     public Profile() {

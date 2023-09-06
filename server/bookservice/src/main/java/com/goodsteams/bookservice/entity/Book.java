@@ -27,8 +27,8 @@ public class Book {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "cover_image", nullable = false)
-    private String coverImage;
+    @Column(name = "cover_image_url", nullable = false)
+    private String coverImageUrl;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;
