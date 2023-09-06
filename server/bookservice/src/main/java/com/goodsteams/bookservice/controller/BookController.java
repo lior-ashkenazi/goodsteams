@@ -1,27 +1,31 @@
 package com.goodsteams.bookservice.controller;
 
 import com.goodsteams.bookservice.entity.Book;
-import com.goodsteams.bookservice.entity.Genre;
 import com.goodsteams.bookservice.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/book")
 public class BookController {
 
     private final BookService bookService;
+    private final Map<String, String> sortMap;
 
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
+        this.sortMap = Map.ofEntries(
+                Map.entry("release_date", "releaseDate"),
+                Map.entry("title", "title"),
+                Map.entry("price", "price"),
+                Map.entry("average_rating", "averageRating")
+        );
     }
 
     @GetMapping("/{id}")
@@ -37,7 +41,8 @@ public class BookController {
             @RequestParam(defaultValue = "title,asc") String sort) {
 
         String[] sortParams = sort.split(",");
-        Sort sortOrder = Sort.by(sortParams[0]);
+        String sortOrderParam = this.sortMap.get(sortParams[0]);
+        Sort sortOrder = Sort.by(sortOrderParam);
         if (sortParams[1].equalsIgnoreCase("desc")) {
             sortOrder = sortOrder.descending();
         }
@@ -47,8 +52,12 @@ public class BookController {
     }
 
     @GetMapping("/genre/{genreName}")
-    public ResponseEntity<List<Book>> getBooksByGenre(@PathVariable String genreName) {
-        List<Book> books = bookService.getBooksByGenre(genreName);
+    public ResponseEntity<Page<Book>> getBooksByGenre(
+            @PathVariable String genreName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<Book> books = bookService.getBooksByGenre(genreName, page, size);
         return ResponseEntity.ok(books);
     }
 

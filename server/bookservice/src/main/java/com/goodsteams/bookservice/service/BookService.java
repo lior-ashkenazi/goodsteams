@@ -39,8 +39,9 @@ public class BookService {
         return bookRepository.findByTitleContainingIgnoreCase(title, pageable);
     }
 
-    public List<Book> getBooksByGenre(String genreName) {
-        return bookRepository.findBooksByGenreName(genreName);
+    public Page<Book> getBooksByGenre(String genreName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository.findBooksByGenreName(genreName, pageable);
     }
 
 }
