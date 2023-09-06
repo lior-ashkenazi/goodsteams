@@ -32,9 +32,9 @@ public class BookService {
         return book.get();
     }
 
-    public Page<Book> getBooksByTitle(String title, int page, int size, Sort sort) {
+    public Page<Book> getBooksByTitleOrAuthor(String term, int page, int size, Sort sort) {
         Pageable pageable = PageRequest.of(page, size, sort);
-        return bookRepository.findByTitleContainingIgnoreCase(title, pageable);
+        return bookRepository.findByTitleContainingOOrAuthorContainingIgnoreCase(term, pageable);
     }
 
     public Page<Book> getBooksByGenre(String genreName, int page, int size) {
