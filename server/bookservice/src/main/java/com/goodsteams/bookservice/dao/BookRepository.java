@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    Page<Book> findByTitleContainingOOrAuthorContainingIgnoreCase(String term, Pageable pageable);
+    Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+    Page<Book> findByAuthorContainingIgnoreCase(String author, Pageable pageable);
 
     @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.genreName = :genreName")
     Page<Book> findBooksByGenreName(@Param("genreName") String genreName, Pageable pageable);
