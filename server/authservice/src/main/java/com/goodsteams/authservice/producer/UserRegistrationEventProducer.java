@@ -14,7 +14,7 @@ public class UserRegistrationEventProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendRegistrationEvent(String message) {
-        kafkaTemplate.send("user-registration-topic", message);
+    public void sendRegistrationEvent(String token) {
+        kafkaTemplate.send("user-registration-topic", token);
     }
 }

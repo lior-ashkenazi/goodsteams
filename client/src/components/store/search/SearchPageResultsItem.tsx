@@ -12,7 +12,8 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
   return (
     <div
       key={book.id}
-      className="mb-2 flex items-center justify-between bg-yellow-100"
+      className="mb-2 flex items-center justify-between bg-yellow-100 transition-colors hover:bg-yellow-200"
+      style={{ cursor: "pointer" }}
     >
       <div className="flex items-center">
         <div className="flex-shrink-0">

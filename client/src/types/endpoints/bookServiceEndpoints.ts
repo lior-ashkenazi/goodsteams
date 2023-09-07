@@ -6,6 +6,7 @@ export type GetBookByIdResponse = Book;
 
 export type GetBooksByTermRequest = {
   term: string;
+  type?: string;
   page?: number;
   size?: number;
   sort?: string;

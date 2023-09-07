@@ -21,10 +21,10 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
         this.sortMap = Map.ofEntries(
-                Map.entry("release_date", "releaseDate"),
-                Map.entry("title", "title"),
+                Map.entry("release-date", "releaseDate"),
+                Map.entry("name", "name"),
                 Map.entry("price", "price"),
-                Map.entry("average_rating", "averageRating")
+                Map.entry("average-rating", "averageRating")
         );
     }
 
@@ -39,11 +39,19 @@ public class BookController {
             @RequestParam(defaultValue = "title") String type,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "title,asc") String sort) {
+            @RequestParam(defaultValue = "name,asc") String sort) {
 
         String[] sortParams = sort.split(",");
         String sortOrderParam = this.sortMap.get(sortParams[0]);
+        if (sortOrderParam.equals("name")) {
+            if (type.equals("title")) {
+                sortOrderParam = "title";
+            } else if(type.equals("author")) {
+                sortOrderParam = "author";
+            }
+        }
         Sort sortOrder = Sort.by(sortOrderParam);
+
         if (sortParams[1].equalsIgnoreCase("desc")) {
             sortOrder = sortOrder.descending();
         }
