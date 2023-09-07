@@ -15,7 +15,7 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { ExpandMore, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { useLazyGetProfileQuery, useLoginUserMutation } from "../../store";
 
@@ -77,7 +77,7 @@ const LoginForm = () => {
 
   return (
     <form
-      className="flex w-[28rem] flex-col gap-y-16 rounded bg-green-500 p-10 shadow-md"
+      className="flex w-[28rem] flex-col gap-y-16 rounded bg-green-400 p-10 text-yellow-50 shadow-md"
       onSubmit={handleSubmit(onSubmitHandler)}
     >
       <h2 className="text-5xl font-semibold">Sign In</h2>
@@ -95,7 +95,7 @@ const LoginForm = () => {
               helperText={errors.username ? errors.username?.message : " "}
               FormHelperTextProps={{
                 style: {
-                  background: "#22c55e",
+                  background: "#4ade80",
                   margin: 0, // Cancel the margin
                   paddingTop: "3px", // Set the upper padding to 3px
                   paddingLeft: "14px", // Set the left padding to 14px
@@ -137,7 +137,7 @@ const LoginForm = () => {
               />
               <FormHelperText
                 style={{
-                  background: "#22c55e",
+                  background: "#4ade80",
                   margin: 0, // Cancel the margin
                   paddingTop: "3px", // Set the upper padding to 3px
                   paddingLeft: "14px", // Set the left padding to 14px
@@ -153,10 +153,9 @@ const LoginForm = () => {
         <span className="flex justify-center">
           <Button
             variant="contained"
-            className="h-16 w-40 bg-yellow-400 text-lg hover:bg-yellow-500"
+            className="h-16 w-40 bg-yellow-300 text-lg text-yellow-800 hover:bg-yellow-400 active:bg-yellow-500"
             type="submit"
             disabled={isSubmitting}
-            endIcon={<ExpandMore />}
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
           </Button>
