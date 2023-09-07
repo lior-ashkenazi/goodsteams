@@ -7,6 +7,7 @@ import profileReducer from "./slices/profileSlice";
 import { apiSlice } from "./apis/apiSlice";
 import { authServiceEndpoints } from "./apis/endpoints/authServiceEndpoints";
 import { profileServiceEndpoints } from "./apis/endpoints/profileServiceEndpoints";
+import { bookServiceEndpoints } from "./apis/endpoints/bookServiceEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -43,3 +44,5 @@ export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } = profileServiceEndpoints;
+
+export const { useGetBooksByTermQuery } = bookServiceEndpoints;

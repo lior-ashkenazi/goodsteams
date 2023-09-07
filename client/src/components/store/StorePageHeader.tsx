@@ -42,7 +42,7 @@ const StorePageHeader = () => {
             Your Store
           </Button>
           <Button className="px-4 py-3 text-base normal-case text-green-900">
-            Categories
+            Genres
           </Button>
           <Button className="px-4 py-3 text-base normal-case text-green-900">
             News
