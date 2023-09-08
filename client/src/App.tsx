@@ -14,12 +14,16 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await authQuery().unwrap();
-      await getProfile().unwrap();
+      try {
+        await authQuery().unwrap();
+        await getProfile().unwrap();
+      } catch {
+        navigate("/");
+      }
     };
 
     fetchData();
-  }, [authQuery, getProfile]);
+  }, [authQuery, getProfile, navigate]);
 
   useEffect(() => {
     // this is an edge case handling when web-app

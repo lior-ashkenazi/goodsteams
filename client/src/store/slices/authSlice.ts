@@ -51,6 +51,14 @@ const authSlice = createSlice({
         },
       )
       .addMatcher(
+        authServiceEndpoints.endpoints.authUser.matchRejected,
+        (state) => {
+          state.token = null;
+          state.isAuthenticated = false;
+          localStorage.removeItem("goodsteams-jwt");
+        },
+      )
+      .addMatcher(
         authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
         (state) => {
           state.token = null;
