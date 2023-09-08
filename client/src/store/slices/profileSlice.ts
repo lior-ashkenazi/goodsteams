@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { profileServiceEndpoints } from "../apis/endpoints/profileServiceEndpoints";
+import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 
 type ProfileState = {
   username: string | null;
@@ -42,6 +43,20 @@ const profileSlice = createSlice({
           const avatarUrl = action.payload.profile.avatarUrl;
           state.username = username;
           state.avatarUrl = avatarUrl;
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.authUser.matchRejected,
+        (state) => {
+          state.username = null;
+          state.avatarUrl = null;
+        },
+      )
+      .addMatcher(
+        profileServiceEndpoints.endpoints.getProfile.matchRejected,
+        (state) => {
+          state.username = null;
+          state.avatarUrl = null;
         },
       )
       .addMatcher(

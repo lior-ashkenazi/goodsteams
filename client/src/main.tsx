@@ -28,6 +28,7 @@ const router = createMemoryRouter(
       <Route index element={<Navigate replace to="/store" />} />
       <Route path="store" element={<StorePage />}>
         <Route path="search" element={<SearchPage />} />
+        {/* <Route path="genre" element={<GenrePage />} /> */}
       </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
