@@ -95,7 +95,7 @@ const Header = ({ headerRef }: HeaderProps) => {
               }}
             >
               <Paper>
-                <MenuList autoFocusItem={openStoreMenu}>
+                <MenuList>
                   <MenuItem
                     onClick={() => {
                       navigate("/store");
@@ -165,7 +165,7 @@ const Header = ({ headerRef }: HeaderProps) => {
               }}
             >
               <Paper>
-                <MenuList autoFocusItem={openDiscussionsMenu}>
+                <MenuList>
                   <MenuItem
                     onClick={() => {
                       navigate("/");
@@ -257,7 +257,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                   }}
                 >
                   <Paper>
-                    <MenuList autoFocusItem={openProfileMenu}>
+                    <MenuList>
                       <MenuItem
                         onClick={() => {
                           navigate("/");
@@ -373,7 +373,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                     setOpenLoginMenu(false);
                   }}
                 >
-                  <MenuList autoFocusItem={openLoginMenu}>
+                  <MenuList>
                     <MenuItem
                       onClick={() => {
                         navigate("/");
