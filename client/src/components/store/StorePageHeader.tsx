@@ -38,13 +38,22 @@ const StorePageHeader = () => {
       </Button>
       <div className="flex justify-between rounded bg-gradient-to-l from-green-500 to-yellow-50 ">
         <nav className="flex gap-x-1">
-          <Button className="px-4 py-3 text-base normal-case text-green-900">
+          <Button
+            className="px-4 py-3 text-base normal-case text-green-900"
+            disableRipple
+          >
             Your Store
           </Button>
-          <Button className="px-4 py-3 text-base normal-case text-green-900">
+          <Button
+            className="px-4 py-3 text-base normal-case text-green-900"
+            disableRipple
+          >
             Genres
           </Button>
-          <Button className="px-4 py-3 text-base normal-case text-green-900">
+          <Button
+            className="px-4 py-3 text-base normal-case text-green-900"
+            disableRipple
+          >
             News
           </Button>
         </nav>

@@ -334,7 +334,7 @@ const Header = ({ headerRef }: HeaderProps) => {
           } ${
             currentPage !== "login" &&
             currentPage !== "register" &&
-            "font-semibold  underline decoration-2 underline-offset-4"
+            "font-semibold underline decoration-2 underline-offset-4"
           }`}
           disableRipple
           onClick={() => setOpenLoginMenu(true)}
