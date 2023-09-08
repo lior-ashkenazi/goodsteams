@@ -48,8 +48,30 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
           </div>
         </div>
       </div>
-      <span>{convertDate(book.releaseDate)}</span>
-      <span className="mr-10">{book.price}$</span>
+      <div className="m-6 flex w-[24rem] items-center justify-between">
+        <span>{convertDate(book.releaseDate)}</span>
+        {book.discountPercent === 0 ? (
+          <span className="mr-10">{book.price}$</span>
+        ) : (
+          <div className="mr-10 flex items-center gap-x-10">
+            <span className="h-auto rounded-sm bg-green-300 p-1 text-yellow-50">
+              -{book.discountPercent}%
+            </span>
+            <span>
+              <span className="block text-xs text-gray-400 line-through">
+                {book.price}$
+              </span>
+              <span className="block text-green-300">
+                {(
+                  book.price -
+                  (book.discountPercent / 100) * book.price
+                ).toFixed(2)}
+                $
+              </span>
+            </span>
+          </div>
+        )}
+      </div>
     </button>
   );
 };
