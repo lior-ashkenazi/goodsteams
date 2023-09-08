@@ -1,9 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import { useGetBooksByTermQuery } from "../../../store";
-import SearchPageHeader from "./SearchPageHeader";
-import SearchPageFooter from "./SearchPageFooter";
-import SearchPageMain from "./SearchPageMain";
-import SearchPageSkeleton from "./SearchPageSkeleton";
+import SearchPageHeader from "../../../components/store/search/SearchPageHeader";
+import SearchPageFooter from "../../../components/store/search/SearchPageFooter";
+import SearchPageMain from "../../../components/store/search/SearchPageMain";
+import SearchPageSkeleton from "../../../components/store/search/SearchPageSkeleton";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();

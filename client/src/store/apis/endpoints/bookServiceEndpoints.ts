@@ -25,7 +25,7 @@ export const bookServiceEndpoints = apiSlice.injectEndpoints({
       GetBooksByGenreResponse,
       GetBooksByGenreRequest
     >({
-      query: (genreName, page = 0, size = 10) =>
+      query: ({ genreName, page = 0, size = 10 }) =>
         `book/genre/${genreName}?page=${page}&size=${size}`,
     }),
   }),

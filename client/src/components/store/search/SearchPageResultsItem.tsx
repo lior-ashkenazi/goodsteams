@@ -10,10 +10,9 @@ interface SearchPageResultsItemProps {
 
 const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
   return (
-    <div
+    <button
       key={book.id}
-      className="mb-2 flex items-center justify-between bg-yellow-100 transition-colors hover:bg-yellow-200"
-      style={{ cursor: "pointer" }}
+      className="mb-2 flex w-full items-center justify-between bg-yellow-100 transition-colors hover:bg-yellow-200 active:bg-yellow-300"
     >
       <div className="flex items-center">
         <div className="flex-shrink-0">
@@ -23,7 +22,7 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
             aria-label={`${book.title} cover image`}
           />
         </div>
-        <div className="m-6 w-[24rem]">
+        <div className="m-6 w-[24rem] text-left">
           <div className="mb-6 truncate text-lg font-medium">
             <span className="truncate">{book.title}</span>
           </div>
@@ -51,7 +50,7 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
       </div>
       <span>{convertDate(book.releaseDate)}</span>
       <span className="mr-10">{book.price}$</span>
-    </div>
+    </button>
   );
 };
 

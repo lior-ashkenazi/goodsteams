@@ -33,7 +33,7 @@ const SearchPageFooter = ({
   };
 
   return (
-    <div className="flex w-full items-center justify-center rounded-sm bg-green-200 p-6 pt-0 text-green-900">
+    <div className="mb-8 flex w-full items-center justify-center rounded bg-green-200 p-6 pt-2 text-green-900">
       <Pagination
         count={totalPages}
         page={page + 1}

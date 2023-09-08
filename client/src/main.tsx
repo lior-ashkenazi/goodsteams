@@ -16,7 +16,8 @@ import { StyledEngineProvider } from "@mui/material";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import LoginPage from "./pages/login/LoginPage.tsx";
 import RegisterPage from "./pages/register/RegisterPage.tsx";
-import SearchPage from "./components/store/search/SearchPage.tsx";
+import SearchPage from "./pages/store/search/SearchPage.tsx";
+import GenrePage from "./pages/store/genre/GenrePage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -28,7 +29,7 @@ const router = createMemoryRouter(
       <Route index element={<Navigate replace to="/store" />} />
       <Route path="store" element={<StorePage />}>
         <Route path="search" element={<SearchPage />} />
-        {/* <Route path="genre" element={<GenrePage />} /> */}
+        <Route path="genre/:genreName" element={<GenrePage />} />
       </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />

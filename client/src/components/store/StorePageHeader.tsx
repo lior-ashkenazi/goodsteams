@@ -72,6 +72,7 @@ const StorePageHeader = () => {
         <nav className="flex gap-x-1">
           <Button
             className="px-4 py-3 text-base normal-case text-green-900"
+            onClick={() => navigate("/store")}
             disableRipple
           >
             Your Store
