@@ -3,7 +3,7 @@ import { Skeleton } from "@mui/material";
 const GenrePageSkeleton = () => {
   return (
     <div className="grid grid-cols-3 gap-8 p-8">
-      {Array(3)
+      {Array(6)
         .fill(null)
         .map((_, index) => (
           <Skeleton

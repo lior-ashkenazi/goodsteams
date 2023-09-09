@@ -1,7 +1,7 @@
 import { Page } from "../models/Page";
 import { Book } from "../models/Book";
 
-export type GetBookByIdRequest = number;
+export type GetBookByIdRequest = string;
 export type GetBookByIdResponse = Book;
 
 export type GetBooksByTermRequest = {

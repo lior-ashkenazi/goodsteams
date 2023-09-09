@@ -45,5 +45,8 @@ export const {
   useUpdateProfileMutation,
 } = profileServiceEndpoints;
 
-export const { useGetBooksByTermQuery, useGetBooksByGenreQuery } =
-  bookServiceEndpoints;
+export const {
+  useGetBooksByTermQuery,
+  useGetBooksByGenreQuery,
+  useGetBookByIdQuery,
+} = bookServiceEndpoints;

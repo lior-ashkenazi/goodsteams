@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { Book } from "../../../types/models/Book";
 
 interface GenreBookBoxProps {
@@ -5,8 +7,13 @@ interface GenreBookBoxProps {
 }
 
 const GenreBookBox = ({ book }: GenreBookBoxProps) => {
+  const navigate = useNavigate();
+
   return (
-    <button className="active:bg-yellow-yellow-300 flex w-72 flex-col items-center gap-4 rounded-sm border border-yellow-400 bg-yellow-100 transition-colors hover:bg-yellow-200 active:bg-yellow-300">
+    <button
+      className="active:bg-yellow-yellow-300 flex w-72 flex-col items-center gap-4 rounded-sm border border-yellow-400 bg-yellow-100 transition-colors hover:bg-yellow-200 active:bg-yellow-300"
+      onClick={() => navigate(`/store/book/${book.id}`)}
+    >
       <img
         className="rounded-sm"
         src={book.coverImageUrl}

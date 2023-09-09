@@ -39,14 +39,13 @@ const Header = ({ headerRef }: HeaderProps) => {
 
   // New state & refs for store and community
   const [openStoreMenu, setOpenStoreMenu] = useState<boolean>(false);
-  const [openDiscussionsMenu, setOpenDiscussionsMenu] =
-    useState<boolean>(false);
+  const [openCommunityMenu, setOpenCommunityMenu] = useState<boolean>(false);
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false);
 
   const [openLoginMenu, setOpenLoginMenu] = useState<boolean>(false);
 
   const storeButtonRef = useRef<HTMLButtonElement>(null);
-  const discussionsButtonRef = useRef<HTMLButtonElement>(null);
+  const communityButtonRef = useRef<HTMLButtonElement>(null);
   const profileButtonRef = useRef<HTMLButtonElement>(null);
   const loginButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -125,35 +124,35 @@ const Header = ({ headerRef }: HeaderProps) => {
     );
   };
 
-  const renderDiscussionsButton = () => {
+  const renderCommunityButton = () => {
     return (
       <>
         <Button
-          ref={discussionsButtonRef}
+          ref={communityButtonRef}
           className={`text-lg font-medium ${
-            currentPage !== "discussions"
+            currentPage !== "community"
               ? "text-yellow-50 hover:text-white"
               : "text-green-950 hover:text-green-950"
           } ${
-            currentPage === "discussions" &&
+            currentPage === "community" &&
             "font-semibold  underline decoration-2 underline-offset-4"
           }`}
           onClick={() => navigate("/")}
-          onMouseEnter={() => setOpenDiscussionsMenu(true)}
-          onMouseLeave={() => setOpenDiscussionsMenu(false)}
+          onMouseEnter={() => setOpenCommunityMenu(true)}
+          onMouseLeave={() => setOpenCommunityMenu(false)}
           disableRipple
         >
-          Discussions
+          Community
         </Button>
         <Popper
-          open={openDiscussionsMenu}
-          anchorEl={discussionsButtonRef.current}
+          open={openCommunityMenu}
+          anchorEl={communityButtonRef.current}
           role={undefined}
           placement="bottom-start"
           transition
           disablePortal
-          onMouseEnter={() => setOpenDiscussionsMenu(true)}
-          onMouseLeave={() => setOpenDiscussionsMenu(false)}
+          onMouseEnter={() => setOpenCommunityMenu(true)}
+          onMouseLeave={() => setOpenCommunityMenu(false)}
           className="z-10"
         >
           {({ TransitionProps, placement }) => (
@@ -169,7 +168,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                   <MenuItem
                     onClick={() => {
                       navigate("/");
-                      setOpenDiscussionsMenu(false);
+                      setOpenCommunityMenu(false);
                     }}
                     disableRipple
                   >
@@ -178,7 +177,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                   <MenuItem
                     onClick={() => {
                       navigate("/");
-                      setOpenDiscussionsMenu(false);
+                      setOpenCommunityMenu(false);
                     }}
                     disableRipple
                   >
@@ -439,7 +438,7 @@ const Header = ({ headerRef }: HeaderProps) => {
           </Button>
           <ul className="flex items-center gap-x-2">
             <li>{renderStoreButton()}</li>
-            <li>{renderDiscussionsButton()}</li>
+            <li>{renderCommunityButton()}</li>
             <li>{renderLibraryButton()}</li>
             <li>{renderProfileButton()}</li>
           </ul>

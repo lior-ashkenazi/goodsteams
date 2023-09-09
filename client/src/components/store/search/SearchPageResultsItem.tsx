@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { Book } from "../../../types/models/Book";
 import { Rating, Typography } from "@mui/material";
 
@@ -9,10 +11,13 @@ interface SearchPageResultsItemProps {
 }
 
 const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
+  const navigate = useNavigate();
+
   return (
     <button
       key={book.id}
       className="mb-2 flex w-full items-center justify-between bg-yellow-100 transition-colors hover:bg-yellow-200 active:bg-yellow-300"
+      onClick={() => navigate(`/store/book/${book.id}`)}
     >
       <div className="flex items-center">
         <div className="flex-shrink-0">

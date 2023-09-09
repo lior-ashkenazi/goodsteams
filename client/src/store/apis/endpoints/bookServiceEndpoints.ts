@@ -11,7 +11,7 @@ import {
 export const bookServiceEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getBookById: builder.query<GetBookByIdResponse, GetBookByIdRequest>({
-      query: (id) => `book/${id}`,
+      query: (bookId) => `book/${bookId}`,
     }),
     getBooksByTerm: builder.query<
       GetBooksByTermResponse,
@@ -25,7 +25,7 @@ export const bookServiceEndpoints = apiSlice.injectEndpoints({
       GetBooksByGenreResponse,
       GetBooksByGenreRequest
     >({
-      query: ({ genreName, page = 0, size = 10 }) =>
+      query: ({ genreName, page = 0, size = 9 }) =>
         `book/genre/${genreName}?page=${page}&size=${size}`,
     }),
   }),

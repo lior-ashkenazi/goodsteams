@@ -153,7 +153,7 @@ const LoginForm = () => {
         <span className="flex justify-center">
           <Button
             variant="contained"
-            className="h-16 w-40 bg-yellow-300 text-lg text-yellow-800 hover:bg-yellow-400 active:bg-yellow-500"
+            className="h-16 w-40 bg-yellow-300 text-lg text-yellow-600 hover:bg-yellow-400 active:bg-yellow-500"
             type="submit"
             disabled={isSubmitting}
           >
