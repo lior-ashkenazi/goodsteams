@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useGetBooksByGenreQuery } from "../../../store";
 import { capitalizeWords } from "../../../utils/letteringUtils";
-import GenreBookBox from "../../../components/store/genre/GenreBookBox";
+import GenrePageBody from "../../../components/store/genre/GenrePageBody";
+import GenrePageSkeleton from "../../../components/store/genre/GenrePageSkeleton";
 
 const GenrePage = () => {
   let { genreName } = useParams();
@@ -22,13 +23,9 @@ const GenrePage = () => {
       </div>
       <div className="rounded text-yellow-900">
         {!isFetching && data ? (
-          <div className="grid grid-cols-3 gap-8 p-8">
-            {data.content.map((book, index) => {
-              return <GenreBookBox book={book} key={index} />;
-            })}
-          </div>
+          <GenrePageBody books={data.content} />
         ) : (
-          <div></div>
+          <GenrePageSkeleton />
         )}
       </div>
     </div>
