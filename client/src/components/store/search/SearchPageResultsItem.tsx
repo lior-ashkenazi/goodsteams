@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
 import { Book } from "../../../types/models/Book";
-import { Rating, Typography } from "@mui/material";
+import { Rating } from "@mui/material";
 
-import { renderRatingTypography } from "../../../utils/ratingUtils";
 import { convertDate } from "../../../utils/dateUtils";
 
 interface SearchPageResultsItemProps {
@@ -31,23 +30,16 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
           <div className="mb-6 truncate text-lg font-medium">
             <span className="truncate">{book.title}</span>
           </div>
-          <div className="mb-6 text-sm">
+          <div className="mb-6 text-sm italic">
             by <span>{book.author}</span>
           </div>
           <div className="truncate text-sm">
-            <Typography
-              component="legend"
-              className={`${book.averageRating === 0 && "text-transparent"}`}
-            >
-              {renderRatingTypography(book.averageRating)}
-            </Typography>
             <span className="flex items-center gap-x-1">
               <Rating value={book.averageRating} precision={0.5} readOnly />
               <span
-                className={`${book.averageRating === 0 && "text-transparent"}`}
+                className={`${book.averageRating > 0 && "text-transparent"}`}
               >
-                <span>- {book.averageRating} avg rating </span>
-                <span>- {book.reviewCount} ratings</span>
+                - {book.averageRating.toFixed(2)} avg rating{" "}
               </span>
             </span>
           </div>
