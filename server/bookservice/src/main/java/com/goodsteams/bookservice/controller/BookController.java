@@ -70,7 +70,7 @@ public class BookController {
     public ResponseEntity<Page<Book>> getBooksByGenre(
             @PathVariable String genreName,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "9") int size) {
 
         Page<Book> books = bookService.getBooksByGenre(genreName, page, size);
         return ResponseEntity.ok(books);

@@ -54,6 +54,9 @@ public class Book {
     @Column(name = "average_rating", nullable = false)
     private BigDecimal averageRating;
 
+    @Column(name = "rating_count", nullable = false)
+    private Integer ratingCount;
+
     @Column(name = "review_count", nullable = false)
     private Integer reviewCount;
 
