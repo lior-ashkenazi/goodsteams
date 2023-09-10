@@ -24,8 +24,8 @@ public class Book {
     @Column(name = "author", nullable = false)
     private String author;
 
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    private String description;
+    @Column(name = "synopsis", nullable = false, columnDefinition = "TEXT")
+    private String synopsis;
 
     @Column(name = "cover_image_url", nullable = false)
     private String coverImageUrl;

@@ -4,12 +4,13 @@ export type Book = {
   id: number;
   title: string;
   author: string;
-  description: string;
+  synopsis: string;
   coverImageUrl: string;
   price: number;
   discountPercent: number;
   releaseDate: string;
   averageRating: number;
+  ratingCount: number;
   reviewCount: number;
   purchaseCount: number;
   publisher: string;
