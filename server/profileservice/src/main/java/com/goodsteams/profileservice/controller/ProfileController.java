@@ -1,7 +1,7 @@
 package com.goodsteams.profileservice.controller;
 
 import com.goodsteams.profileservice.entity.Profile;
-import com.goodsteams.profileservice.responsemodels.ProfileResponseDTO;
+import com.goodsteams.profileservice.responsemodel.ProfileResponseDTO;
 import com.goodsteams.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,7 @@ public class ProfileController {
 
         Profile profile = profileService.findProfileByToken(token);
 
-        ProfileResponseDTO response = new ProfileResponseDTO();
-        response.setMessage("Profile retrieved successfully.");
-        response.setProfile(profile);
+        ProfileResponseDTO response = new ProfileResponseDTO("Profile retrieved successfully.", profile);
 
         return ResponseEntity.ok(response);
 
@@ -38,9 +36,7 @@ public class ProfileController {
 
         Profile updatedProfile = profileService.saveProfileByToken(token, profile);
 
-        ProfileResponseDTO response = new ProfileResponseDTO();
-        response.setMessage("Profile updated.");
-        response.setProfile(updatedProfile);
+        ProfileResponseDTO response = new ProfileResponseDTO("Profile updated.", updatedProfile);
 
         return ResponseEntity.ok(response);
     }

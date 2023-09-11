@@ -15,7 +15,7 @@ public class Cart {
     @Column(name = "cart_id")
     private Long cartId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", unique = true, nullable = false)
     private Long userId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)

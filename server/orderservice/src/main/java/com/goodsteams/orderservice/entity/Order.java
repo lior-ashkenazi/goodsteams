@@ -17,7 +17,6 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
-    @JsonIgnore
     @Column(name = "user_id", nullable = false)
     private Long userId;
 

@@ -10,6 +10,13 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<Map<String, String>> handleTokenException(TokenException e) {
+        Map<String, String> response = Map.of("message", e.getMessage());
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
     // Handle other unexpected exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception e) {

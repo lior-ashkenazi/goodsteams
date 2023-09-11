@@ -1,4 +1,4 @@
-package com.goodsteams.profileservice.service;
+package com.goodsteams.orderservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
