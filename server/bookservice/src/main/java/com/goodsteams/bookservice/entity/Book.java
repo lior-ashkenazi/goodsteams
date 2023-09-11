@@ -33,6 +33,9 @@ public class Book {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "currency", nullable = false)
+    private String currency;
+
     @Column(name = "discount_percent", nullable = false)
     private Integer discountPercent;
 
