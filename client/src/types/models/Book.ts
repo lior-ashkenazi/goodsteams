@@ -1,7 +1,7 @@
 import { Genre } from "./Genre";
 
 export type Book = {
-  id: number;
+  bookId: number;
   title: string;
   author: string;
   synopsis: string;

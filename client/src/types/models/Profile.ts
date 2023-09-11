@@ -1,4 +1,5 @@
 export type Profile = {
+  profileId: number;
   username: string;
   firstName: string;
   lastName: string;

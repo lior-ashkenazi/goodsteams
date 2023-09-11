@@ -12,7 +12,7 @@ const GenreBookBox = ({ book }: GenreBookBoxProps) => {
   return (
     <button
       className="active:bg-yellow-yellow-300 flex w-72 flex-col items-center gap-4 rounded-sm border border-yellow-400 bg-yellow-100 transition-colors hover:bg-yellow-200 active:bg-yellow-300"
-      onClick={() => navigate(`/store/book/${book.id}`)}
+      onClick={() => navigate(`/store/book/${book.bookId}`)}
     >
       <img
         className="rounded-sm"

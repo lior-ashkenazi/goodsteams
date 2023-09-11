@@ -16,24 +16,24 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    private Long id;
+    private Long bookId;
 
-    @Column(name = "title", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String title;
 
-    @Column(name = "author", nullable = false)
+    @Column(nullable = false)
     private String author;
 
-    @Column(name = "synopsis", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String synopsis;
 
     @Column(name = "cover_image_url", nullable = false)
     private String coverImageUrl;
 
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(name = "currency", nullable = false)
+    @Column(length = 3, nullable = false, columnDefinition = "VARCHAR(3) DEFAULT 'USD'")
     private String currency;
 
     @Column(name = "discount_percent", nullable = false)

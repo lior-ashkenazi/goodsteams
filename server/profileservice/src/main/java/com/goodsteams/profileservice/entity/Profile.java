@@ -18,8 +18,8 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore   // This annotation ensures the ID is not included in the JSON response.
-    private Long id;
+    @Column(name = "profile_id")
+    private Long profileId;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -27,16 +27,16 @@ public class Profile {
     @Column(name = "first_name", nullable = false)
     private String firstName = EMPTY_STRING;
 
-    @Column(name ="last_name", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName = EMPTY_STRING;
 
     @Column(nullable = false)
     private String gender = EMPTY_STRING;
 
-    @Column(name="birth_date", nullable = false)
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate = DEFAULT_BIRTHDATE;
 
-    @Column(name="avatar_url", nullable = false)
+    @Column(name = "avatar_url", nullable = false)
     private String avatarUrl = DEFAULT_AVATAR;
 
     public Profile() {

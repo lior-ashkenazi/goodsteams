@@ -14,9 +14,9 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
 
   return (
     <button
-      key={book.id}
+      key={book.bookId}
       className="mb-2 flex w-full items-center justify-between bg-yellow-100 transition-colors hover:bg-yellow-200 active:bg-yellow-300"
-      onClick={() => navigate(`/store/book/${book.id}`)}
+      onClick={() => navigate(`/store/book/${book.bookId}`)}
     >
       <div className="flex items-center">
         <div className="flex-shrink-0">
