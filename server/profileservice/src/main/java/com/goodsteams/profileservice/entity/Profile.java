@@ -21,6 +21,9 @@ public class Profile {
     @Column(name = "profile_id")
     private Long profileId;
 
+    @Column(name = "user_id", unique = true, nullable = false)
+    private Long userId;
+
     @Column(unique = true, nullable = false)
     private String username;
 
@@ -42,7 +45,8 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(String username) {
+    public Profile(Long userId, String username) {
+        this.userId = userId;
         this.username = username;
     }
 }

@@ -2,6 +2,7 @@ package com.goodsteams.profileservice.service;
 
 import com.goodsteams.profileservice.dao.ProfileRepository;
 import com.goodsteams.profileservice.entity.Profile;
+import com.goodsteams.profileservice.exception.InvalidTokenException;
 import com.goodsteams.profileservice.exception.ProfileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -24,17 +25,20 @@ public class ProfileService {
     }
 
     public Profile saveProfileByToken(String token) {
-        String username = decodeToken(token);
+        Jwt jwt = tokenService.decodeToken(token);
+        Long userId = extractTokenUserId(jwt);
+        String username = extractTokenUsername(jwt);
 
-        Profile profile = new Profile(username);
+        Profile profile = new Profile(userId, username);
 
         return profileRepository.save(profile);
     }
 
     public Profile findProfileByToken(String token) {
-        String username = decodeToken(token);
+        Jwt jwt = tokenService.decodeToken(token);
+        Long userId = extractTokenUserId(jwt);
 
-        Optional<Profile> existingProfile = profileRepository.findByUsername(username);
+        Optional<Profile> existingProfile = profileRepository.findByUserId(userId);
 
         if (existingProfile.isEmpty()) {
             throw new ProfileNotFoundException();
@@ -44,9 +48,10 @@ public class ProfileService {
     }
 
     public Profile saveProfileByToken(String token, Profile profile) {
-        String username = decodeToken(token);
+        Jwt jwt = tokenService.decodeToken(token);
+        Long userId = extractTokenUserId(jwt);
 
-        Optional<Profile> existingProfile = profileRepository.findByUsername(username);
+        Optional<Profile> existingProfile = profileRepository.findByUserId(userId);
 
         if (existingProfile.isEmpty()) {
             throw new ProfileNotFoundException();
@@ -54,12 +59,22 @@ public class ProfileService {
 
         return profileRepository.save(profile);
     }
-    
-    private String decodeToken(String token) {
-        Jwt jwt = tokenService.decodeToken(token);
 
-        return jwt.getClaimAsString("sub");
+    private Long extractTokenUserId(Jwt jwt) {
+        String userIdStr = jwt.getClaimAsString("userId");
+        Long userId = null;
+
+        try {
+            userId = Long.parseLong(userIdStr);
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+
+        return userId;
     }
 
+    private String extractTokenUsername(Jwt jwt) {
+        return jwt.getClaimAsString("sub");
+    }
 
 }

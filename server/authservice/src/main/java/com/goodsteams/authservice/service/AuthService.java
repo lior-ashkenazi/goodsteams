@@ -51,7 +51,7 @@ public class AuthService {
         );
 
         // Use the TokenService to generate a JWT for the user
-        return tokenService.generateToken(auth);
+        return tokenService.generateToken(auth, user.getUserId());
     }
 
     public String loginUser(String username, String password) {
@@ -71,7 +71,7 @@ public class AuthService {
                 null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
-        return tokenService.generateToken(auth);
+        return tokenService.generateToken(auth, user.getUserId());
     }
 
     public String authenticateUserToken(String token) {
@@ -79,10 +79,20 @@ public class AuthService {
         Jwt jwt = tokenService.decodeToken(token);
 
         String username = jwt.getClaimAsString("sub");
+
+        String userIdStr = jwt.getClaimAsString("userId");
+        Long userId = null;
+
+        try {
+            userId = Long.parseLong(userIdStr);
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+
         Instant expirationDate = jwt.getExpiresAt();
 
         // Verify if user exists in database
-        boolean userExists = authRepository.existsByUsername(username);
+        boolean userExists = authRepository.existsByUserId(userId);
         if (!userExists) {
             throw new InvalidTokenException();
         }
@@ -100,7 +110,7 @@ public class AuthService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
         // Generate a new JWT token if all verifications are successful
-        return tokenService.generateToken(auth);
+        return tokenService.generateToken(auth, userId);
     }
 
 }

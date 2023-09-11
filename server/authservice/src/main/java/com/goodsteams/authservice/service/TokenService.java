@@ -22,7 +22,7 @@ public class TokenService {
         this.jwtDecoder = jwtDecoder;
     }
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, Long userId) {
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -31,7 +31,8 @@ public class TokenService {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(3, ChronoUnit.HOURS)) // 3 hours
-                .subject(authentication.getName())
+                .subject(authentication.getName()) // This is where the username is stored
+                .claim("userId", userId) // Add the userId as a claim
                 .claim("scope", scope)
                 .build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

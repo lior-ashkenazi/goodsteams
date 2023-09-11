@@ -1,16 +1,11 @@
 package com.goodsteams.profileservice.controller;
 
 import com.goodsteams.profileservice.entity.Profile;
-import com.goodsteams.profileservice.exception.ProfileNotFoundException;
 import com.goodsteams.profileservice.responsemodels.ProfileResponseDTO;
 import com.goodsteams.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/profile")
