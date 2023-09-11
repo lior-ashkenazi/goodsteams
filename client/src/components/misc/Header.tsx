@@ -326,15 +326,7 @@ const Header = ({ headerRef }: HeaderProps) => {
       <>
         <Button
           ref={loginButtonRef}
-          className={`text-lg font-medium ${
-            currentPage !== "login" && currentPage !== "register"
-              ? "text-yellow-50 hover:text-white"
-              : "text-green-950 hover:text-green-950"
-          } ${
-            currentPage !== "login" &&
-            currentPage !== "register" &&
-            "font-semibold underline decoration-2 underline-offset-4"
-          }`}
+          className="font-medium font-semibold text-yellow-50 underline decoration-2 underline-offset-4 hover:text-white"
           disableRipple
           onClick={() => setOpenLoginMenu(true)}
           endIcon={<ExpandMoreIcon />}
@@ -401,7 +393,7 @@ const Header = ({ headerRef }: HeaderProps) => {
       </>
     ) : (
       <Button
-        className={`text-lg font-medium text-amber-50 hover:text-white ${
+        className={`font-medium text-amber-50 hover:text-white ${
           (currentPage === "login" || currentPage === "register") &&
           "font-semibold text-green-950 underline decoration-2 underline-offset-4 hover:text-green-950"
         }`}
