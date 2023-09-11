@@ -4,13 +4,13 @@ import { profileServiceEndpoints } from "../apis/endpoints/profileServiceEndpoin
 import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 
 type ProfileState = {
-  profileId: number | null;
+  userId: number | null;
   username: string | null;
   avatarUrl: string | null;
 };
 
 const initialState: ProfileState = {
-  profileId: null,
+  userId: null,
   username: null,
   avatarUrl: null,
 };
@@ -22,12 +22,12 @@ const profileSlice = createSlice({
     setProfile: (
       state,
       action: PayloadAction<{
-        profileId: number;
+        userId: number;
         username: string;
         avatarUrl: string;
       }>,
     ) => {
-      state.profileId = action.payload.profileId;
+      state.userId = action.payload.userId;
       state.username = action.payload.username;
       state.avatarUrl = action.payload.avatarUrl;
     },
@@ -37,7 +37,7 @@ const profileSlice = createSlice({
       .addMatcher(
         profileServiceEndpoints.endpoints.createProfile.matchFulfilled,
         (state, action) => {
-          state.profileId = action.payload.profile.profileId;
+          state.userId = action.payload.profile.userId;
           state.username = action.payload.profile.username;
           state.avatarUrl = action.payload.profile.avatarUrl;
         },
@@ -45,7 +45,7 @@ const profileSlice = createSlice({
       .addMatcher(
         profileServiceEndpoints.endpoints.getProfile.matchFulfilled,
         (state, action) => {
-          state.profileId = action.payload.profile.profileId;
+          state.userId = action.payload.profile.userId;
           state.username = action.payload.profile.username;
           state.avatarUrl = action.payload.profile.avatarUrl;
         },
@@ -53,7 +53,7 @@ const profileSlice = createSlice({
       .addMatcher(
         authServiceEndpoints.endpoints.authUser.matchRejected,
         (state) => {
-          state.profileId = null;
+          state.userId = null;
           state.username = null;
           state.avatarUrl = null;
         },
@@ -61,7 +61,7 @@ const profileSlice = createSlice({
       .addMatcher(
         profileServiceEndpoints.endpoints.getProfile.matchRejected,
         (state) => {
-          state.profileId = null;
+          state.userId = null;
           state.username = null;
           state.avatarUrl = null;
         },
