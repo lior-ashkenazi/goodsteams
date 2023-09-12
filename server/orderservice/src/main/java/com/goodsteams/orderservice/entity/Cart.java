@@ -18,7 +18,13 @@ public class Cart {
     @Column(name = "user_id", unique = true, nullable = false)
     private Long userId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> cartItems;
+
+    public Cart() {}
+
+    public Cart(Long userId) {
+        this.userId = userId;
+    }
 
 }

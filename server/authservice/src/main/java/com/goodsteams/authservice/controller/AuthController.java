@@ -1,7 +1,6 @@
 package com.goodsteams.authservice.controller;
 
-import com.goodsteams.authservice.exception.UserRegistrationException;
-import com.goodsteams.authservice.producer.UserRegistrationEventProducer;
+import com.goodsteams.authservice.service.KafkaService;
 import com.goodsteams.authservice.requestmodels.UserLoginDTO;
 import com.goodsteams.authservice.requestmodels.UserRegistrationDTO;
 import com.goodsteams.authservice.service.AuthService;
@@ -17,12 +16,12 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRegistrationEventProducer userRegistrationEventProducer;
+    private final KafkaService kafkaService;
 
     @Autowired
-    public AuthController (AuthService authService, UserRegistrationEventProducer userRegistrationEventProducer) {
+    public AuthController (AuthService authService, KafkaService kafkaService) {
         this.authService = authService;
-        this.userRegistrationEventProducer = userRegistrationEventProducer;
+        this.kafkaService = kafkaService;
     }
 
 
@@ -39,7 +38,7 @@ public class AuthController {
         response.put("message", "User registered successfully.");
         response.put("token", jwtToken);
 
-        userRegistrationEventProducer.sendRegistrationEvent(jwtToken);
+        kafkaService.sendRegistrationEvent(jwtToken);
 
         return ResponseEntity.ok(response);
     }

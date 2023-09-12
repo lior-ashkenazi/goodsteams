@@ -24,14 +24,14 @@ public class ProfileService {
         this.tokenService = tokenService;
     }
 
-    public Profile saveProfileByToken(String token) {
+    public void saveProfileByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = extractTokenUserId(jwt);
         String username = extractTokenUsername(jwt);
 
         Profile profile = new Profile(userId, username);
 
-        return profileRepository.save(profile);
+        profileRepository.save(profile);
     }
 
     public Profile findProfileByToken(String token) {

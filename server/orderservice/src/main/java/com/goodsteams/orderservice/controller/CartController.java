@@ -1,9 +1,8 @@
 package com.goodsteams.orderservice.controller;
 
+import com.goodsteams.orderservice.entity.Cart;
 import com.goodsteams.orderservice.service.CartService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -17,6 +16,13 @@ public class CartController {
 
 
     @GetMapping("/")
+    public Cart getCart(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
 
+        return cartService.findCartByToken(token);
+    }
+
+    @PutMapping("/")
+    public Cart addCartItem()
 
 }

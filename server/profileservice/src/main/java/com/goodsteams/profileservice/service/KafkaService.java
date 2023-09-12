@@ -1,16 +1,16 @@
-package com.goodsteams.profileservice.consumer;
+package com.goodsteams.profileservice.service;
 
-import com.goodsteams.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+
 @Service
-public class UserRegistrationEventConsumer {
+public class KafkaService {
 
     private final ProfileService profileService;
 
     @Autowired
-    public UserRegistrationEventConsumer(ProfileService profileService) {
+    public KafkaService(ProfileService profileService) {
         this.profileService = profileService;
     }
 
