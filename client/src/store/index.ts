@@ -39,9 +39,8 @@ export const {
 } = authServiceEndpoints;
 
 export const {
-  useCreateProfileMutation,
-  useLazyGetProfileQuery,
-  useGetProfileQuery,
+  useLazyGetProfileSecureQuery,
+  useGetProfileSecureQuery,
   useUpdateProfileMutation,
 } = profileServiceEndpoints;
 

@@ -17,7 +17,10 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { useRegisterUserMutation, useLazyGetProfileQuery } from "../../store";
+import {
+  useRegisterUserMutation,
+  useLazyGetProfileSecureQuery,
+} from "../../store";
 import { isAuthError } from "../../types/errors/authServiceErrors";
 
 const registerFormValidationSchema = z
@@ -57,7 +60,7 @@ const RegisterForm = () => {
   const navigate = useNavigate();
 
   const [registerUser] = useRegisterUserMutation();
-  const [getProfile] = useLazyGetProfileQuery();
+  const [getProfileSecure] = useLazyGetProfileSecureQuery();
 
   const {
     register,
@@ -80,7 +83,7 @@ const RegisterForm = () => {
     const userCredentials = { username, password };
     try {
       await registerUser(userCredentials).unwrap();
-      await getProfile().unwrap();
+      await getProfileSecure().unwrap();
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {

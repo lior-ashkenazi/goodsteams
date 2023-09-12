@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { profileServiceEndpoints } from "../apis/endpoints/profileServiceEndpoints";
-import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 
 type ProfileState = {
   userId: number | null;
@@ -35,41 +34,17 @@ const profileSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(
-        profileServiceEndpoints.endpoints.createProfile.matchFulfilled,
+        profileServiceEndpoints.endpoints.getProfileSecure.matchFulfilled,
         (state, action) => {
-          state.userId = action.payload.profile.userId;
-          state.username = action.payload.profile.username;
-          state.avatarUrl = action.payload.profile.avatarUrl;
-        },
-      )
-      .addMatcher(
-        profileServiceEndpoints.endpoints.getProfile.matchFulfilled,
-        (state, action) => {
-          state.userId = action.payload.profile.userId;
-          state.username = action.payload.profile.username;
-          state.avatarUrl = action.payload.profile.avatarUrl;
-        },
-      )
-      .addMatcher(
-        authServiceEndpoints.endpoints.authUser.matchRejected,
-        (state) => {
-          state.userId = null;
-          state.username = null;
-          state.avatarUrl = null;
-        },
-      )
-      .addMatcher(
-        profileServiceEndpoints.endpoints.getProfile.matchRejected,
-        (state) => {
-          state.userId = null;
-          state.username = null;
-          state.avatarUrl = null;
+          state.userId = action.payload.userId;
+          state.username = action.payload.username;
+          state.avatarUrl = action.payload.avatarUrl;
         },
       )
       .addMatcher(
         profileServiceEndpoints.endpoints.updateProfile.matchFulfilled,
         (state, action) => {
-          state.avatarUrl = action.payload.profile.avatarUrl;
+          state.avatarUrl = action.payload.avatarUrl;
         },
       );
   },

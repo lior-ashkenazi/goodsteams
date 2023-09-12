@@ -17,7 +17,10 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { useLazyGetProfileQuery, useLoginUserMutation } from "../../store";
+import {
+  useLazyGetProfileSecureQuery,
+  useLoginUserMutation,
+} from "../../store";
 
 import { isAuthError } from "../../types/errors/authServiceErrors";
 
@@ -40,7 +43,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const [loginUser] = useLoginUserMutation();
-  const [getProfile] = useLazyGetProfileQuery();
+  const [getProfileSecure] = useLazyGetProfileSecureQuery();
 
   const {
     register,
@@ -61,7 +64,7 @@ const LoginForm = () => {
     const userCredentials = { username, password };
     try {
       await loginUser(userCredentials).unwrap();
-      await getProfile().unwrap();
+      await getProfileSecure().unwrap();
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {

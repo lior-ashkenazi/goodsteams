@@ -1,26 +1,26 @@
 import { apiSlice } from "../apiSlice";
 import {
-  CreateProfileRequest,
-  CreateProfileResponse,
-  GetProfileRequest,
-  GetProfileResponse,
+  GetProfileSecureRequest,
+  GetProfileSecureResponse,
+  GetProfilePublicRequest,
+  GetProfilePublicResponse,
   UpdateProfileRequest,
   UpdateProfileResponse,
 } from "../../../types/endpoints/profileServiceEndpoints";
 
 export const profileServiceEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createProfile: builder.mutation<
-      CreateProfileResponse,
-      CreateProfileRequest
+    getProfileSecure: builder.query<
+      GetProfileSecureResponse,
+      GetProfileSecureRequest
     >({
-      query: () => ({
-        url: "profile/",
-        method: "POST",
-      }),
+      query: () => "profile/secure",
     }),
-    getProfile: builder.query<GetProfileResponse, GetProfileRequest>({
-      query: () => "profile/",
+    getProfilePublic: builder.query<
+      GetProfilePublicResponse,
+      GetProfilePublicRequest
+    >({
+      query: (userId) => `profile/public/${userId}`,
     }),
     updateProfile: builder.mutation<
       UpdateProfileResponse,

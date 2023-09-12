@@ -1,21 +1,23 @@
+import { User } from "../models/User";
+
 export type RegisterUserRequest = {
   username: string;
   password: string;
 };
 export type RegisterUserResponse = {
-  message: string;
+  user: User;
   token: string;
 };
 
 export type LoginUserRequest = { username: string; password: string };
 export type LoginUserResponse = {
-  message: string;
+  user: User;
   token: string;
 };
 
 export type AuthUserRequest = void;
 export type AuthUserResponse = {
-  message: string;
+  user: User;
   token: string;
 };
 
