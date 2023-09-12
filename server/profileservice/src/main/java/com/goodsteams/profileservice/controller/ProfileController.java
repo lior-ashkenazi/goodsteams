@@ -1,10 +1,8 @@
 package com.goodsteams.profileservice.controller;
 
 import com.goodsteams.profileservice.entity.Profile;
-import com.goodsteams.profileservice.responsemodel.ProfileResponseDTO;
 import com.goodsteams.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,27 +16,23 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<ProfileResponseDTO> getProfile(@RequestHeader("Authorization") String authHeader) {
+    @GetMapping("/secure")
+    public Profile getProfileByToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
-        Profile profile = profileService.findProfileByToken(token);
-
-        ProfileResponseDTO response = new ProfileResponseDTO("Profile retrieved successfully.", profile);
-
-        return ResponseEntity.ok(response);
-
+        return profileService.findProfileByToken(token);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<ProfileResponseDTO> authenticateUser(@RequestHeader("Authorization") String authHeader, @RequestBody Profile profile) {
+    @PutMapping("/secure")
+    public Profile updateProfile(@RequestHeader("Authorization") String authHeader, @RequestBody Profile profile) {
         String token = authHeader.substring(7);
 
-        Profile updatedProfile = profileService.saveProfileByToken(token, profile);
+        return profileService.saveProfileByToken(token, profile);
+    }
 
-        ProfileResponseDTO response = new ProfileResponseDTO("Profile updated.", updatedProfile);
-
-        return ResponseEntity.ok(response);
+    @GetMapping("/public/{userId}")
+    public Profile getProfileByUserId(@PathVariable Long userId) {
+        return profileService.findProfileByUserId(userId);
     }
 
 }

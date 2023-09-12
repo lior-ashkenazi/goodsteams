@@ -35,7 +35,11 @@ public class ReactiveSecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/auth/register", "/api/auth/login", "/api/book/**").permitAll()
+                        .pathMatchers(
+                                "/api/auth/register",
+                                "/api/auth/login",
+                                "/api/profile/public/**",
+                                "/api/book/**").permitAll()
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
                 .exceptionHandling(exHandling -> {

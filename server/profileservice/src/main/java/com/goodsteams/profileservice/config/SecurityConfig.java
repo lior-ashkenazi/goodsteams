@@ -33,7 +33,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/profile/").authenticated()
+                        .requestMatchers("/api/profile/public/**").permitAll()
+                        .requestMatchers("/api/profile/secure").authenticated()
                         .anyRequest().denyAll())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -3,6 +3,9 @@ package com.goodsteams.authservice.service;
 import com.goodsteams.authservice.dao.AuthRepository;
 import com.goodsteams.authservice.entity.User;
 import com.goodsteams.authservice.exception.*;
+import com.goodsteams.authservice.responsemodel.UserAuthenticationResponseDTO;
+import com.goodsteams.authservice.responsemodel.UserLoginResponseDTO;
+import com.goodsteams.authservice.responsemodel.UserRegistrationResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,7 +32,7 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String registerUser(String username, String password) {
+    public UserRegistrationResponseDTO registerUser(String username, String password) {
 
         if (authRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException();
@@ -51,10 +54,12 @@ public class AuthService {
         );
 
         // Use the TokenService to generate a JWT for the user
-        return tokenService.generateToken(auth, user.getUserId());
+        String token = tokenService.generateToken(auth, user.getUserId());
+
+        return new UserRegistrationResponseDTO(user, token);
     }
 
-    public String loginUser(String username, String password) {
+    public UserLoginResponseDTO loginUser(String username, String password) {
 
         // Fetch user from the database using the provided username
         User user = authRepository.findByUsername(username)
@@ -71,10 +76,13 @@ public class AuthService {
                 null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
-        return tokenService.generateToken(auth, user.getUserId());
+
+        String token = tokenService.generateToken(auth, user.getUserId());
+
+        return new UserLoginResponseDTO(user, token);
     }
 
-    public String authenticateUserToken(String token) {
+    public UserAuthenticationResponseDTO authenticateUserToken(String token) {
 
         Jwt jwt = tokenService.decodeToken(token);
 
@@ -91,17 +99,14 @@ public class AuthService {
 
         Instant expirationDate = jwt.getExpiresAt();
 
-        // Verify if user exists in database
-        boolean userExists = authRepository.existsByUserId(userId);
-        if (!userExists) {
-            throw new InvalidTokenException();
-        }
-
         // Check if token is expired
         assert expirationDate != null;
         if (expirationDate.isBefore(Instant.now())) {
             throw new TokenExpiredException();
         }
+
+        // Verify if user exists in database
+        User user = authRepository.findById(userId).orElseThrow(InvalidTokenException::new);
 
         // If validation is successful, generate a JWT token
         Authentication auth = new UsernamePasswordAuthenticationToken(
@@ -110,7 +115,9 @@ public class AuthService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
         // Generate a new JWT token if all verifications are successful
-        return tokenService.generateToken(auth, userId);
+        String newToken = tokenService.generateToken(auth, userId);
+
+        return new UserAuthenticationResponseDTO(user, newToken);
     }
 
 }

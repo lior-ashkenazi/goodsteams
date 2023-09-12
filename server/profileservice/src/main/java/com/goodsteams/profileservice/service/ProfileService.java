@@ -51,13 +51,17 @@ public class ProfileService {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = extractTokenUserId(jwt);
 
-        Optional<Profile> existingProfile = profileRepository.findByUserId(userId);
+        boolean existingProfile = profileRepository.existsByUserId(userId);
 
-        if (existingProfile.isEmpty()) {
+        if (!existingProfile) {
             throw new ProfileNotFoundException();
         }
 
         return profileRepository.save(profile);
+    }
+
+    public Profile findProfileByUserId(Long userId) {
+        return profileRepository.findByUserId(userId).orElseThrow(ProfileNotFoundException::new);
     }
 
     private Long extractTokenUserId(Jwt jwt) {

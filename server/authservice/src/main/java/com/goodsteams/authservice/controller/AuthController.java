@@ -1,8 +1,11 @@
 package com.goodsteams.authservice.controller;
 
+import com.goodsteams.authservice.responsemodel.UserAuthenticationResponseDTO;
+import com.goodsteams.authservice.responsemodel.UserLoginResponseDTO;
+import com.goodsteams.authservice.responsemodel.UserRegistrationResponseDTO;
 import com.goodsteams.authservice.service.KafkaService;
-import com.goodsteams.authservice.requestmodels.UserLoginDTO;
-import com.goodsteams.authservice.requestmodels.UserRegistrationDTO;
+import com.goodsteams.authservice.requestmodel.UserLoginRequestDTO;
+import com.goodsteams.authservice.requestmodel.UserRegistrationRequestDTO;
 import com.goodsteams.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,47 +27,29 @@ public class AuthController {
         this.kafkaService = kafkaService;
     }
 
-
-
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+    public UserRegistrationResponseDTO registerUser(@RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
 
-        String jwtToken = authService.registerUser(
-                userRegistrationDTO.username(),
-                userRegistrationDTO.password()
+        UserRegistrationResponseDTO userRegistrationResponseDTO = authService.registerUser(
+                userRegistrationRequestDTO.username(),
+                userRegistrationRequestDTO.password()
         );
 
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User registered successfully.");
-        response.put("token", jwtToken);
+        kafkaService.sendRegistrationEvent(userRegistrationResponseDTO.token());
 
-        kafkaService.sendRegistrationEvent(jwtToken);
-
-        return ResponseEntity.ok(response);
+        return userRegistrationResponseDTO;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
-        String jwtToken = authService.loginUser(userLoginDTO.username(), userLoginDTO.password());
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User logged in successfully.");
-        response.put("token", jwtToken);
-
-        return ResponseEntity.ok(response);
+    public UserLoginResponseDTO loginUser(@RequestBody UserLoginRequestDTO userLoginRequestDTO) {
+        return authService.loginUser(userLoginRequestDTO.username(), userLoginRequestDTO.password());
     }
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, String>> authenticateUser(@RequestHeader("Authorization") String authHeader) {
+    public UserAuthenticationResponseDTO authenticateUser(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
-        // Delegate to AuthService
-        String newToken = authService.authenticateUserToken(token);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User is authenticated.");
-        response.put("token", newToken);
-
-        return ResponseEntity.ok(response);
+        return authService.authenticateUserToken(token);
     }
 
 

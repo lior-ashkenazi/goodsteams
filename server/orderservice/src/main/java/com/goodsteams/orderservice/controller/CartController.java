@@ -1,6 +1,7 @@
 package com.goodsteams.orderservice.controller;
 
 import com.goodsteams.orderservice.entity.Cart;
+import com.goodsteams.orderservice.requestmodel.CartItemDTO;
 import com.goodsteams.orderservice.service.CartService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,13 @@ public class CartController {
     }
 
     @PutMapping("/")
-    public Cart addCartItem()
+    public Cart addCartItem(@RequestBody CartItemDTO cartItemDTO) {
+        return cartService.addCartItem(cartItemDTO);
+    }
+
+    @DeleteMapping("/{cartItemId}")
+    public Cart deleteCartItem(@PathVariable Long cartItemId) {
+        return cartService.deleteCartItem(cartItemId);
+    }
 
 }
