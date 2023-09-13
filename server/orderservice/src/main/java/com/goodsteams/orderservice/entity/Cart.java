@@ -3,11 +3,12 @@ package com.goodsteams.orderservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Cart")
+@Table(name = "cart")
 public class Cart {
 
     @Id
@@ -19,8 +20,7 @@ public class Cart {
     private Long userId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CartItem> cartItems;
-
+    private List<CartItem> cartItems = new ArrayList<>();
     public Cart() {}
 
     public Cart(Long userId) {

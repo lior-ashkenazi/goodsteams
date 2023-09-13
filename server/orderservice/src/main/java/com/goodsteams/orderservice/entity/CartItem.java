@@ -1,5 +1,6 @@
 package com.goodsteams.orderservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "CartItem")
+@Table(name = "cart_item")
 public class CartItem {
 
     @Id
@@ -15,6 +16,7 @@ public class CartItem {
     @Column(name = "cart_item_id")
     private Long cartItemId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
@@ -26,11 +28,12 @@ public class CartItem {
     private BigDecimal price;
 
     @Column(length = 3, nullable = false, columnDefinition = "VARCHAR(3) DEFAULT 'USD'")
-    private String currency;
+    private String currency = "USD";
 
     public CartItem(){}
 
-    public CartItem(Long bookId, BigDecimal price) {
+    public CartItem(Cart cart, Long bookId, BigDecimal price) {
+        this.cart = cart;
         this.bookId = bookId;
         this.price = price;
     }

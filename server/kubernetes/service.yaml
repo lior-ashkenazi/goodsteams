@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gateway-service
+  name: gateway-service-service
 spec:
   selector:
     app: gateway-service
@@ -14,7 +14,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-service
+  name: auth-service-service
 spec:
   selector:
     app: auth-service
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: profile-service
+  name: profile-service-service
 spec:
   selector:
     app: profile-service
@@ -40,10 +40,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: book-service
+  name: book-service-service
 spec:
   selector:
     app: book-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service-service
+spec:
+  selector:
+    app: order-service
   ports:
     - protocol: TCP
       port: 80

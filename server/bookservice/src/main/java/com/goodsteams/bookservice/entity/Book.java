@@ -66,7 +66,7 @@ public class Book {
     @Column(name = "purchase_count", nullable = false)
     private Integer purchaseCount;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "book_genre_bridge",
             joinColumns = @JoinColumn(name = "book_id"),

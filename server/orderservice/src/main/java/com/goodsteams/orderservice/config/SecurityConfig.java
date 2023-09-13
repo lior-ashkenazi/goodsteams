@@ -33,7 +33,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/order/**", "/api/cart/**").authenticated()
+                        .requestMatchers("/api/order/cart","/api/order/cart/**","/api/order/payment/**").authenticated()
                         .anyRequest().denyAll())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -53,7 +53,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*")); // Added gateway service as an example. Adjust as needed.
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "PUT"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "DELETE"));
         configuration.setAllowCredentials(false); // No cookies will be accepted or sent.
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

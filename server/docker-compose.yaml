@@ -24,3 +24,9 @@ services:
       context: ./bookservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-book-service:latest
+
+  order-service:
+    build:
+      context: ./orderservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-order-service:latest

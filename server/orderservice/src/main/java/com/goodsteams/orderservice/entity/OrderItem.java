@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "OrderItem")
+@Table(name = "order_item")
 public class OrderItem {
 
     @Id
@@ -26,6 +26,6 @@ public class OrderItem {
     private BigDecimal price;
 
     @Column(length = 3, nullable = false, columnDefinition = "VARCHAR(3) DEFAULT 'USD'")
-    private String currency;
+    private String currency = "USD";
 
 }

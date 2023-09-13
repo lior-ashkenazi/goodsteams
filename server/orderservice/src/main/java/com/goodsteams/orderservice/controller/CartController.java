@@ -6,7 +6,7 @@ import com.goodsteams.orderservice.service.CartService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/order")
 public class CartController {
 
     private final CartService cartService;
@@ -15,20 +15,19 @@ public class CartController {
         this.cartService = cartService;
     }
 
-
-    @GetMapping("/")
+    @GetMapping("/cart")
     public Cart getCart(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
         return cartService.findCartByToken(token);
     }
 
-    @PutMapping("/")
+    @PostMapping("/cart/cart-item")
     public Cart addCartItem(@RequestBody CartItemDTO cartItemDTO) {
         return cartService.addCartItem(cartItemDTO);
     }
 
-    @DeleteMapping("/{cartItemId}")
+    @DeleteMapping("/cart/cart-item/{cartItemId}")
     public Cart deleteCartItem(@PathVariable Long cartItemId) {
         return cartService.deleteCartItem(cartItemId);
     }

@@ -69,7 +69,7 @@ public class CartService {
         }
 
         // Create a new cart item and set the price
-        CartItem cartItem = new CartItem(cartItemDTO.bookId(), bookPrice);
+        CartItem cartItem = new CartItem(cart, cartItemDTO.bookId(), bookPrice);
 
         // Add cart item to cart and save
         cart.getCartItems().add(cartItem);  // assuming Cart has a list of CartItems
