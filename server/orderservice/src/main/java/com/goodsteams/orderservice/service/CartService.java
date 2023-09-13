@@ -72,7 +72,7 @@ public class CartService {
         CartItem cartItem = new CartItem(cart, cartItemDTO.bookId(), bookPrice);
 
         // Add cart item to cart and save
-        cart.getCartItems().add(cartItem);  // assuming Cart has a list of CartItems
+        cart.getCartItems().add(cartItem);  // assuming Cart has a set of CartItems
         cartRepository.save(cart);
 
         return cart;
@@ -84,12 +84,14 @@ public class CartService {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(CartItemNotFoundException::new);
 
-        // Delete the cart item
-        cartItemRepository.deleteById(cartItemId);
+        Cart cart = cartItem.getCart();
+
+        // Delete the cart item from the set of the cart
+        cart.getCartItems().remove(cartItem);
+        cartRepository.save(cart);
 
         // Fetch the updated cart and return
-        return cartRepository.findById(cartItem.getCart().getCartId())
-                .orElseThrow(CartNotFoundException::new);
+        return cart;
     }
 
 

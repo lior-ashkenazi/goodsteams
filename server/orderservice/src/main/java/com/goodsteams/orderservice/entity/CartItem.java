@@ -3,6 +3,8 @@ package com.goodsteams.orderservice.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -16,6 +18,8 @@ public class CartItem {
     @Column(name = "cart_item_id")
     private Long cartItemId;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
