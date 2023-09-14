@@ -5,10 +5,14 @@ import { orderServiceEndpoints } from "../apis/endpoints/orderServiceEndpoints";
 
 type CartState = {
   cart: Cart | null;
+  toastMessage: string | null;
+  showToast: boolean | null;
 };
 
 const initialState: CartState = {
   cart: null,
+  toastMessage: null,
+  showToast: null,
 };
 
 const cartSlice = createSlice({
@@ -19,9 +23,17 @@ const cartSlice = createSlice({
       state,
       action: PayloadAction<{
         cart: Cart;
+        toastMessage: string;
+        showToast: boolean;
       }>,
     ) => {
       state.cart = action.payload.cart;
+      state.toastMessage = action.payload.toastMessage;
+      state.showToast = action.payload.showToast;
+    },
+    clearToast: (state) => {
+      state.toastMessage = "";
+      state.showToast = false;
     },
   },
   extraReducers: (builder) => {
@@ -36,16 +48,20 @@ const cartSlice = createSlice({
         orderServiceEndpoints.endpoints.addCartItem.matchFulfilled,
         (state, action) => {
           state.cart = action.payload;
+          state.toastMessage = "Added item to the cart";
+          state.showToast = true;
         },
       )
       .addMatcher(
         orderServiceEndpoints.endpoints.deleteCartItem.matchFulfilled,
         (state, action) => {
           state.cart = action.payload;
+          state.toastMessage = "Removed item from the cart";
+          state.showToast = true;
         },
       );
   },
 });
 
-export const { setCart } = cartSlice.actions;
+export const { setCart, clearToast } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -302,7 +302,7 @@ const Header = ({ headerRef }: HeaderProps) => {
     return (
       isAuthenticated &&
       username && (
-        <IconButton aria-label={"cart"}>
+        <IconButton aria-label={"cart"} onClick={() => navigate("/store/cart")}>
           {cart && cart.cartItems && cart.cartItems.length > 0 ? (
             <Badge
               badgeContent={cart.cartItems.length}

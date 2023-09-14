@@ -33,10 +33,10 @@ const router = createMemoryRouter(
         <Route path="search" element={<SearchPage />} />
         <Route path="book/:bookId" element={<BookPage />} />
         <Route path="genre/:genreName" element={<GenrePage />} />
+        <Route path="cart" element={<CartPage />} />
       </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
-      <Route path="cart" element={<CartPage />} />
     </Route>,
   ),
 );
