@@ -1,7 +1,11 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Rating, Button } from "@mui/material";
 
+import { RootState, useAddCartItemMutation } from "../../../store";
 import { Book } from "../../../types/models/Book";
+import { Cart } from "../../../types/models/Cart";
 import { convertDate } from "../../../utils/dateUtils";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
 
@@ -11,11 +15,28 @@ interface BookSectionProps {
 }
 
 const BookSection = ({ isFetching, book }: BookSectionProps) => {
+  const isAuthenticated: boolean | null = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
+  const cart: Cart | null = useSelector((state: RootState) => state.cart.cart);
+
+  const [addCartItem] = useAddCartItemMutation();
   const navigate = useNavigate();
+
+  const [bookInCart, setBookInCart] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (cart && book) {
+      setBookInCart(
+        cart.cartItems.some((cartItem) => cartItem.bookId === book.bookId),
+      );
+    }
+  }, [cart, book]);
 
   return (
     <>
-      {!isFetching && book ? (
+      {cart && !isFetching && book ? (
         <section className="mx-6 my-12 grid grid-cols-2 gap-y-8">
           <button className="absolute -top-12 right-0 rounded-sm bg-gradient-to-l from-green-200 to-yellow-100 px-3 py-2 text-green-600 transition-colors hover:from-green-100 hover:to-yellow-50 hover:text-green-500">
             Community Hub
@@ -91,8 +112,26 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
                 variant="contained"
                 className="bg-gradient-to-tl from-green-400 to-green-300 p-3 text-green-50 shadow-none transition-colors hover:from-green-500 hover:to-green-400 active:from-green-600 active:to-green-500"
                 disableRipple
+                onClick={async () => {
+                  if (!isAuthenticated) navigate("/login");
+                  else if (bookInCart) navigate("/store/cart");
+                  else {
+                    const addCartItemDTO = {
+                      cartId: cart.cartId,
+                      bookId: book.bookId,
+                      title: book.title,
+                      author: book.author,
+                      coverImageUrl: book.coverImageUrl,
+                      price: book.price,
+                      discountPercent: book.discountPercent,
+                    };
+
+                    await addCartItem(addCartItemDTO).unwrap;
+                    navigate("/store/cart");
+                  }
+                }}
               >
-                Add to Cart
+                {bookInCart ? "In Cart" : "Add to Cart"}
               </Button>
               <div
                 className={`mr-1 bg-yellow-200 ${

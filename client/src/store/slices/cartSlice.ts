@@ -53,10 +53,24 @@ const cartSlice = createSlice({
         },
       )
       .addMatcher(
+        orderServiceEndpoints.endpoints.addCartItem.matchRejected,
+        (state) => {
+          state.toastMessage = "Could not add item to cart";
+          state.showToast = true;
+        },
+      )
+      .addMatcher(
         orderServiceEndpoints.endpoints.deleteCartItem.matchFulfilled,
         (state, action) => {
           state.cart = action.payload;
           state.toastMessage = "Removed item from the cart";
+          state.showToast = true;
+        },
+      )
+      .addMatcher(
+        orderServiceEndpoints.endpoints.deleteCartItem.matchRejected,
+        (state) => {
+          state.toastMessage = "Could not remove item from cart";
           state.showToast = true;
         },
       );

@@ -19,7 +19,7 @@ import RegisterPage from "./pages/register/RegisterPage.tsx";
 import SearchPage from "./pages/store/search/SearchPage.tsx";
 import GenrePage from "./pages/store/genre/GenrePage.tsx";
 import BookPage from "./pages/store/book/BookPage.tsx";
-import CartPage from "./pages/cart/CartPage.tsx";
+import CartPage from "./pages/store/cart/CartPage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
