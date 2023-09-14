@@ -89,6 +89,9 @@ public class CartService {
         cart.getCartItems().remove(cartItem);
         cartRepository.save(cart);
 
+        // Actually delete the cartItem from the database
+        cartItemRepository.delete(cartItem);
+
         // Fetch the updated cart and return
         return cart;
     }
