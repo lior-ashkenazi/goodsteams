@@ -4,6 +4,7 @@ import { Book } from "../../../types/models/Book";
 import { Rating } from "@mui/material";
 
 import { convertDate } from "../../../utils/dateUtils";
+import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
 
 interface SearchPageResultsItemProps {
   book: Book;
@@ -57,11 +58,7 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
                 {book.price}$
               </span>
               <span className="block text-green-300">
-                {(
-                  book.price -
-                  (book.discountPercent / 100) * book.price
-                ).toFixed(2)}
-                $
+                {calculatePriceAfterDiscount(book.price, book.discountPercent)}$
               </span>
             </span>
           </div>

@@ -75,7 +75,7 @@ const StorePageHeader = () => {
             onClick={() => navigate("/store")}
             disableRipple
           >
-            Your Store
+            Store
           </Button>
           <Button
             ref={genresButtonRef}

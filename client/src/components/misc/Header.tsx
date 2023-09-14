@@ -15,6 +15,7 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Avatar from "@mui/material/Avatar";
+import { Cart } from "../../types/models/Cart";
 
 interface HeaderProps {
   headerRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -36,6 +37,8 @@ const Header = ({ headerRef }: HeaderProps) => {
   const avatarUrl: string | null = useSelector(
     (state: RootState) => state.profile.avatarUrl,
   );
+  // The reducer is called cart and inside it we have a property called cart
+  const cart: Cart | null = useSelector((state: RootState) => state.cart.cart);
 
   // New state & refs for store and community
   const [openStoreMenu, setOpenStoreMenu] = useState<boolean>(false);
@@ -300,22 +303,26 @@ const Header = ({ headerRef }: HeaderProps) => {
       isAuthenticated &&
       username && (
         <IconButton aria-label={"cart"}>
-          <Badge
-            badgeContent={4}
-            color="error" // Using this to ensure default colors are overridden
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            sx={{
-              "& .MuiBadge-badge": {
-                backgroundColor: "#22c55e",
-                color: "#fefce8",
-              },
-            }}
-          >
+          {cart && cart.cartItems && cart.cartItems.length > 0 ? (
+            <Badge
+              badgeContent={cart.cartItems.length}
+              color="error" // Using this to ensure default colors are overridden
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              sx={{
+                "& .MuiBadge-badge": {
+                  backgroundColor: "#22c55e",
+                  color: "#fefce8",
+                },
+              }}
+            >
+              <ShoppingCartIcon style={{ color: "#fefce8" }} />
+            </Badge>
+          ) : (
             <ShoppingCartIcon style={{ color: "#fefce8" }} />
-          </Badge>
+          )}
         </IconButton>
       )
     );

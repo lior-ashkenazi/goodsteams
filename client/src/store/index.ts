@@ -3,11 +3,13 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 
 import authReducer from "./slices/authSlice";
 import profileReducer from "./slices/profileSlice";
+import cartReducer from "./slices/cartSlice";
 
 import { apiSlice } from "./apis/apiSlice";
 import { authServiceEndpoints } from "./apis/endpoints/authServiceEndpoints";
 import { profileServiceEndpoints } from "./apis/endpoints/profileServiceEndpoints";
 import { bookServiceEndpoints } from "./apis/endpoints/bookServiceEndpoints";
+import { orderServiceEndpoints } from "./apis/endpoints/orderServiceEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -16,6 +18,7 @@ const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
     profile: profileReducer,
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
@@ -49,3 +52,5 @@ export const {
   useGetBooksByGenreQuery,
   useGetBookByIdQuery,
 } = bookServiceEndpoints;
+
+export const { useGetCartQuery, useLazyGetCartQuery } = orderServiceEndpoints;

@@ -20,6 +20,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   useRegisterUserMutation,
   useLazyGetProfileSecureQuery,
+  useLazyGetCartQuery,
 } from "../../store";
 import { isAuthError } from "../../types/errors/authServiceErrors";
 
@@ -61,6 +62,7 @@ const RegisterForm = () => {
 
   const [registerUser] = useRegisterUserMutation();
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
+  const [getCart] = useLazyGetCartQuery();
 
   const {
     register,
@@ -84,6 +86,7 @@ const RegisterForm = () => {
     try {
       await registerUser(userCredentials).unwrap();
       await getProfileSecure().unwrap();
+      await getCart().unwrap();
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {

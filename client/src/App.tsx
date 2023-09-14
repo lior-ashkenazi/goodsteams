@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useLazyAuthUserQuery, useLazyGetProfileSecureQuery } from "./store";
+import {
+  useLazyAuthUserQuery,
+  useLazyGetCartQuery,
+  useLazyGetProfileSecureQuery,
+} from "./store";
 import Header from "./components/misc/Header";
 
 const App = () => {
   const [authQuery] = useLazyAuthUserQuery();
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
+  const [getCart] = useLazyGetCartQuery();
 
   const navigate = useNavigate();
 
@@ -17,13 +22,14 @@ const App = () => {
       try {
         await authQuery().unwrap();
         await getProfileSecure().unwrap();
+        await getCart().unwrap();
       } catch {
         navigate("/");
       }
     };
 
     fetchData();
-  }, [authQuery, getProfileSecure, navigate]);
+  }, [authQuery, getProfileSecure, getCart, navigate]);
 
   useEffect(() => {
     // this is an edge case handling when web-app
