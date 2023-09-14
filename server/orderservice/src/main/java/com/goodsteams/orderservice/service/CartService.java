@@ -7,13 +7,11 @@ import com.goodsteams.orderservice.entity.CartItem;
 import com.goodsteams.orderservice.exception.CartItemNotFoundException;
 import com.goodsteams.orderservice.exception.CartNotFoundException;
 import com.goodsteams.orderservice.exception.InvalidTokenException;
-import com.goodsteams.orderservice.exception.RedisCacheException;
 import com.goodsteams.orderservice.requestmodel.CartItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
