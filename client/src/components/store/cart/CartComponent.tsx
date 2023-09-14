@@ -59,16 +59,19 @@ const CartComponent = () => {
     <>
       {cart ? (
         <div className="flex flex-col gap-y-8">
-          {showToast && toastMessage && renderToastMessage()}
           <h1 className="text-6xl font-medium tracking-tight">Shopping Cart</h1>
-          <ul className="flex flex-col gap-y-3">
+          {showToast && toastMessage && renderToastMessage()}
+          <ul className="flex flex-col gap-y-2">
             {cart.cartItems
               .slice()
               .sort((a, b) => {
                 return a.addedDate.localeCompare(b.addedDate);
               })
               .map((cartItem: CartItem, index: number) => (
-                <li key={index} className="flex justify-between">
+                <li
+                  key={index}
+                  className="flex justify-between rounded-sm bg-green-400"
+                >
                   <div className="flex">
                     <img
                       src={cartItem.coverImageUrl}
@@ -92,7 +95,7 @@ const CartComponent = () => {
                   <div className="flex flex-col items-center p-2">
                     {cartItem.discountPercent > 0 ? (
                       <span className="flex flex-col text-right">
-                        <span className="text-xs text-green-600 line-through">
+                        <span className="text-xs text-green-700 line-through">
                           {cartItem.price}$
                         </span>
                         <span>
@@ -118,13 +121,34 @@ const CartComponent = () => {
                 </li>
               ))}
           </ul>
-          <Button
-            variant="contained"
-            className="w-max self-end bg-gradient-to-tl from-yellow-500 to-yellow-400 text-lg normal-case text-yellow-50 shadow-none"
-            disableRipple
-          >
-            Proceed To Purchase
-          </Button>
+          <div className="flex flex-col rounded-sm bg-green-400 p-4 font-medium">
+            <span className="mb-10 flex justify-between text-lg text-green-50">
+              <span>Estimated Total</span>
+              <span>
+                {cart.cartItems
+                  .reduce((acc, cartItem) => {
+                    return (
+                      acc +
+                      Number(
+                        calculatePriceAfterDiscount(
+                          cartItem.price,
+                          cartItem.discountPercent,
+                        ),
+                      )
+                    );
+                  }, 0)
+                  .toFixed(2)}
+                $
+              </span>
+            </span>
+            <Button
+              variant="contained"
+              className="w-max self-end bg-gradient-to-tl from-yellow-500 to-yellow-400 text-lg normal-case text-yellow-50 shadow-none"
+              disableRipple
+            >
+              Proceed To Purchase
+            </Button>
+          </div>
         </div>
       ) : (
         <div></div>
