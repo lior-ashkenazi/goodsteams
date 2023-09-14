@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
-import { AppDispatch, clearToast, RootState } from "../../../store";
+import {
+  AppDispatch,
+  clearToast,
+  RootState,
+  useDeleteCartItemMutation,
+} from "../../../store";
 import { Cart } from "../../../types/models/Cart";
 import { CartItem } from "../../../types/models/CartItem";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
@@ -21,6 +26,8 @@ const CartComponent = () => {
   const showToast: boolean | null = useSelector(
     (state: RootState) => state.cart.showToast,
   );
+
+  const [deleteCartItem] = useDeleteCartItemMutation();
 
   useEffect(() => {
     return () => {
@@ -43,6 +50,11 @@ const CartComponent = () => {
     );
   };
 
+  const handleDeleteCartItem = async (cartItemId: number) => {
+    await deleteCartItem(cartItemId.toString()).unwrap;
+    navigate("/store/cart");
+  };
+
   return (
     <>
       {cart ? (
@@ -50,53 +62,61 @@ const CartComponent = () => {
           {showToast && toastMessage && renderToastMessage()}
           <h1 className="text-6xl font-medium tracking-tight">Shopping Cart</h1>
           <ul className="flex flex-col gap-y-3">
-            {cart.cartItems.map((cartItem: CartItem, index: number) => (
-              <li key={index} className="flex justify-between">
-                <div className="flex">
-                  <img
-                    src={cartItem.coverImageUrl}
-                    className="w-20 rounded-sm"
-                    aria-label={`${cartItem.title} cover image`}
-                  />
-                  <span className="flex flex-col p-2">
-                    <button
-                      className="truncate text-lg"
-                      onClick={() => navigate(`/store/book/${cartItem.bookId}`)}
+            {cart.cartItems
+              .slice()
+              .sort((a, b) => {
+                return a.addedDate.localeCompare(b.addedDate);
+              })
+              .map((cartItem: CartItem, index: number) => (
+                <li key={index} className="flex justify-between">
+                  <div className="flex">
+                    <img
+                      src={cartItem.coverImageUrl}
+                      className="w-20 rounded-sm"
+                      aria-label={`${cartItem.title} cover image`}
+                    />
+                    <span className="flex flex-col p-2">
+                      <button
+                        className="truncate text-lg"
+                        onClick={() =>
+                          navigate(`/store/book/${cartItem.bookId}`)
+                        }
+                      >
+                        {cartItem.title}
+                      </button>
+                      <span className="truncate text-lg">
+                        by {cartItem.author}
+                      </span>
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-center p-2">
+                    {cartItem.discountPercent > 0 ? (
+                      <span className="flex flex-col text-right">
+                        <span className="text-xs text-green-600 line-through">
+                          {cartItem.price}$
+                        </span>
+                        <span>
+                          {calculatePriceAfterDiscount(
+                            cartItem.price,
+                            cartItem.discountPercent,
+                          )}
+                          $
+                        </span>
+                      </span>
+                    ) : (
+                      <span>{cartItem.price}$</span>
+                    )}
+                    <Button
+                      variant="text"
+                      className="bg-transparent text-xs text-green-700 underline"
+                      disableRipple
+                      onClick={() => handleDeleteCartItem(cartItem.cartItemId)}
                     >
-                      {cartItem.title}
-                    </button>
-                    <span className="truncate text-lg">
-                      by {cartItem.author}
-                    </span>
-                  </span>
-                </div>
-                <div className="flex flex-col items-center p-2">
-                  {cartItem.discountPercent > 0 ? (
-                    <span className="flex flex-col text-right">
-                      <span className="text-xs text-green-600 line-through">
-                        {cartItem.price}$
-                      </span>
-                      <span>
-                        {calculatePriceAfterDiscount(
-                          cartItem.price,
-                          cartItem.discountPercent,
-                        )}
-                        $
-                      </span>
-                    </span>
-                  ) : (
-                    <span>{cartItem.price}$</span>
-                  )}
-                  <Button
-                    variant="text"
-                    className="text-xs text-green-700 underline"
-                    disableRipple
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </li>
-            ))}
+                      Remove
+                    </Button>
+                  </div>
+                </li>
+              ))}
           </ul>
           <Button
             variant="contained"

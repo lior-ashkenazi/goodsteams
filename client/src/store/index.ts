@@ -53,7 +53,11 @@ export const {
   useGetBookByIdQuery,
 } = bookServiceEndpoints;
 
-export const { useGetCartQuery, useLazyGetCartQuery, useAddCartItemMutation } =
-  orderServiceEndpoints;
+export const {
+  useGetCartQuery,
+  useLazyGetCartQuery,
+  useAddCartItemMutation,
+  useDeleteCartItemMutation,
+} = orderServiceEndpoints;
 
 export { clearToast } from "./slices/cartSlice";
