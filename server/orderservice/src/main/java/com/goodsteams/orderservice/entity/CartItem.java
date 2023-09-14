@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -28,18 +29,38 @@ public class CartItem {
     @Column(name = "book_id", nullable = false)
     private Long bookId;
 
+    @Column(unique = true, nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String author;
+
+    @Column(name = "cover_image_url", nullable = false)
+    private String coverImageUrl;
+
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
 
     @Column(length = 3, nullable = false, columnDefinition = "VARCHAR(3) DEFAULT 'USD'")
     private String currency = "USD";
 
-    public CartItem(){}
+    @Column(name = "discount_percent", nullable = false)
+    private Integer discountPercent;
 
-    public CartItem(Cart cart, Long bookId, BigDecimal price) {
+    @Column(name = "added_date", updatable = false, nullable = false)
+    private LocalDateTime addedDate = LocalDateTime.now();
+
+    public CartItem() {
+    }
+
+    public CartItem(Cart cart, Long bookId, String title, String author, String coverImageUrl, BigDecimal price, Integer discountPercent) {
         this.cart = cart;
         this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.coverImageUrl = coverImageUrl;
         this.price = price;
+        this.discountPercent = discountPercent;
     }
 
 }

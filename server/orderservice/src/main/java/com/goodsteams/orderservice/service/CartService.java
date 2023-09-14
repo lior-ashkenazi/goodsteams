@@ -22,17 +22,15 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final TokenService tokenService;
-    private final RedisService redisService;
 
     @Autowired
     public CartService(CartRepository cartRepository,
                        CartItemRepository cartItemRepository,
-                       TokenService tokenService,
-                       RedisService redisService) {
+                       TokenService tokenService
+    ) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.tokenService = tokenService;
-        this.redisService = redisService;
     }
 
     public void saveCartByToken(String token) {
@@ -62,14 +60,17 @@ public class CartService {
         Cart cart = cartRepository.findById(cartItemDTO.cartId())
                 .orElseThrow(CartNotFoundException::new);
 
-        // Fetch the price from Redis using bookId from CartItemDTO
-        BigDecimal bookPrice = redisService.getBookPrice(cartItemDTO.bookId());
-        if (bookPrice == null) {
-            throw new RedisCacheException();
-        }
 
         // Create a new cart item and set the price
-        CartItem cartItem = new CartItem(cart, cartItemDTO.bookId(), bookPrice);
+        CartItem cartItem = new CartItem(
+                cart,
+                cartItemDTO.bookId(),
+                cartItemDTO.title(),
+                cartItemDTO.author(),
+                cartItemDTO.coverImageUrl(),
+                cartItemDTO.price(),
+                cartItemDTO.discountPercent()
+        );
 
         // Add cart item to cart and save
         cart.getCartItems().add(cartItem);  // assuming Cart has a set of CartItems
@@ -93,7 +94,6 @@ public class CartService {
         // Fetch the updated cart and return
         return cart;
     }
-
 
 
     private Long extractTokenUserId(Jwt jwt) {

@@ -10,7 +10,7 @@ public class KafkaService {
     private final CartService cartService;
 
     @Autowired
-    public KafkaService(CartService cartService, RedisService redisService) {
+    public KafkaService(CartService cartService) {
         this.cartService = cartService;
     }
 
