@@ -35,7 +35,7 @@ public class AuthController {
                 userRegistrationRequestDTO.password()
         );
 
-        kafkaService.sendRegistrationEvent(userRegistrationResponseDTO.token());
+        kafkaService.produceRegistrationEvent(userRegistrationResponseDTO.token());
 
         return userRegistrationResponseDTO;
     }

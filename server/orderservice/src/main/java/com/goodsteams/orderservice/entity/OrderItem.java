@@ -12,8 +12,8 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
-    private Long itemId;
+    @Column(name = "order_item_id")
+    private Long orderItemId;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
@@ -27,5 +27,13 @@ public class OrderItem {
 
     @Column(length = 3, nullable = false, columnDefinition = "VARCHAR(3) DEFAULT 'USD'")
     private String currency = "USD";
+
+    public OrderItem() {}
+
+    public OrderItem(Order order, Long bookId, BigDecimal price) {
+        this.order = order;
+        this.bookId = bookId;
+        this.price = price;
+    }
 
 }

@@ -15,7 +15,7 @@ public class KafkaService {
     }
 
     @KafkaListener(topics = "user-registration-topic", groupId = "profile-service-group")
-    public void listenForRegistration(String token) {
+    public void consumeUserRegistrationEvent(String token) {
         profileService.saveProfileByToken(token);
     }
 }

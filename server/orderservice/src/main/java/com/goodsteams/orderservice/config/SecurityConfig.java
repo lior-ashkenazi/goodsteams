@@ -33,7 +33,10 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/order/cart","/api/order/cart/**","/api/order/payment/**").authenticated()
+                        .requestMatchers(
+                                "/api/order/cart",
+                                "/api/order/cart/**",
+                                "/api/order/payment/**").authenticated()
                         .anyRequest().denyAll())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

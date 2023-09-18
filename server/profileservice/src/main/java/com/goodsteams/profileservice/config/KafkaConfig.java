@@ -1,4 +1,4 @@
-package com.goodsteams.orderservice.config;
+package com.goodsteams.profileservice.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaConsumerConfig {
+public class KafkaConfig {
 
     @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;

@@ -2,7 +2,6 @@ package com.goodsteams.profileservice.service;
 
 import com.goodsteams.profileservice.dao.ProfileRepository;
 import com.goodsteams.profileservice.entity.Profile;
-import com.goodsteams.profileservice.exception.InvalidTokenException;
 import com.goodsteams.profileservice.exception.ProfileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -26,8 +25,8 @@ public class ProfileService {
 
     public void saveProfileByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
-        Long userId = extractTokenUserId(jwt);
-        String username = extractTokenUsername(jwt);
+        Long userId = tokenService.extractTokenUserId(jwt);
+        String username = tokenService.extractTokenUsername(jwt);
 
         Profile profile = new Profile(userId, username);
 
@@ -36,7 +35,7 @@ public class ProfileService {
 
     public Profile findProfileByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
-        Long userId = extractTokenUserId(jwt);
+        Long userId = tokenService.extractTokenUserId(jwt);
 
         Optional<Profile> existingProfile = profileRepository.findByUserId(userId);
 
@@ -49,7 +48,7 @@ public class ProfileService {
 
     public Profile saveProfileByToken(String token, Profile profile) {
         Jwt jwt = tokenService.decodeToken(token);
-        Long userId = extractTokenUserId(jwt);
+        Long userId = tokenService.extractTokenUserId(jwt);
 
         boolean existingProfile = profileRepository.existsByUserId(userId);
 
@@ -62,23 +61,6 @@ public class ProfileService {
 
     public Profile findProfileByUserId(Long userId) {
         return profileRepository.findByUserId(userId).orElseThrow(ProfileNotFoundException::new);
-    }
-
-    private Long extractTokenUserId(Jwt jwt) {
-        String userIdStr = jwt.getClaimAsString("userId");
-        Long userId = null;
-
-        try {
-            userId = Long.parseLong(userIdStr);
-        } catch (Exception e) {
-            throw new InvalidTokenException();
-        }
-
-        return userId;
-    }
-
-    private String extractTokenUsername(Jwt jwt) {
-        return jwt.getClaimAsString("sub");
     }
 
 }

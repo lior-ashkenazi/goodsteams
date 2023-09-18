@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: library-service
+  template:
+    metadata:
+      labels:
+        app: library-service
+    spec:
+      containers:
+        - name: library-service
+          image: liorash7/goodsteams-library-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: rsa-keys
+              mountPath: /etc/rsa
+      volumes:
+        - name: rsa-keys
+          secret:
+            secretName: rsa-keys-secret

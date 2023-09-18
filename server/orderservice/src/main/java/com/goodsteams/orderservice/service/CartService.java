@@ -7,7 +7,7 @@ import com.goodsteams.orderservice.entity.CartItem;
 import com.goodsteams.orderservice.exception.CartItemNotFoundException;
 import com.goodsteams.orderservice.exception.CartNotFoundException;
 import com.goodsteams.orderservice.exception.InvalidTokenException;
-import com.goodsteams.orderservice.requestmodel.CartItemDTO;
+import com.goodsteams.orderservice.dto.CartItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class CartService {
 
     public void saveCartByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
-        Long userId = extractTokenUserId(jwt);
+        Long userId = tokenService.extractTokenUserId(jwt);
 
         Cart cart = new Cart(userId);
 
@@ -42,7 +42,7 @@ public class CartService {
 
     public Cart findCartByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
-        Long userId = extractTokenUserId(jwt);
+        Long userId = tokenService.extractTokenUserId(jwt);
 
         Optional<Cart> existingCart = cartRepository.findCartByUserId(userId);
 
@@ -89,25 +89,21 @@ public class CartService {
         cart.getCartItems().remove(cartItem);
         cartRepository.save(cart);
 
-        // Actually delete the cartItem from the database
-        cartItemRepository.delete(cartItem);
-
         // Fetch the updated cart and return
         return cart;
     }
 
+    public void clearCartByUserId(Long userId) {
+        // Fetch the cart by userId
+        Cart cart = cartRepository.findCartByUserId(userId)
+                .orElseThrow(CartNotFoundException::new);
 
-    private Long extractTokenUserId(Jwt jwt) {
-        String userIdStr = jwt.getClaimAsString("userId");
-        Long userId = null;
+        // Clear the set of cart items
+        cart.getCartItems().clear();
 
-        try {
-            userId = Long.parseLong(userIdStr);
-        } catch (Exception e) {
-            throw new InvalidTokenException();
-        }
+        // Save the cart which will trigger the removal of cart items from the database
+        cartRepository.save(cart);
 
-        return userId;
     }
 
 }

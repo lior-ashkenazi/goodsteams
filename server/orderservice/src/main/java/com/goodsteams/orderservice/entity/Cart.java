@@ -25,7 +25,8 @@ public class Cart {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OrderBy("addedDate DESC")
     private Set<CartItem> cartItems = new HashSet<>();
     public Cart() {}
 

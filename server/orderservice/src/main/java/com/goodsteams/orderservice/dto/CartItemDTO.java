@@ -1,4 +1,4 @@
-package com.goodsteams.orderservice.requestmodel;
+package com.goodsteams.orderservice.dto;
 
 import java.math.BigDecimal;
 

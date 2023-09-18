@@ -1,5 +1,6 @@
 package com.goodsteams.orderservice.service;
 
+import com.goodsteams.orderservice.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -17,6 +18,19 @@ public class TokenService {
 
     public Jwt decodeToken(String token) {
         return jwtDecoder.decode(token);
+    }
+
+    public Long extractTokenUserId(Jwt jwt) {
+        String userIdStr = jwt.getClaimAsString("userId");
+        Long userId = null;
+
+        try {
+            userId = Long.parseLong(userIdStr);
+        } catch (Exception e) {
+            throw new InvalidTokenException();
+        }
+
+        return userId;
     }
 
 }

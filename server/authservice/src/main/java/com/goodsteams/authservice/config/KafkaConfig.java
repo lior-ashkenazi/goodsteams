@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaProducerConfig {
+public class KafkaConfig {
 
     @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;

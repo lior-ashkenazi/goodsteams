@@ -30,3 +30,10 @@ services:
       context: ./orderservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-order-service:latest
+
+  library-service:
+    build:
+      context: ./libraryservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-library-service:latest
+    
