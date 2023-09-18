@@ -1,4 +1,4 @@
-package com.goodsteams.libraryservice.config;
+package com.goodsteams.wishlistservice.config;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -30,29 +30,7 @@ public class KafkaConfig {
 
 
     @Bean
-    public DefaultKafkaConsumerFactory<String, String> stringConsumerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-
-        // Adding SASL authentication properties
-        configProps.put("security.protocol", securityProtocol);
-        configProps.put("sasl.mechanism", saslMechanism);
-        configProps.put("sasl.jaas.config", saslJaasConfig);
-
-        return new DefaultKafkaConsumerFactory<>(configProps);
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> stringKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(stringConsumerFactory());
-        return factory;
-    }
-
-    @Bean
-    public DefaultKafkaConsumerFactory<String, JsonNode> jsonConsumerFactory() {
+    public DefaultKafkaConsumerFactory<String, JsonNode> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -72,9 +50,9 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, JsonNode> jsonKafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, JsonNode> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, JsonNode> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(jsonConsumerFactory());
+        factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 

@@ -4,12 +4,14 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 import authReducer from "./slices/authSlice";
 import profileReducer from "./slices/profileSlice";
 import cartReducer from "./slices/cartSlice";
+import libraryReducer from "./slices/librarySlice";
 
 import { apiSlice } from "./apis/apiSlice";
 import { authServiceEndpoints } from "./apis/endpoints/authServiceEndpoints";
 import { profileServiceEndpoints } from "./apis/endpoints/profileServiceEndpoints";
 import { bookServiceEndpoints } from "./apis/endpoints/bookServiceEndpoints";
 import { orderServiceEndpoints } from "./apis/endpoints/orderServiceEndpoints";
+import { libraryServiceEndpoints } from "./apis/endpoints/libraryServiceEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -19,6 +21,7 @@ const store = configureStore({
     auth: authReducer,
     profile: profileReducer,
     cart: cartReducer,
+    library: libraryReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
@@ -42,8 +45,8 @@ export const {
 } = authServiceEndpoints;
 
 export const {
-  useLazyGetProfileSecureQuery,
   useGetProfileSecureQuery,
+  useLazyGetProfileSecureQuery,
   useUpdateProfileMutation,
 } = profileServiceEndpoints;
 
@@ -58,6 +61,11 @@ export const {
   useLazyGetCartQuery,
   useAddCartItemMutation,
   useDeleteCartItemMutation,
+  useCreatePaymentIntentMutation,
+  useSubmitPaymentMutation,
 } = orderServiceEndpoints;
+
+export const { useGetLibraryQuery, useLazyGetLibraryQuery } =
+  libraryServiceEndpoints;
 
 export { clearToast } from "./slices/cartSlice";

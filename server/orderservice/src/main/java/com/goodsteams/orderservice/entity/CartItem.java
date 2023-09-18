@@ -29,7 +29,7 @@ public class CartItem {
     @Column(name = "book_id", nullable = false)
     private Long bookId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)

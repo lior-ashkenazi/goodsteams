@@ -15,6 +15,7 @@ export const profileServiceEndpoints = apiSlice.injectEndpoints({
       GetProfileSecureRequest
     >({
       query: () => "profile/secure",
+      providesTags: ["Profile"],
     }),
     getProfilePublic: builder.query<
       GetProfilePublicResponse,

@@ -18,10 +18,16 @@ public class KafkaService {
         this.libraryService = libraryService;
     }
 
-    @KafkaListener(topics = "order-payment-topic", groupId = "library-service-group")
+    @KafkaListener(topics = "user-registration-topic", groupId = "library-service-group", containerFactory = "stringKafkaListenerContainerFactory")
+    public void consumeUserRegistrationEvent(String token) {
+        libraryService.saveLibraryByToken(token);
+    }
+
+
+    @KafkaListener(topics = "order-payment-topic", groupId = "library-service-group", containerFactory = "jsonKafkaListenerContainerFactory")
     public void consumeOrderPaymentEvent(JsonNode jsonNode) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         OwnedBookDTO ownedBookDTO = mapper.treeToValue(jsonNode, OwnedBookDTO.class);
-        libraryService.saveOwnedBook(ownedBookDTO);
+        libraryService.addOwnedBook(ownedBookDTO);
     }
 }

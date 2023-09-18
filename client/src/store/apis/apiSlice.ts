@@ -3,7 +3,6 @@ import { RootState } from "../index";
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  //   tagTypes: ["Users", "Messages", "Chats", "Profile"],
   baseQuery: fetchBaseQuery({
     baseUrl: `/api`,
     prepareHeaders: (headers, { getState }) => {
@@ -14,5 +13,6 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Profile", "Cart", "Library"],
   endpoints: () => ({}),
 });

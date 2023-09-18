@@ -7,12 +7,17 @@ import {
   AddCartItemResponse,
   DeleteCartItemRequest,
   DeleteCartItemResponse,
+  CreatePaymentIntentRequest,
+  CreatePaymentIntentResponse,
+  SubmitPaymentRequest,
+  SubmitPaymentResponse,
 } from "../../../types/endpoints/orderServiceEndpoints";
 
 export const orderServiceEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCart: builder.query<GetCartResponse, GetCartRequest>({
-      query: () => `order/cart`,
+      query: () => `order/cart/`,
+      providesTags: ["Cart"],
     }),
     addCartItem: builder.mutation<AddCartItemResponse, AddCartItemRequest>({
       query: (cartItem) => ({
@@ -29,6 +34,26 @@ export const orderServiceEndpoints = apiSlice.injectEndpoints({
         url: `order/cart/cart-item/${cartItemId}`,
         method: "DELETE",
       }),
+    }),
+    createPaymentIntent: builder.mutation<
+      CreatePaymentIntentResponse,
+      CreatePaymentIntentRequest
+    >({
+      query: () => ({
+        url: `order/payment/payment-intent`,
+        method: "POST",
+      }),
+    }),
+    submitPayment: builder.mutation<
+      SubmitPaymentResponse,
+      SubmitPaymentRequest
+    >({
+      query: (cart) => ({
+        url: `order/payment/payment-complete`,
+        method: "POST",
+        body: cart,
+      }),
+      invalidatesTags: ["Cart", "Library"],
     }),
   }),
 });

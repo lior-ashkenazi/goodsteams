@@ -12,21 +12,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserRegistrationException.class)
     public ResponseEntity<Map<String, String>> handleUserRegistrationException(UserRegistrationException e) {
-        Map<String, String> response = Map.of("message", e.getMessage());
+        Map<String, String> response = Map.of("error", e.getMessage());
 
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(UserLoginException.class)
     public ResponseEntity<Map<String, String>> handleUserLoginException(UserLoginException e) {
-        Map<String, String> response = Map.of("message", e.getMessage());
+        Map<String, String> response = Map.of("error", e.getMessage());
 
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(TokenException.class)
     public ResponseEntity<Map<String, String>> handleTokenException(TokenException e) {
-        Map<String, String> response = Map.of("message", e.getMessage());
+        Map<String, String> response = Map.of("error", e.getMessage());
 
         return ResponseEntity.badRequest().body(response);
     }
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     // Handle other unexpected exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception e) {
-        Map<String, String> response = Map.of("message", "An unexpected error occurred.");
+        Map<String, String> response = Map.of("error", "An unexpected error occurred.");
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

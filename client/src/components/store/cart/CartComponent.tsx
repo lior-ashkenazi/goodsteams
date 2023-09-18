@@ -59,7 +59,15 @@ const CartComponent = () => {
     <>
       {cart ? (
         <div className="flex flex-col gap-y-8">
-          <h1 className="text-6xl font-medium tracking-tight">Shopping Cart</h1>
+          <button
+            className="absolute -top-12 right-0 rounded-sm bg-gradient-to-l from-green-200 to-yellow-100 px-3 py-2 text-green-600 transition-colors hover:from-green-100 hover:to-yellow-50 hover:text-green-500"
+            onClick={() => navigate("/store")}
+          >
+            Continue Shopping
+          </button>
+          <h1 className="mb-4 text-6xl font-medium tracking-tight">
+            Shopping Cart
+          </h1>
           {showToast && toastMessage && renderToastMessage()}
           <ul className="flex flex-col gap-y-2">
             {cart.cartItems
@@ -145,8 +153,10 @@ const CartComponent = () => {
               variant="contained"
               className="w-max self-end bg-gradient-to-tl from-yellow-500 to-yellow-400 text-lg normal-case text-yellow-50 shadow-none"
               disableRipple
+              disabled={cart && cart.cartItems && cart.cartItems.length === 0}
+              onClick={() => navigate("/store/payment")}
             >
-              Proceed To Purchase
+              Proceed To Payment
             </Button>
           </div>
         </div>

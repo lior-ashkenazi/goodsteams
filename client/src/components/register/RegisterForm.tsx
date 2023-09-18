@@ -21,6 +21,7 @@ import {
   useRegisterUserMutation,
   useLazyGetProfileSecureQuery,
   useLazyGetCartQuery,
+  useLazyGetLibraryQuery,
 } from "../../store";
 import { isAuthError } from "../../types/errors/authServiceErrors";
 
@@ -63,6 +64,7 @@ const RegisterForm = () => {
   const [registerUser] = useRegisterUserMutation();
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
   const [getCart] = useLazyGetCartQuery();
+  const [getLibrary] = useLazyGetLibraryQuery();
 
   const {
     register,
@@ -85,8 +87,11 @@ const RegisterForm = () => {
     const userCredentials = { username, password };
     try {
       await registerUser(userCredentials).unwrap();
-      await getProfileSecure().unwrap();
+
       await getCart().unwrap();
+      await getLibrary().unwrap();
+
+      await getProfileSecure().unwrap();
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {
