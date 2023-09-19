@@ -6,6 +6,7 @@ import { Rating, Button } from "@mui/material";
 import { RootState, useAddCartItemMutation } from "../../../store";
 import { Book } from "../../../types/models/Book";
 import { Cart } from "../../../types/models/Cart";
+import { Library } from "../../../types/models/Library";
 import { convertDate } from "../../../utils/dateUtils";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
 
@@ -21,18 +22,49 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
 
   const cart: Cart | null = useSelector((state: RootState) => state.cart.cart);
 
+  const library: Library | null = useSelector(
+    (state: RootState) => state.library.library,
+  );
+
   const [addCartItem] = useAddCartItemMutation();
   const navigate = useNavigate();
 
+  const [bookInLibrary, setBookInLibrary] = useState<boolean>(false);
   const [bookInCart, setBookInCart] = useState<boolean>(false);
 
   useEffect(() => {
-    if (cart && book) {
+    if (library && cart && book) {
       setBookInCart(
         cart.cartItems.some((cartItem) => cartItem.bookId === book.bookId),
       );
+      setBookInLibrary(
+        library.ownedBooks.some(
+          (ownedBook) => ownedBook.bookId === book.bookId,
+        ),
+      );
     }
-  }, [cart, book]);
+  }, [library, cart, book]);
+
+  const handleAddCartItem = async () => {
+    if (!cart || !book) return;
+
+    if (!isAuthenticated) navigate("/login");
+    else if (bookInCart) navigate("/store/cart");
+    else {
+      const addCartItemDTO = {
+        cartId: cart.cartId,
+        bookId: book.bookId,
+        title: book.title,
+        author: book.author,
+        coverImageUrl: book.coverImageUrl,
+        price: book.price,
+        discountPercent: book.discountPercent,
+      };
+
+      await addCartItem(addCartItemDTO).unwrap;
+      navigate("/store/cart");
+    }
+  };
 
   return (
     <>
@@ -98,8 +130,8 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
             </span>
           </div>
           <div className="col-span-2 m-2 break-words rounded-sm bg-yellow-100 p-8 text-yellow-950">
-            <h2 className="mb-8 text-4xl font-medium underline">Synopsis</h2>
-            <p className="text-lg">{book.synopsis}</p>
+            <h2 className="mb-8 text-4xl font-bold underline">Synopsis</h2>
+            <p className="text-lg italic">{book.synopsis}</p>
           </div>
           <div className="relative col-span-2 m-2 rounded-sm bg-gradient-to-r from-green-500 to-yellow-100 p-4">
             <div className="w-[32rem]">
@@ -112,26 +144,14 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
                 variant="contained"
                 className="bg-gradient-to-tl from-green-400 to-green-300 p-3 text-green-50 shadow-none transition-colors hover:from-green-500 hover:to-green-400 active:from-green-600 active:to-green-500"
                 disableRipple
-                onClick={async () => {
-                  if (!isAuthenticated) navigate("/login");
-                  else if (bookInCart) navigate("/store/cart");
-                  else {
-                    const addCartItemDTO = {
-                      cartId: cart.cartId,
-                      bookId: book.bookId,
-                      title: book.title,
-                      author: book.author,
-                      coverImageUrl: book.coverImageUrl,
-                      price: book.price,
-                      discountPercent: book.discountPercent,
-                    };
-
-                    await addCartItem(addCartItemDTO).unwrap;
-                    navigate("/store/cart");
-                  }
-                }}
+                onClick={handleAddCartItem}
+                disabled={bookInLibrary}
               >
-                {bookInCart ? "In Cart" : "Add to Cart"}
+                {bookInLibrary
+                  ? "In Library"
+                  : bookInCart
+                  ? "In Cart"
+                  : "Add to Cart"}
               </Button>
               <div
                 className={`mr-1 bg-yellow-200 ${
