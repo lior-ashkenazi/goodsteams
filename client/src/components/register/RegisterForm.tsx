@@ -71,10 +71,17 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    watch,
   } = useForm<RegisterFormValidationSchema>({
     resolver: zodResolver(registerFormValidationSchema),
     mode: "onBlur",
   });
+
+  const [watchedUsername, watchedPassword, watchedConfirmPassword] = watch([
+    "username",
+    "password",
+    "confirmPassword",
+  ]);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -226,9 +233,16 @@ const RegisterForm = () => {
         <span className="flex justify-center">
           <Button
             variant="contained"
-            className="h-16 w-40 bg-yellow-300 text-lg text-yellow-600 hover:bg-yellow-400 active:bg-yellow-500"
+            className={`h-16 w-40 text-lg  shadow-none ${
+              !watchedUsername && !watchedPassword && !watchedConfirmPassword
+                ? "bg-gray-300 text-gray-400"
+                : "bg-yellow-300 text-yellow-600 hover:bg-yellow-400 active:bg-yellow-500"
+            }`}
             type="submit"
-            disabled={isSubmitting}
+            disabled={
+              isSubmitting ||
+              (!watchedUsername && !watchedPassword && !watchedConfirmPassword)
+            }
           >
             {isSubmitting ? "Signing up..." : "Sign up"}
           </Button>

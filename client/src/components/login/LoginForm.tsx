@@ -54,10 +54,13 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    watch,
   } = useForm<LoginFormValidationSchema>({
     resolver: zodResolver(loginFormValidationSchema),
     mode: "onBlur",
   });
+
+  const [watchedUsername, watchedPassword] = watch(["username", "password"]);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -164,9 +167,13 @@ const LoginForm = () => {
         <span className="flex justify-center">
           <Button
             variant="contained"
-            className="h-16 w-40 bg-yellow-300 text-lg text-yellow-600 hover:bg-yellow-400 active:bg-yellow-500"
+            className={`h-16 w-40  text-lg  shadow-none ${
+              !watchedUsername && !watchedPassword
+                ? "bg-gray-300 text-gray-400"
+                : "bg-yellow-300 text-yellow-600 hover:bg-yellow-400 active:bg-yellow-500"
+            }`}
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || (!watchedUsername && !watchedPassword)}
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
           </Button>
