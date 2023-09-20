@@ -159,3 +159,31 @@ spec:
         - name: rsa-keys
           secret:
             secretName: rsa-keys-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wishlist-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wishlist-service
+  template:
+    metadata:
+      labels:
+        app: wishlist-service
+    spec:
+      containers:
+        - name: wishlist-service
+          image: liorash7/goodsteams-wishlist-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: rsa-keys
+              mountPath: /etc/rsa
+      volumes:
+        - name: rsa-keys
+          secret:
+            secretName: rsa-keys-secret

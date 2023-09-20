@@ -17,6 +17,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
+    @ExceptionHandler(WishlistException.class)
+    public ResponseEntity<Map<String, String>> handleWishlistException(WishlistException e) {
+        Map<String, String> response =Map.of("error", e.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception e) {
 //        Map<String, String> response = Map.of("message", "An unexpected error occurred.");

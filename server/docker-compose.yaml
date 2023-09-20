@@ -36,4 +36,10 @@ services:
       context: ./libraryservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-library-service:latest
+
+  wishlist-service:
+    build:
+      context: ./wishlistservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-wishlist-service:latest
     

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,20 +45,20 @@ public class CartService {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = tokenService.extractTokenUserId(jwt);
 
-        Optional<Cart> existingCart = cartRepository.findCartByUserId(userId);
-
-        if (existingCart.isEmpty()) {
-            throw new CartNotFoundException();
-        }
-
-        return existingCart.get();
+        return cartRepository.findCartByUserId(userId)
+                .orElseThrow(CartNotFoundException::new);
     }
 
-    public Cart addCartItem(CartItemDTO cartItemDTO) {
+    public Cart addCartItemByToken(String token, CartItemDTO cartItemDTO) {
         // Fetch the cart using cartId from CartItemDTO
         Cart cart = cartRepository.findById(cartItemDTO.cartId())
                 .orElseThrow(CartNotFoundException::new);
 
+        Jwt jwt = tokenService.decodeToken(token);
+        Long userId = tokenService.extractTokenUserId(jwt);
+        if (!Objects.equals(cart.getUserId(), userId)) {
+            throw new InvalidTokenException();
+        }
 
         // Create a new cart item and set the price
         CartItem cartItem = new CartItem(
@@ -78,12 +79,18 @@ public class CartService {
 
     }
 
-    public Cart deleteCartItem(Long cartItemId) {
+    public Cart deleteCartItemByToken(String token, Long cartItemId) {
         // Check if cartItem exists
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(CartItemNotFoundException::new);
 
         Cart cart = cartItem.getCart();
+
+        Jwt jwt = tokenService.decodeToken(token);
+        Long userId = tokenService.extractTokenUserId(jwt);
+        if (!Objects.equals(cart.getUserId(), userId)) {
+            throw new InvalidTokenException();
+        }
 
         // Delete the cart item from the set of the cart
         cart.getCartItems().remove(cartItem);

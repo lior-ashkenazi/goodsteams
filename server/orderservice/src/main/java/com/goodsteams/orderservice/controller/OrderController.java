@@ -1,7 +1,6 @@
 package com.goodsteams.orderservice.controller;
 
 import com.goodsteams.orderservice.dto.CartItemDTO;
-import com.goodsteams.orderservice.exception.EmptyCartException;
 import com.goodsteams.orderservice.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class OrderController {
     public ResponseEntity<Map<String, String>> completePayment(@RequestHeader("Authorization") String authHeader,
                                                                @RequestBody List<CartItemDTO> cartItemsDTO) {
         if (cartItemsDTO.isEmpty()) {
-            throw new EmptyCartException();
+            throw new RuntimeException("Cart is empty.");
         }
 
         String token = authHeader.substring(7);

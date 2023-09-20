@@ -23,13 +23,17 @@ public class CartController {
     }
 
     @PostMapping("/cart-item")
-    public Cart addCartItem(@RequestBody CartItemDTO cartItemDTO) {
-        return cartService.addCartItem(cartItemDTO);
+    public Cart addCartItem(@RequestHeader("Authorization") String authHeader, @RequestBody CartItemDTO cartItemDTO) {
+        String token = authHeader.substring(7);
+
+        return cartService.addCartItemByToken(token, cartItemDTO);
     }
 
     @DeleteMapping("/cart-item/{cartItemId}")
-    public Cart deleteCartItem(@PathVariable Long cartItemId) {
-        return cartService.deleteCartItem(cartItemId);
+    public Cart deleteCartItem(@RequestHeader("Authorization") String authHeader, @PathVariable Long cartItemId) {
+        String token = authHeader.substring(7);
+
+        return cartService.deleteCartItemByToken(token, cartItemId);
     }
 
 }
