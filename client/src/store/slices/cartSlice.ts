@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { Cart } from "../../types/models/Cart";
+import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { orderServiceEndpoints } from "../apis/endpoints/orderServiceEndpoints";
 
 type CartState = {
@@ -72,6 +73,14 @@ const cartSlice = createSlice({
         (state) => {
           state.toastMessage = "Could not remove item from cart";
           state.showToast = true;
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
+        (state) => {
+          state.cart = null;
+          state.toastMessage = null;
+          state.showToast = null;
         },
       );
   },

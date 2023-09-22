@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Wishlist } from "../../types/models/Wishlist";
+import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { wishlistServiceEndpoints } from "../apis/endpoints/wishlistServiceEndpoints";
 
 type WishlistState = {
@@ -41,6 +42,12 @@ const wishlistSlice = createSlice({
         wishlistServiceEndpoints.endpoints.deleteWishlistItem.matchFulfilled,
         (state, action) => {
           state.wishlist = action.payload;
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
+        (state) => {
+          state.wishlist = null;
         },
       );
   },

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { profileServiceEndpoints } from "../apis/endpoints/profileServiceEndpoints";
 
 type ProfileState = {
@@ -45,6 +46,14 @@ const profileSlice = createSlice({
         profileServiceEndpoints.endpoints.updateProfile.matchFulfilled,
         (state, action) => {
           state.avatarUrl = action.payload.avatarUrl;
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
+        (state) => {
+          state.userId = null;
+          state.username = null;
+          state.avatarUrl = null;
         },
       );
   },

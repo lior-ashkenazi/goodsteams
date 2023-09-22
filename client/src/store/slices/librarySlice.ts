@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { Library } from "../../types/models/Library";
+import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { libraryServiceEndpoints } from "../apis/endpoints/libraryServiceEndpoints";
 
 type LibraryState = {
@@ -29,6 +30,12 @@ const librarySlice = createSlice({
       libraryServiceEndpoints.endpoints.getLibrary.matchFulfilled,
       (state, action) => {
         state.library = action.payload;
+      },
+    )
+    .addMatcher(
+      authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
+      (state) => {
+        state.library = null;
       },
     );
   },
