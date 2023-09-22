@@ -54,6 +54,9 @@ public class WishlistItem {
     @Column(name = "average_rating", nullable = false)
     private BigDecimal averageRating;
 
+    @Column(name = "purchase_count", nullable = false)
+    private Integer purchaseCount;
+
     @Column(name = "added_date", updatable = false, nullable = false)
     private LocalDateTime addedDate = LocalDateTime.now();
 
@@ -73,7 +76,8 @@ public class WishlistItem {
             BigDecimal price,
             Integer discountPercent,
             LocalDate releaseDate,
-            BigDecimal averageRating
+            BigDecimal averageRating,
+            Integer purchaseCount
     ) {
         this.wishlist = wishlist;
         this.bookId = bookId;
@@ -84,6 +88,7 @@ public class WishlistItem {
         this.discountPercent = discountPercent;
         this.releaseDate = releaseDate;
         this.averageRating = averageRating;
+        this.purchaseCount = purchaseCount;
     }
 
 }

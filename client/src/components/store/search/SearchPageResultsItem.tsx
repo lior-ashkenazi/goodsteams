@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Book } from "../../../types/models/Book";
 import { Rating } from "@mui/material";
 
-import { convertDate } from "../../../utils/dateUtils";
+import { formatDate } from "../../../utils/dateUtils";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
 
 interface SearchPageResultsItemProps {
@@ -45,7 +45,7 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
         </div>
       </div>
       <div className="m-6 flex w-[24rem] items-center justify-between">
-        <span>{convertDate(book.releaseDate)}</span>
+        <span>{formatDate(book.releaseDate)}</span>
         {book.discountPercent === 0 ? (
           <span className="mr-10">{book.price}$</span>
         ) : (

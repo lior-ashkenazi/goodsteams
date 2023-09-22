@@ -81,12 +81,16 @@ const CartComponent = () => {
                   className="flex justify-between rounded-sm bg-green-400"
                 >
                   <div className="flex">
-                    <img
-                      src={cartItem.coverImageUrl}
-                      className="w-20 rounded-sm"
-                      aria-label={`${cartItem.title} cover image`}
-                    />
-                    <span className="flex flex-col p-2">
+                    <button
+                      onClick={() => navigate(`/store/book/${cartItem.bookId}`)}
+                    >
+                      <img
+                        src={cartItem.coverImageUrl}
+                        className="w-20 rounded-sm"
+                        aria-label={`${cartItem.title} cover image`}
+                      />
+                    </button>
+                    <span className="flex flex-col p-2 text-green-50">
                       <button
                         className="truncate text-lg"
                         onClick={() =>
@@ -95,7 +99,7 @@ const CartComponent = () => {
                       >
                         {cartItem.title}
                       </button>
-                      <span className="truncate text-lg">
+                      <span className="truncate text-lg italic">
                         by {cartItem.author}
                       </span>
                     </span>

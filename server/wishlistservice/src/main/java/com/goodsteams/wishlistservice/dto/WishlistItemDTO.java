@@ -11,6 +11,7 @@ public record WishlistItemDTO(Long wishlistId,
                               BigDecimal price,
                               Integer discountPercent,
                               LocalDate releaseDate,
-                              BigDecimal averageRating
-                              ) {
+                              BigDecimal averageRating,
+                              Integer purchaseCount
+) {
 }

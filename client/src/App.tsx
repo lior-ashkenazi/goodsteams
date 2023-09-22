@@ -5,6 +5,7 @@ import {
   useLazyGetCartQuery,
   useLazyGetLibraryQuery,
   useLazyGetProfileSecureQuery,
+  useLazyGetWishlistQuery,
 } from "./store";
 import Header from "./components/misc/Header";
 
@@ -13,6 +14,7 @@ const App = () => {
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
   const [getCart] = useLazyGetCartQuery();
   const [getLibrary] = useLazyGetLibraryQuery();
+  const [getWishlist] = useLazyGetWishlistQuery();
 
   const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ const App = () => {
 
         await getCart().unwrap();
         await getLibrary().unwrap();
+        await getWishlist().unwrap();
 
         await getProfileSecure().unwrap();
       } catch {
@@ -34,7 +37,7 @@ const App = () => {
     };
 
     fetchData();
-  }, [authQuery, getProfileSecure, getCart, getLibrary, navigate]);
+  }, [authQuery, getProfileSecure, getCart, getLibrary, getWishlist, navigate]);
 
   useEffect(() => {
     // this is an edge case handling when web-app

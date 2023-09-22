@@ -1,6 +1,11 @@
 import { parseISO, format } from "date-fns";
 
-export const convertDate = (dateString: string): string => {
+export const formatDate = (dateString: string, option?: string): string => {
   const date = parseISO(dateString);
-  return format(date, "d MMMM yyyy");
+
+  let formatString = "M/d/yyyy";
+  if (option === "verbose") formatString = "d MMMM yyyy";
+  else if (option === "concise") formatString = "dd MMM, yyyy";
+
+  return format(date, formatString);
 };

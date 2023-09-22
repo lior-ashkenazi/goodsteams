@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -17,8 +18,10 @@ import {
   Divider,
   Grid,
 } from "@mui/material";
-
 import SearchIcon from "@mui/icons-material/Search";
+
+import { RootState } from "../../store";
+import { Wishlist } from "../../types/models/Wishlist";
 
 const searchBarTheme = createTheme({
   palette: {
@@ -36,7 +39,20 @@ const StorePageHeader = () => {
 
   const genresButtonRef = useRef<HTMLButtonElement>(null);
 
+  const isAuthenticated: boolean = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
+  const wishlist: Wishlist | null = useSelector(
+    (state: RootState) => state.wishlist.wishlist,
+  );
+
   const handleSearch = () => navigate(`/store/search?term=${searchTerm}`);
+
+  const handleWishlistClick = () => {
+    if (!isAuthenticated) navigate("/login");
+    else navigate("/store/wishlist");
+  };
 
   const firstGenresColumn = [
     "Adventure",
@@ -64,9 +80,17 @@ const StorePageHeader = () => {
       <Button
         className="mb-1 self-end bg-green-400 text-xs text-amber-50"
         variant="contained"
+        onClick={handleWishlistClick}
+        disableRipple
         disableElevation
       >
-        Wishlist
+        {`Wishlist ${
+          wishlist &&
+          wishlist.wishlistItems &&
+          wishlist.wishlistItems.length > 0
+            ? `(${wishlist.wishlistItems.length})`
+            : ""
+        }`}
       </Button>
       <div className="flex justify-between rounded bg-gradient-to-l from-green-500 to-yellow-50 ">
         <nav className="flex gap-x-1">

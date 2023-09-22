@@ -68,7 +68,8 @@ public class WishlistService {
                 wishlistItemDTO.price(),
                 wishlistItemDTO.discountPercent(),
                 wishlistItemDTO.releaseDate(),
-                wishlistItemDTO.averageRating()
+                wishlistItemDTO.averageRating(),
+                wishlistItemDTO.purchaseCount()
         );
 
         wishlist.getWishlistItems().add(wishlistItem);

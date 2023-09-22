@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@mui/material";
-import { useGetCartQuery, useGetLibraryQuery } from "../../../store";
+import {
+  useGetCartQuery,
+  useGetLibraryQuery,
+  useGetWishlistQuery,
+} from "../../../store";
 
 const PostPaymentPage = () => {
   const navigate = useNavigate();
 
   useGetLibraryQuery();
   useGetCartQuery();
+  useGetWishlistQuery();
 
   return (
     <div className="relative mb-8 mt-10 flex h-[32rem] w-full items-center justify-center rounded-sm bg-gradient-to-br from-green-400 to-green-100 p-10">

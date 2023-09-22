@@ -1,14 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Rating, Button } from "@mui/material";
+import {
+  Rating,
+  Button,
+  IconButton,
+  Popper,
+  Grow,
+  Paper,
+  MenuItem,
+  MenuList,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import { RootState, useAddCartItemMutation } from "../../../store";
+import {
+  RootState,
+  useAddCartItemMutation,
+  useAddWishlistItemMutation,
+  useDeleteWishlistItemMutation,
+} from "../../../store";
 import { Book } from "../../../types/models/Book";
 import { Cart } from "../../../types/models/Cart";
 import { Library } from "../../../types/models/Library";
-import { convertDate } from "../../../utils/dateUtils";
-import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
+import { Wishlist } from "../../../types/models/Wishlist";
+
+import { formatDate } from "../../../utils/dateUtils";
+import AddToCartComponent from "../../misc/AddToCartComponent";
 
 interface BookSectionProps {
   isFetching: boolean;
@@ -16,6 +34,8 @@ interface BookSectionProps {
 }
 
 const BookSection = ({ isFetching, book }: BookSectionProps) => {
+  const navigate = useNavigate();
+
   const isAuthenticated: boolean | null = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
@@ -26,14 +46,24 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
     (state: RootState) => state.library.library,
   );
 
+  const wishlist: Wishlist | null = useSelector(
+    (state: RootState) => state.wishlist.wishlist,
+  );
+
+  const [addWishlistItem] = useAddWishlistItemMutation();
+  const [deleteWishlistItem] = useDeleteWishlistItemMutation();
   const [addCartItem] = useAddCartItemMutation();
-  const navigate = useNavigate();
 
   const [bookInLibrary, setBookInLibrary] = useState<boolean>(false);
   const [bookInCart, setBookInCart] = useState<boolean>(false);
+  const [bookInWishlist, setBookInWishlist] = useState<boolean>(false);
+
+  const [openWishlistMenu, setOpenWishlistMenu] = useState<boolean>(false);
+
+  const wishlistDropMenuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (library && cart && book) {
+    if (library && wishlist && cart && book) {
       setBookInCart(
         cart.cartItems.some((cartItem) => cartItem.bookId === book.bookId),
       );
@@ -42,8 +72,13 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
           (ownedBook) => ownedBook.bookId === book.bookId,
         ),
       );
+      setBookInWishlist(
+        wishlist.wishlistItems.some(
+          (wishlistItem) => wishlistItem.bookId === book.bookId,
+        ),
+      );
     }
-  }, [library, cart, book]);
+  }, [library, wishlist, cart, book]);
 
   const handleAddCartItem = async () => {
     if (!cart || !book) return;
@@ -66,9 +101,44 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
     }
   };
 
+  const handleWishlistButton = async () => {
+    if (!wishlist || !book) return;
+
+    if (!isAuthenticated) navigate("/login");
+    else if (!bookInWishlist) {
+      const addWishlistItemDTO = {
+        wishlistId: wishlist.wishlistId,
+        bookId: book.bookId,
+        title: book.title,
+        author: book.author,
+        coverImageUrl: book.coverImageUrl,
+        price: book.price,
+        discountPercent: book.discountPercent,
+        releaseDate: book.releaseDate,
+        averageRating: book.averageRating,
+        purchaseCount: book.purchaseCount,
+      };
+
+      await addWishlistItem(addWishlistItemDTO).unwrap;
+    } else {
+      handleDeleteWishlistItem();
+    }
+  };
+
+  const handleDeleteWishlistItem = async () => {
+    if (!wishlist || !book) return;
+
+    // Necessarily not undefined because bookInWishlist === true
+    const wishlistItem = wishlist.wishlistItems.find(
+      (wishlistItem) => wishlistItem.bookId === book.bookId,
+    );
+
+    await deleteWishlistItem(wishlistItem!.wishlistItemId.toString()).unwrap();
+  };
+
   return (
     <>
-      {cart && !isFetching && book ? (
+      {library && wishlist && cart && !isFetching && book ? (
         <section className="mx-6 my-12 grid grid-cols-2 gap-y-8">
           <button className="absolute -top-12 right-0 rounded-sm bg-gradient-to-l from-green-200 to-yellow-100 px-3 py-2 text-green-600 transition-colors hover:from-green-100 hover:to-yellow-50 hover:text-green-500">
             Community Hub
@@ -76,12 +146,77 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
           <span className="col-span-2 p-4 text-center">
             <h1 className="text-6xl font-semibold">{book.title}</h1>
           </span>
-          <div className="col-span-1 flex justify-center">
+          <div className="col-span-1 flex flex-col items-center">
             <img
               src={book.coverImageUrl}
-              className="w-80 rounded-sm"
+              className="mb-8 w-80 rounded-sm"
               aria-label="book-cover-image"
             />
+            {!bookInLibrary && (
+              <div>
+                <Button
+                  variant="contained"
+                  className="bg-gradient-to-tl from-green-400 to-green-300 px-3 py-2 normal-case text-green-50 shadow-none transition-colors hover:from-green-500 hover:to-green-400 active:from-green-600 active:to-green-500"
+                  disableRipple
+                  onClick={handleWishlistButton}
+                  {...(bookInWishlist ? { startIcon: <CheckIcon /> } : {})}
+                >
+                  {bookInWishlist ? "On Wishlist" : "Add to Wishlist"}
+                </Button>
+                <IconButton
+                  ref={wishlistDropMenuButtonRef}
+                  aria-label="wishlist-drop-menu"
+                  className="ml-0.5 w-2 rounded bg-gradient-to-tl from-green-400 to-green-300 px-3 py-2 normal-case text-green-50 shadow-none transition-colors hover:from-green-500 hover:to-green-400 active:from-green-600 active:to-green-500"
+                  onMouseEnter={() => setOpenWishlistMenu(true)}
+                  onMouseLeave={() => setOpenWishlistMenu(false)}
+                  disableRipple
+                >
+                  <ArrowDropDownIcon />
+                </IconButton>
+                <Popper
+                  open={openWishlistMenu}
+                  anchorEl={wishlistDropMenuButtonRef.current}
+                  role={undefined}
+                  placement="bottom-start"
+                  transition
+                  disablePortal
+                  onMouseEnter={() => setOpenWishlistMenu(true)}
+                  onMouseLeave={() => setOpenWishlistMenu(false)}
+                  className="z-10 w-64"
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === "bottom-start"
+                            ? "left top"
+                            : "left bottom",
+                      }}
+                    >
+                      <Paper>
+                        <MenuList>
+                          <MenuItem
+                            onClick={() => navigate("/store/wishlist")}
+                            disableRipple
+                          >
+                            Manage your wishlist
+                          </MenuItem>
+                        </MenuList>
+                        <MenuList>
+                          <MenuItem
+                            onClick={handleDeleteWishlistItem}
+                            disableRipple
+                          >
+                            Remove from your wishlist
+                          </MenuItem>
+                        </MenuList>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </div>
+            )}
           </div>
           <div className="flex flex-col items-center gap-y-8 p-4">
             <span className="text-4xl font-medium italic">{book.author}</span>
@@ -126,7 +261,8 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
             </div>
             <span>{book.pageCount} pages, Kindle Edition</span>
             <span>
-              Published in {convertDate(book.releaseDate)} by {book.publisher}
+              Published in {formatDate(book.releaseDate, "verbose")} by{" "}
+              {book.publisher}
             </span>
           </div>
           <div className="col-span-2 m-2 break-words rounded-sm bg-yellow-100 p-8 text-yellow-950">
@@ -139,47 +275,13 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
                 Buy {book.title}
               </span>
             </div>
-            <div className="absolute -bottom-5 right-10 flex flex-row-reverse items-center bg-yellow-300 p-1">
-              <Button
-                variant="contained"
-                className="bg-gradient-to-tl from-green-400 to-green-300 p-3 text-green-50 shadow-none transition-colors hover:from-green-500 hover:to-green-400 active:from-green-600 active:to-green-500"
-                disableRipple
-                onClick={handleAddCartItem}
-                disabled={bookInLibrary}
-              >
-                {bookInLibrary
-                  ? "In Library"
-                  : bookInCart
-                  ? "In Cart"
-                  : "Add to Cart"}
-              </Button>
-              <div
-                className={`mr-1 bg-yellow-200 ${
-                  book.discountPercent > 0 ? "px-4 py-1.5" : "px-4 py-3"
-                }`}
-              >
-                {book.discountPercent > 0 ? (
-                  <span className="flex flex-col text-right">
-                    <span className="text-xs text-yellow-600 line-through">
-                      {book.price}$
-                    </span>
-                    <span className="text-sm text-green-500">
-                      {calculatePriceAfterDiscount(
-                        book.price,
-                        book.discountPercent,
-                      )}
-                      $
-                    </span>
-                  </span>
-                ) : (
-                  <span className="text-sm text-green-800">{book.price}$</span>
-                )}
-              </div>
-              {book.discountPercent > 0 && (
-                <span className="bg-green-400 px-3 py-2 text-2xl font-bold text-green-50">
-                  -{book.discountPercent}%
-                </span>
-              )}
+            <div className="absolute -bottom-5 right-10">
+              <AddToCartComponent
+                item={book}
+                itemInLibrary={bookInLibrary}
+                itemInCart={bookInCart}
+                handleAddCartItem={handleAddCartItem}
+              />
             </div>
           </div>
         </section>

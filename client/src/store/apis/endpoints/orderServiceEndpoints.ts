@@ -20,10 +20,10 @@ export const orderServiceEndpoints = apiSlice.injectEndpoints({
       providesTags: ["Cart"],
     }),
     addCartItem: builder.mutation<AddCartItemResponse, AddCartItemRequest>({
-      query: (cartItem) => ({
+      query: (cartItemDTO) => ({
         url: "order/cart/cart-item",
         method: "POST",
-        body: cartItem,
+        body: cartItemDTO,
       }),
     }),
     deleteCartItem: builder.mutation<
@@ -53,7 +53,7 @@ export const orderServiceEndpoints = apiSlice.injectEndpoints({
         method: "POST",
         body: cart,
       }),
-      invalidatesTags: ["Cart", "Library"],
+      invalidatesTags: ["Cart", "Library", "Wishlist"],
     }),
   }),
 });

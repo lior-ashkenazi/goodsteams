@@ -22,6 +22,7 @@ import {
   useLazyGetProfileSecureQuery,
   useLazyGetCartQuery,
   useLazyGetLibraryQuery,
+  useLazyGetWishlistQuery,
 } from "../../store";
 import { isAuthError } from "../../types/errors/authServiceErrors";
 
@@ -65,6 +66,7 @@ const RegisterForm = () => {
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
   const [getCart] = useLazyGetCartQuery();
   const [getLibrary] = useLazyGetLibraryQuery();
+  const [getWishlist] = useLazyGetWishlistQuery();
 
   const {
     register,
@@ -97,6 +99,7 @@ const RegisterForm = () => {
 
       await getCart().unwrap();
       await getLibrary().unwrap();
+      await getWishlist().unwrap();
 
       await getProfileSecure().unwrap();
       navigate("/store");

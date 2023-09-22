@@ -21,6 +21,7 @@ import {
   useLazyGetCartQuery,
   useLazyGetLibraryQuery,
   useLazyGetProfileSecureQuery,
+  useLazyGetWishlistQuery,
   useLoginUserMutation,
 } from "../../store";
 
@@ -48,6 +49,7 @@ const LoginForm = () => {
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
   const [getCart] = useLazyGetCartQuery();
   const [getLibrary] = useLazyGetLibraryQuery();
+  const [getWishlist] = useLazyGetWishlistQuery();
 
   const {
     register,
@@ -74,6 +76,7 @@ const LoginForm = () => {
 
       await getCart().unwrap();
       await getLibrary().unwrap();
+      await getWishlist().unwrap();
 
       await getProfileSecure().unwrap();
       navigate("/store");

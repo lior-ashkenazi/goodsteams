@@ -5,6 +5,7 @@ import authReducer from "./slices/authSlice";
 import profileReducer from "./slices/profileSlice";
 import cartReducer from "./slices/cartSlice";
 import libraryReducer from "./slices/librarySlice";
+import wishlistReducer from "./slices/wishlistSlice";
 
 import { apiSlice } from "./apis/apiSlice";
 import { authServiceEndpoints } from "./apis/endpoints/authServiceEndpoints";
@@ -12,6 +13,7 @@ import { profileServiceEndpoints } from "./apis/endpoints/profileServiceEndpoint
 import { bookServiceEndpoints } from "./apis/endpoints/bookServiceEndpoints";
 import { orderServiceEndpoints } from "./apis/endpoints/orderServiceEndpoints";
 import { libraryServiceEndpoints } from "./apis/endpoints/libraryServiceEndpoints";
+import { wishlistServiceEndpoints } from "./apis/endpoints/wishlistServiceEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -22,6 +24,7 @@ const store = configureStore({
     profile: profileReducer,
     cart: cartReducer,
     library: libraryReducer,
+    wishlist: wishlistReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
@@ -67,5 +70,12 @@ export const {
 
 export const { useGetLibraryQuery, useLazyGetLibraryQuery } =
   libraryServiceEndpoints;
+
+export const {
+  useGetWishlistQuery,
+  useLazyGetWishlistQuery,
+  useAddWishlistItemMutation,
+  useDeleteWishlistItemMutation,
+} = wishlistServiceEndpoints;
 
 export { clearToast } from "./slices/cartSlice";
