@@ -2,6 +2,9 @@ package com.goodsteams.orderservice.service;
 
 import com.goodsteams.orderservice.dao.CartItemRepository;
 import com.goodsteams.orderservice.dao.CartRepository;
+import com.goodsteams.orderservice.dto.BookDTO;
+import com.goodsteams.orderservice.dto.PopulatedCartDTO;
+import com.goodsteams.orderservice.dto.PopulatedCartItemDTO;
 import com.goodsteams.orderservice.entity.Cart;
 import com.goodsteams.orderservice.entity.CartItem;
 import com.goodsteams.orderservice.exception.CartItemNotFoundException;
@@ -12,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,15 +26,19 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final TokenService tokenService;
+    private final RedisService redisService;
+
 
     @Autowired
     public CartService(CartRepository cartRepository,
                        CartItemRepository cartItemRepository,
-                       TokenService tokenService
+                       TokenService tokenService,
+                       RedisService redisService
     ) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.tokenService = tokenService;
+        this.redisService = redisService;
     }
 
     public void saveCartByToken(String token) {
@@ -41,15 +50,17 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public Cart findCartByToken(String token) {
+    public PopulatedCartDTO findCartByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = tokenService.extractTokenUserId(jwt);
 
-        return cartRepository.findCartByUserId(userId)
+        Cart cart = cartRepository.findCartByUserId(userId)
                 .orElseThrow(CartNotFoundException::new);
+
+        return populateCart(cart);
     }
 
-    public Cart addCartItemByToken(String token, CartItemDTO cartItemDTO) {
+    public PopulatedCartDTO addCartItemByToken(String token, CartItemDTO cartItemDTO) {
         // Fetch the cart using cartId from CartItemDTO
         Cart cart = cartRepository.findById(cartItemDTO.cartId())
                 .orElseThrow(CartNotFoundException::new);
@@ -63,23 +74,18 @@ public class CartService {
         // Create a new cart item and set the price
         CartItem cartItem = new CartItem(
                 cart,
-                cartItemDTO.bookId(),
-                cartItemDTO.title(),
-                cartItemDTO.author(),
-                cartItemDTO.coverImageUrl(),
-                cartItemDTO.price(),
-                cartItemDTO.discountPercent()
+                cartItemDTO.bookId()
         );
 
         // Add cart item to cart and save
         cart.getCartItems().add(cartItem);  // assuming Cart has a set of CartItems
         cartRepository.save(cart);
 
-        return cart;
+        return populateCart(cart);
 
     }
 
-    public Cart deleteCartItemByToken(String token, Long cartItemId) {
+    public PopulatedCartDTO deleteCartItemByToken(String token, Long cartItemId) {
         // Check if cartItem exists
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(CartItemNotFoundException::new);
@@ -97,7 +103,8 @@ public class CartService {
         cartRepository.save(cart);
 
         // Fetch the updated cart and return
-        return cart;
+
+        return populateCart(cart);
     }
 
     public void clearCartByUserId(Long userId) {
@@ -111,6 +118,23 @@ public class CartService {
         // Save the cart which will trigger the removal of cart items from the database
         cartRepository.save(cart);
 
+    }
+
+    private PopulatedCartDTO populateCart(Cart cart) {
+        List<PopulatedCartItemDTO> populatedCartItemDTOs = new ArrayList<>();
+
+        for (CartItem cartItem : cart.getCartItems()) {
+            BookDTO bookData = redisService.getBook(cartItem.getBookId().toString());
+
+            populatedCartItemDTOs.add(new PopulatedCartItemDTO(
+                            cartItem.getCartItemId(),
+                            bookData,
+                            cartItem.getAddedDate()
+                    )
+            );
+        }
+
+        return new PopulatedCartDTO(cart.getCartId(), cart.getUserId(), populatedCartItemDTOs);
     }
 
 }

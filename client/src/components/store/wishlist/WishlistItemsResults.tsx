@@ -57,9 +57,9 @@ const WishlistItemsResults = ({
         .sort(sortComparator)
         .map((wishlistItem, index) => (
           <WishlistItemsResult
+            key={index}
             cart={cart}
             wishlistItem={wishlistItem}
-            index={index}
           />
         ))}
     </ul>

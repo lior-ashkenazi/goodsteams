@@ -1,6 +1,7 @@
 package com.goodsteams.orderservice.service;
 
 import com.goodsteams.orderservice.dao.OrderRepository;
+import com.goodsteams.orderservice.dto.BookDTO;
 import com.goodsteams.orderservice.dto.CartItemDTO;
 import com.goodsteams.orderservice.dto.OrderItemDTO;
 import com.goodsteams.orderservice.entity.Order;
@@ -20,35 +21,46 @@ public class OrderService {
     private final TokenService tokenService;
     private final CartService cartService;
     private final KafkaService kafkaService;
+    private final RedisService redisService;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
                         TokenService tokenService,
                         CartService cartService,
-                        KafkaService kafkaService) {
+                        KafkaService kafkaService,
+                        RedisService redisService) {
         this.orderRepository = orderRepository;
         this.tokenService = tokenService;
         this.cartService = cartService;
         this.kafkaService = kafkaService;
+        this.redisService = redisService;
     }
 
     public void saveOrderByToken(String token, List<CartItemDTO> cartItemsDTO) {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = tokenService.extractTokenUserId(jwt);
 
-        BigDecimal totalPrice = cartItemsDTO.stream()
-                .map(CartItemDTO::price)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // Initialize total price
+        BigDecimal totalPrice = BigDecimal.ZERO;
 
-        Order order = new Order(userId, totalPrice);
+        Order order = new Order(userId, BigDecimal.ZERO);  // Initialize with zero and update later
         List<OrderItemDTO> orderItemsDTO = new ArrayList<>();
 
         for (CartItemDTO cartItemDTO : cartItemsDTO) {
-            OrderItem orderItem = new OrderItem(order, cartItemDTO.bookId(), cartItemDTO.price());
-            orderItemsDTO.add(new OrderItemDTO(userId, cartItemDTO.bookId(), cartItemDTO.title(), cartItemDTO.author(), cartItemDTO.coverImageUrl()));
+            BookDTO bookData = redisService.getBook(cartItemDTO.bookId().toString());
+
+            BigDecimal price = bookData.getPrice();
+
+            totalPrice = totalPrice.add(price);
+
+            OrderItem orderItem = new OrderItem(order, cartItemDTO.bookId(), price);
+            orderItemsDTO.add(new OrderItemDTO(userId, cartItemDTO.bookId()));
 
             order.getOrderItems().add(orderItem);
         }
+
+        // Update the total price in the order
+        order.setTotalPrice(totalPrice);
 
         // Save order
         orderRepository.save(order);

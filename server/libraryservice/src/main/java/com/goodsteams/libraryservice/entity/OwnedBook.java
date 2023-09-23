@@ -26,22 +26,10 @@ public class OwnedBook {
     @Column(name = "book_id", nullable = false)
     private Long bookId;
 
-    @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private String author;
-
-    @Column(name = "cover_image_url", nullable = false)
-    private String coverImageUrl;
-
     public OwnedBook() {}
 
-    public OwnedBook(Library library, Long bookId, String title, String author, String coverImageUrl) {
+    public OwnedBook(Library library, Long bookId) {
         this.library = library;
         this.bookId = bookId;
-        this.title = title;
-        this.author = author;
-        this.coverImageUrl = coverImageUrl;
     }
 }

@@ -1,5 +1,6 @@
 package com.goodsteams.libraryservice.controller;
 
+import com.goodsteams.libraryservice.dto.PopulatedLibraryDTO;
 import com.goodsteams.libraryservice.entity.Library;
 import com.goodsteams.libraryservice.entity.OwnedBook;
 import com.goodsteams.libraryservice.service.LibraryService;
@@ -23,9 +24,10 @@ public class LibraryController {
     }
 
     @GetMapping("/")
-    public Library getLibraryByToken(@RequestHeader("Authorization") String authHeader) {
+    public PopulatedLibraryDTO getLibraryByToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
         return libraryService.findLibraryByToken(token);
     }
+
 }

@@ -89,11 +89,6 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
       const addCartItemDTO = {
         cartId: cart.cartId,
         bookId: book.bookId,
-        title: book.title,
-        author: book.author,
-        coverImageUrl: book.coverImageUrl,
-        price: book.price,
-        discountPercent: book.discountPercent,
       };
 
       await addCartItem(addCartItemDTO).unwrap;
@@ -109,14 +104,6 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
       const addWishlistItemDTO = {
         wishlistId: wishlist.wishlistId,
         bookId: book.bookId,
-        title: book.title,
-        author: book.author,
-        coverImageUrl: book.coverImageUrl,
-        price: book.price,
-        discountPercent: book.discountPercent,
-        releaseDate: book.releaseDate,
-        averageRating: book.averageRating,
-        purchaseCount: book.purchaseCount,
       };
 
       await addWishlistItem(addWishlistItemDTO).unwrap;

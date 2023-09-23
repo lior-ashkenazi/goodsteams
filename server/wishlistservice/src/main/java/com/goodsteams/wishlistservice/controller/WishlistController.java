@@ -1,5 +1,6 @@
 package com.goodsteams.wishlistservice.controller;
 
+import com.goodsteams.wishlistservice.dto.PopulatedWishlistDTO;
 import com.goodsteams.wishlistservice.dto.WishlistItemDTO;
 import com.goodsteams.wishlistservice.entity.Wishlist;
 import com.goodsteams.wishlistservice.service.WishlistService;
@@ -16,14 +17,14 @@ public class WishlistController {
     }
 
     @GetMapping("/")
-    public Wishlist getWishlist(@RequestHeader("Authorization") String authHeader) {
+    public PopulatedWishlistDTO getWishlist(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
         return wishlistService.findWishlistByToken(token);
     }
 
     @PostMapping("/wishlist-item")
-    public Wishlist addWishlistItem(@RequestHeader("Authorization") String authHeader,
+    public PopulatedWishlistDTO addWishlistItem(@RequestHeader("Authorization") String authHeader,
                                     @RequestBody WishlistItemDTO wishlistItemDTO) {
         String token = authHeader.substring(7);
 
@@ -31,7 +32,7 @@ public class WishlistController {
     }
 
     @DeleteMapping("/wishlist-item/{wishlistItemId}")
-    public Wishlist deleteWishlistItem(@RequestHeader("Authorization") String authHeader,
+    public PopulatedWishlistDTO deleteWishlistItem(@RequestHeader("Authorization") String authHeader,
                                        @PathVariable Long wishlistItemId) {
         String token = authHeader.substring(7);
 

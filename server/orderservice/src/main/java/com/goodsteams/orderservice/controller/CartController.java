@@ -1,5 +1,6 @@
 package com.goodsteams.orderservice.controller;
 
+import com.goodsteams.orderservice.dto.PopulatedCartDTO;
 import com.goodsteams.orderservice.entity.Cart;
 import com.goodsteams.orderservice.dto.CartItemDTO;
 import com.goodsteams.orderservice.service.CartService;
@@ -16,21 +17,21 @@ public class CartController {
     }
 
     @GetMapping("/")
-    public Cart getCart(@RequestHeader("Authorization") String authHeader) {
+    public PopulatedCartDTO getCart(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
 
         return cartService.findCartByToken(token);
     }
 
     @PostMapping("/cart-item")
-    public Cart addCartItem(@RequestHeader("Authorization") String authHeader, @RequestBody CartItemDTO cartItemDTO) {
+    public PopulatedCartDTO addCartItem(@RequestHeader("Authorization") String authHeader, @RequestBody CartItemDTO cartItemDTO) {
         String token = authHeader.substring(7);
 
         return cartService.addCartItemByToken(token, cartItemDTO);
     }
 
     @DeleteMapping("/cart-item/{cartItemId}")
-    public Cart deleteCartItem(@RequestHeader("Authorization") String authHeader, @PathVariable Long cartItemId) {
+    public PopulatedCartDTO deleteCartItem(@RequestHeader("Authorization") String authHeader, @PathVariable Long cartItemId) {
         String token = authHeader.substring(7);
 
         return cartService.deleteCartItemByToken(token, cartItemId);

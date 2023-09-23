@@ -1,8 +1,5 @@
-export type OwnedBook = {
+import { Book } from "./Book";
+
+export type OwnedBook = Book & {
   ownedBookId: number;
-  bookId: number;
-  userId: number;
-  title: string;
-  author: string;
-  coverImageUrl: string;
 };

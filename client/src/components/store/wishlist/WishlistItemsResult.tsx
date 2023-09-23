@@ -15,13 +15,11 @@ import { Cart } from "../../../types/models/Cart";
 interface WishlistItemsResultProps {
   cart: Cart;
   wishlistItem: WishlistItem;
-  index: number;
 }
 
 const WishlistItemsResult = ({
   cart,
   wishlistItem,
-  index,
 }: WishlistItemsResultProps) => {
   const navigate = useNavigate();
 
@@ -44,11 +42,6 @@ const WishlistItemsResult = ({
       const addCartItemDTO = {
         cartId: cart.cartId,
         bookId: wishlistItem.bookId,
-        title: wishlistItem.title,
-        author: wishlistItem.author,
-        coverImageUrl: wishlistItem.coverImageUrl,
-        price: wishlistItem.price,
-        discountPercent: wishlistItem.discountPercent,
       };
 
       await addCartItem(addCartItemDTO).unwrap;
@@ -61,7 +54,7 @@ const WishlistItemsResult = ({
   };
 
   return (
-    <li key={index} className="flex justify-between bg-green-400 p-4">
+    <li className="flex justify-between bg-green-400 p-4">
       <div className="flex">
         <button onClick={() => navigate(`/store/book/${wishlistItem.bookId}`)}>
           <img

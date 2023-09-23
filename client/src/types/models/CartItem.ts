@@ -1,11 +1,6 @@
-export type CartItem = {
+import { Book } from "./Book";
+
+export type CartItem = Book & {
   cartItemId: number;
-  bookId: number;
-  title: string;
-  author: string;
-  coverImageUrl: string;
-  price: number;
-  currency: string;
-  discountPercent: number;
   addedDate: string;
 };

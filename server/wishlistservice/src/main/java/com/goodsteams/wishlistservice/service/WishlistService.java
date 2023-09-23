@@ -2,8 +2,7 @@ package com.goodsteams.wishlistservice.service;
 
 import com.goodsteams.wishlistservice.dao.WishlistItemRepository;
 import com.goodsteams.wishlistservice.dao.WishlistRepository;
-import com.goodsteams.wishlistservice.dto.FulfilledWishlistItemDTO;
-import com.goodsteams.wishlistservice.dto.WishlistItemDTO;
+import com.goodsteams.wishlistservice.dto.*;
 import com.goodsteams.wishlistservice.entity.Wishlist;
 import com.goodsteams.wishlistservice.entity.WishlistItem;
 import com.goodsteams.wishlistservice.exception.InvalidTokenException;
@@ -12,21 +11,26 @@ import com.goodsteams.wishlistservice.exception.WishlistNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class WishlistService {
 
     private final TokenService tokenService;
+    private final RedisService redisService;
     private final WishlistRepository wishlistRepository;
     private final WishlistItemRepository wishlistItemRepository;
 
     public WishlistService(
             TokenService tokenService,
+            RedisService redisService,
             WishlistRepository wishlistRepository,
             WishlistItemRepository wishlistItemRepository
     ) {
         this.tokenService = tokenService;
+        this.redisService = redisService;
         this.wishlistRepository = wishlistRepository;
         this.wishlistItemRepository = wishlistItemRepository;
     }
@@ -40,15 +44,17 @@ public class WishlistService {
         wishlistRepository.save(wishlist);
     }
 
-    public Wishlist findWishlistByToken(String token) {
+    public PopulatedWishlistDTO findWishlistByToken(String token) {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = tokenService.extractTokenUserId(jwt);
 
-        return wishlistRepository.findWishlistByUserId(userId)
+        Wishlist wishlist = wishlistRepository.findWishlistByUserId(userId)
                 .orElseThrow(WishlistNotFoundException::new);
+
+        return populateWishlist(wishlist);
     }
 
-    public Wishlist addWishlistItemByToken(String token, WishlistItemDTO wishlistItemDTO) {
+    public PopulatedWishlistDTO addWishlistItemByToken(String token, WishlistItemDTO wishlistItemDTO) {
         Wishlist wishlist = wishlistRepository.findById(wishlistItemDTO.wishlistId())
                 .orElseThrow(WishlistNotFoundException::new);
 
@@ -59,27 +65,16 @@ public class WishlistService {
             throw new InvalidTokenException();
         }
 
-        WishlistItem wishlistItem = new WishlistItem(
-                wishlist,
-                wishlistItemDTO.bookId(),
-                wishlistItemDTO.title(),
-                wishlistItemDTO.author(),
-                wishlistItemDTO.coverImageUrl(),
-                wishlistItemDTO.price(),
-                wishlistItemDTO.discountPercent(),
-                wishlistItemDTO.releaseDate(),
-                wishlistItemDTO.averageRating(),
-                wishlistItemDTO.purchaseCount()
-        );
+        WishlistItem wishlistItem = new WishlistItem(wishlist, wishlistItemDTO.bookId());
 
         wishlist.getWishlistItems().add(wishlistItem);
         wishlistRepository.save(wishlist);
 
-        return wishlist;
+        return populateWishlist(wishlist);
     }
 
 
-    public Wishlist deleteCartItemByToken(String token, Long wishlistItemId) {
+    public PopulatedWishlistDTO deleteCartItemByToken(String token, Long wishlistItemId) {
         WishlistItem wishlistItem = wishlistItemRepository.findById(wishlistItemId)
                 .orElseThrow(WishlistItemNotFoundException::new);
 
@@ -94,7 +89,7 @@ public class WishlistService {
         wishlist.getWishlistItems().remove(wishlistItem);
         wishlistRepository.save(wishlist);
 
-        return wishlist;
+        return populateWishlist(wishlist);
     }
 
     public void fulfillWishlistItem(FulfilledWishlistItemDTO fulfilledWishlistItemDTO) {
@@ -108,4 +103,21 @@ public class WishlistService {
 
         wishlistRepository.save(wishlist);
     }
+
+    private PopulatedWishlistDTO populateWishlist(Wishlist wishlist) {
+        List<PopulatedWishlistItemDTO> populatedWishlistItemDTOs = new ArrayList<>();
+
+        for (WishlistItem wishlistItem : wishlist.getWishlistItems()) {
+            BookDTO bookData = redisService.getBook(wishlistItem.getBookId().toString());
+
+            populatedWishlistItemDTOs.add(new PopulatedWishlistItemDTO(
+                    wishlistItem.getWishlistItemId(),
+                    bookData,
+                    wishlistItem.getAddedDate()
+            ));
+        }
+
+        return new PopulatedWishlistDTO(wishlist.getWishlistId(), wishlist.getUserId(), populatedWishlistItemDTOs);
+    }
+
 }
