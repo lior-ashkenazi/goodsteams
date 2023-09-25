@@ -1,6 +1,7 @@
 package com.goodsteams.bookservice.service;
 
 import com.goodsteams.bookservice.dao.BookRepository;
+import com.goodsteams.bookservice.dto.PurchasedBookDTO;
 import com.goodsteams.bookservice.dto.RedisInitCredentialsDTO;
 import com.goodsteams.bookservice.entity.Book;
 import com.goodsteams.bookservice.exception.BookNotFoundException;
@@ -73,6 +74,17 @@ public class BookService {
             redisService.saveBook(book.getBookId().toString(), book);
         }
 
+    }
+
+    public void updateBookPurchase(PurchasedBookDTO purchasedBookDTO) {
+        Long bookId = purchasedBookDTO.bookId();
+
+        Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
+
+        book.setPurchaseCount(book.getPurchaseCount() + 1);
+
+        bookRepository.save(book);
+        redisService.saveBook(book.getBookId().toString(), book);
     }
 
 }
