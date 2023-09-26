@@ -4,6 +4,7 @@ import com.goodsteams.bookservice.dao.BookRepository;
 import com.goodsteams.bookservice.dto.PurchasedBookDTO;
 import com.goodsteams.bookservice.dto.RedisInitCredentialsDTO;
 import com.goodsteams.bookservice.entity.Book;
+import com.goodsteams.bookservice.entity.ReviewDTO;
 import com.goodsteams.bookservice.exception.BookNotFoundException;
 import com.goodsteams.bookservice.exception.RedisInitBadCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +85,60 @@ public class BookService {
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
 
         book.setPurchaseCount(book.getPurchaseCount() + 1);
+
+        bookRepository.save(book);
+        redisService.saveBook(book.getBookId().toString(), book);
+    }
+
+    public void addBookReviewRating(ReviewDTO reviewDTO) {
+        Book book = bookRepository.findById(reviewDTO.getBookId())
+                .orElseThrow(BookNotFoundException::new);
+
+        BigDecimal oldRatingTotal = book.getAverageRating().multiply(BigDecimal.valueOf(book.getRatingCount()));
+        BigDecimal newRatingTotal = oldRatingTotal.add(BigDecimal.valueOf(reviewDTO.getRating()));
+
+        int newRatingCount = book.getRatingCount() + 1;
+
+        BigDecimal newAverageRating = newRatingTotal.divide(BigDecimal.valueOf(newRatingCount), 2, RoundingMode.HALF_UP);
+
+        book.setAverageRating(newAverageRating);
+        book.setRatingCount(newRatingCount);
+
+        bookRepository.save(book);
+        redisService.saveBook(book.getBookId().toString(), book);
+    }
+
+    public void updateBookReviewRating(ReviewDTO reviewDTO) {
+        Book book = bookRepository.findById(reviewDTO.getBookId())
+                .orElseThrow(BookNotFoundException::new);
+
+        BigDecimal oldRatingTotal = book.getAverageRating().multiply(BigDecimal.valueOf(book.getRatingCount()));
+        BigDecimal newRatingTotal = oldRatingTotal
+                .subtract(BigDecimal.valueOf(reviewDTO.getPreviousRating()))
+                .add(BigDecimal.valueOf(reviewDTO.getRating()));
+
+        BigDecimal newAverageRating = newRatingTotal.divide(BigDecimal.valueOf(book.getRatingCount()), 2, RoundingMode.HALF_UP);
+
+        book.setAverageRating(newAverageRating);
+
+        bookRepository.save(book);
+        redisService.saveBook(book.getBookId().toString(), book);
+    }
+
+    public void subtractBookReviewRating(ReviewDTO reviewDTO) {
+        Book book = bookRepository.findById(reviewDTO.getBookId())
+                .orElseThrow(BookNotFoundException::new);
+
+        BigDecimal oldRatingTotal = book.getAverageRating().multiply(BigDecimal.valueOf(book.getRatingCount()));
+        BigDecimal newRatingTotal = oldRatingTotal.subtract(BigDecimal.valueOf(reviewDTO.getRating()));
+
+        int newRatingCount = book.getRatingCount() - 1;
+        newRatingCount = newRatingCount == 0 ? 1 : newRatingCount;
+
+        BigDecimal newAverageRating = newRatingTotal.divide(BigDecimal.valueOf(newRatingCount), 2, RoundingMode.HALF_UP);
+
+        book.setAverageRating(newAverageRating);
+        book.setRatingCount(newRatingCount);
 
         bookRepository.save(book);
         redisService.saveBook(book.getBookId().toString(), book);

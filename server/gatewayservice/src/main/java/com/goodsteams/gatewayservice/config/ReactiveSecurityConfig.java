@@ -39,7 +39,8 @@ public class ReactiveSecurityConfig {
                                 "/api/auth/register",
                                 "/api/auth/login",
                                 "/api/profile/public/**",
-                                "/api/book/**").permitAll()
+                                "/api/book/**",
+                                "/api/review/**").permitAll()
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt)
                 .exceptionHandling(exHandling -> {

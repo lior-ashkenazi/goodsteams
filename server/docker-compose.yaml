@@ -42,4 +42,10 @@ services:
       context: ./wishlistservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-wishlist-service:latest
+
+  review-service:
+    build:
+      context: ./reviewservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-review-service:latest
     

@@ -4,7 +4,6 @@ import com.goodsteams.bookservice.dto.RedisInitCredentialsDTO;
 import com.goodsteams.bookservice.entity.Book;
 import com.goodsteams.bookservice.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Book>> getBooksByTitle(
+    public Page<Book> getBooksByTitle(
             @RequestParam String term,
             @RequestParam(defaultValue = "title") String type,
             @RequestParam(defaultValue = "0") int page,
@@ -66,17 +65,16 @@ public class BookController {
             result = bookService.getBooksByAuthor(term, page, size, sortOrder);
         }
 
-        return ResponseEntity.ok(result);
+        return result;
     }
 
     @GetMapping("/genre/{genreName}")
-    public ResponseEntity<Page<Book>> getBooksByGenre(
+    public Page<Book> getBooksByGenre(
             @PathVariable String genreName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "9") int size) {
 
-        Page<Book> books = bookService.getBooksByGenre(genreName, page, size);
-        return ResponseEntity.ok(books);
+        return bookService.getBooksByGenre(genreName, page, size);
     }
 
     @PostMapping("/secure/init")

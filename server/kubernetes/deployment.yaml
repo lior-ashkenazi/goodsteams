@@ -187,3 +187,31 @@ spec:
         - name: rsa-keys
           secret:
             secretName: rsa-keys-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review-service
+  template:
+    metadata:
+      labels:
+        app: review-service
+    spec:
+      containers:
+        - name: review-service
+          image: liorash7/goodsteams-review-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: rsa-keys
+              mountPath: /etc/rsa
+      volumes:
+        - name: rsa-keys
+          secret:
+            secretName: rsa-keys-secret

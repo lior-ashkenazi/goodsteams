@@ -60,9 +60,6 @@ public class Book {
     @Column(name = "rating_count", nullable = false)
     private Integer ratingCount;
 
-    @Column(name = "review_count", nullable = false)
-    private Integer reviewCount;
-
     @Column(name = "purchase_count", nullable = false)
     private Integer purchaseCount;
 
