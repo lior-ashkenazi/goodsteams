@@ -20,8 +20,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReviewException.class)
     public ResponseEntity<Map<String, String>> handleReviewException(ReviewException e) {
         Map<String, String> response = Map.of("error", e.getMessage());
-        HttpStatus status = (e instanceof ReviewNotFoundException || e instanceof ReviewVoteNotFoundException) ?
-                HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
+        HttpStatus status = e instanceof ReviewNotFoundException ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(ReviewVoteException.class)
+    public ResponseEntity<Map<String, String>> handleReviewVoteException(ReviewVoteException e) {
+        Map<String, String> response = Map.of("error", e.getMessage());
+        HttpStatus status = e instanceof ReviewVoteNotFoundException ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
 
         return new ResponseEntity<>(response, status);
     }

@@ -33,10 +33,12 @@ public class ReviewVote {
     private VoteType voteType;
 
     public enum VoteType {
-        HELPFUL,
-        NOT_HELPFUL,
-        FUNNY
+        helpful,
+        not_helpful,
+        funny
     }
+
+    public ReviewVote() {}
 
     public ReviewVote(Review review, Long userId, VoteType voteType) {
         this.review = review;

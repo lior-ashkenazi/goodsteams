@@ -7,19 +7,14 @@ import com.goodsteams.reviewservice.dto.ReviewVoteBundledReviewDTO;
 import com.goodsteams.reviewservice.dto.ReviewVoteDTO;
 import com.goodsteams.reviewservice.entity.Review;
 import com.goodsteams.reviewservice.entity.ReviewVote;
-import com.goodsteams.reviewservice.exception.ReviewNotFoundException;
-import com.goodsteams.reviewservice.exception.ReviewUnauthorizedException;
-import com.goodsteams.reviewservice.exception.ReviewVoteNotFoundException;
+import com.goodsteams.reviewservice.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ReviewService {
@@ -71,8 +66,6 @@ public class ReviewService {
             reviews = reviewRepository.findByBookIdAndBodyTextContaining(bookId, searchTerm, pageable);
         }
 
-        reviewRepository.findByBookId(bookId, pageable);
-
         List<ReviewVoteBundledReviewDTO> reviewVoteBundledReviewDTOs = new ArrayList<>();
         for (Review review : reviews) {
             ReviewVote reviewVote = reviewVoteRepository.findReviewVoteByReviewAndUserId(review, userId).orElse(null);
@@ -105,6 +98,12 @@ public class ReviewService {
     // that the requester is an owner of that book
     public Review saveReviewByToken(String token, ReviewDTO reviewDTO) {
         authorizeToken(token, reviewDTO);
+
+        Optional<Review> existingReview = reviewRepository.findByBookIdAndUserId(reviewDTO.getBookId(), reviewDTO.getUserId());
+
+        if (existingReview.isPresent()) {
+            throw new IllegalReviewException();
+        }
 
         Review review = new Review(
                 reviewDTO.getBookId(),
@@ -159,6 +158,12 @@ public class ReviewService {
     public ReviewVote saveReviewVote(Long reviewId, ReviewVoteDTO reviewVoteDTO) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
 
+        Optional<ReviewVote> existingReviewVote = reviewVoteRepository.findReviewVoteByReviewAndUserId(review, reviewVoteDTO.userId());
+
+        if (existingReviewVote.isPresent()) {
+            throw new IllegalReviewVoteException();
+        }
+
         ReviewVote reviewVote = new ReviewVote(review, reviewVoteDTO.userId(), reviewVoteDTO.voteType());
         review.getReviewVotes().add(reviewVote);
 
@@ -180,15 +185,15 @@ public class ReviewService {
         ReviewVote.VoteType newReviewVoteType = reviewVoteDTO.voteType();
 
         switch (newReviewVoteType) {
-            case HELPFUL -> reviewVote.setVoteType(ReviewVote.VoteType.HELPFUL);
-            case NOT_HELPFUL -> reviewVote.setVoteType(ReviewVote.VoteType.NOT_HELPFUL);
-            case FUNNY -> reviewVote.setVoteType(ReviewVote.VoteType.FUNNY);
+            case helpful -> reviewVote.setVoteType(ReviewVote.VoteType.helpful);
+            case not_helpful -> reviewVote.setVoteType(ReviewVote.VoteType.not_helpful);
+            case funny -> reviewVote.setVoteType(ReviewVote.VoteType.funny);
         }
 
         switch (oldReviewVoteType) {
-            case HELPFUL -> review.setHelpfulCount(review.getHelpfulCount() - 1);
-            case NOT_HELPFUL -> review.setNotHelpfulCount(review.getNotHelpfulCount() - 1);
-            case FUNNY -> review.setFunnyCount(review.getFunnyCount() - 1);
+            case helpful -> review.setHelpfulCount(review.getHelpfulCount() - 1);
+            case not_helpful -> review.setNotHelpfulCount(review.getNotHelpfulCount() - 1);
+            case funny -> review.setFunnyCount(review.getFunnyCount() - 1);
         }
 
         reviewVote.setVoteType(newReviewVoteType);
@@ -211,9 +216,9 @@ public class ReviewService {
         ReviewVote.VoteType reviewVoteType = reviewVote.getVoteType();
 
         switch (reviewVoteType) {
-            case HELPFUL -> review.setHelpfulCount(review.getHelpfulCount() - 1);
-            case NOT_HELPFUL -> review.setNotHelpfulCount(review.getNotHelpfulCount() - 1);
-            case FUNNY -> review.setFunnyCount(review.getFunnyCount() - 1);
+            case helpful -> review.setHelpfulCount(review.getHelpfulCount() - 1);
+            case not_helpful -> review.setNotHelpfulCount(review.getNotHelpfulCount() - 1);
+            case funny -> review.setFunnyCount(review.getFunnyCount() - 1);
         }
 
         review.getReviewVotes().remove(reviewVote);
