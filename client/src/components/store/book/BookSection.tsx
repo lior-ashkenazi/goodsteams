@@ -23,7 +23,7 @@ import {
 import { Book } from "../../../types/models/book/Book";
 import { Cart } from "../../../types/models/cart/Cart";
 import { Library } from "../../../types/models/library/Library";
-import { Wishlist } from "../../../types/models/Wishlist";
+import { Wishlist } from "../../../types/models/wishlist/Wishlist";
 
 import { formatDate } from "../../../utils/dateUtils";
 import AddToCartComponent from "../../misc/AddToCartComponent";
@@ -81,9 +81,8 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
   }, [library, wishlist, cart, book]);
 
   const handleAddCartItem = async () => {
-    if (!cart || !book) return;
-
     if (!isAuthenticated) navigate("/login");
+    if (!cart || !book) return;
     else if (bookInCart) navigate("/store/cart");
     else {
       const addCartItemDTO = {
@@ -97,9 +96,8 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
   };
 
   const handleWishlistButton = async () => {
-    if (!wishlist || !book) return;
-
     if (!isAuthenticated) navigate("/login");
+    else if (!wishlist || !book) return;
     else if (!bookInWishlist) {
       const addWishlistItemDTO = {
         wishlistId: wishlist.wishlistId,
@@ -125,7 +123,7 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
 
   return (
     <>
-      {library && wishlist && cart && !isFetching && book ? (
+      {!isFetching && book ? (
         <section className="mx-6 my-12 grid grid-cols-2 gap-y-8">
           <button className="absolute -top-12 right-0 rounded-sm bg-gradient-to-l from-green-200 to-yellow-100 px-3 py-2 text-green-600 transition-colors hover:from-green-100 hover:to-yellow-50 hover:text-green-500">
             Community Hub
@@ -184,7 +182,10 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
                       <Paper>
                         <MenuList>
                           <MenuItem
-                            onClick={() => navigate("/store/wishlist")}
+                            onClick={() => {
+                              if (!isAuthenticated) navigate("/login");
+                              else navigate("/store/wishlist");
+                            }}
                             disableRipple
                           >
                             Manage your wishlist

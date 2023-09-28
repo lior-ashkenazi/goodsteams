@@ -81,12 +81,8 @@ const LoginForm = () => {
       await getProfileSecure().unwrap();
       navigate("/store");
     } catch (error) {
-      console.log(error);
-
       if (error && typeof error === "object" && isAuthError(error)) {
         const msg = error.data.error;
-        console.log(msg);
-
         if (error.data.error.startsWith("Username")) {
           setError("username", { type: "manual", message: msg });
         } else if (error.data.error.startsWith("Password")) {
