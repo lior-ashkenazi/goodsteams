@@ -23,7 +23,7 @@ import {
 import { Book } from "../../../types/models/book/Book";
 import { Cart } from "../../../types/models/cart/Cart";
 import { Library } from "../../../types/models/library/Library";
-import { Wishlist } from "../../../types/models/wishlist/Wishlist";
+import { Wishlist } from "../../../types/models/Wishlist";
 
 import { formatDate } from "../../../utils/dateUtils";
 import AddToCartComponent from "../../misc/AddToCartComponent";
@@ -136,7 +136,7 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
           <div className="col-span-1 flex flex-col items-center">
             <img
               src={book.coverImageUrl}
-              className="mb-8 w-80 rounded-sm"
+              className="mb-8 w-80 rounded-sm shadow-md"
               aria-label="book-cover-image"
             />
             {!bookInLibrary && (
@@ -194,6 +194,7 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
                           <MenuItem
                             onClick={handleDeleteWishlistItem}
                             disableRipple
+                            disabled={!bookInWishlist}
                           >
                             Remove from your wishlist
                           </MenuItem>
@@ -223,7 +224,7 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
             {book.ratingCount > 0 && (
               <span>
                 <span>{book.ratingCount} ratings </span>
-                <span>&middot; {book.reviewCount} ratings</span>
+                <span>&middot; {book.ratingCount} reviews</span>
               </span>
             )}
             <div className="flex">

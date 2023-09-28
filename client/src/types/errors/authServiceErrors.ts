@@ -1,7 +1,7 @@
 type AuthError = {
   status: number;
   data: {
-    message: string;
+    error: string;
     stack?: string;
   };
 };
@@ -15,7 +15,7 @@ export function isAuthError(obj: object): obj is AuthError {
     "data" in obj &&
     typeof obj.data === "object" &&
     obj.data !== null &&
-    "message" in obj.data &&
-    typeof obj.data.message === "string"
+    "error" in obj.data &&
+    typeof obj.data.error === "string"
   );
 }

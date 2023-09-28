@@ -21,7 +21,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 
 import { RootState } from "../../store";
-import { Wishlist } from "../../types/models/wishlist/Wishlist";
+import { Wishlist } from "../../types/models/Wishlist";
 
 const searchBarTheme = createTheme({
   palette: {

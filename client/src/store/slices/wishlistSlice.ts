@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Wishlist } from "../../types/models/wishlist/Wishlist";
+import { Wishlist } from "../../types/models/Wishlist";
 import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { wishlistServiceEndpoints } from "../apis/endpoints/wishlistServiceEndpoints";
 

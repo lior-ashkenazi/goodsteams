@@ -105,8 +105,8 @@ const RegisterForm = () => {
       navigate("/store");
     } catch (error) {
       if (error && typeof error === "object" && isAuthError(error)) {
-        const msg = error.data.message;
-        if (error.data.message.startsWith("Username")) {
+        const msg = error.data.error;
+        if (error.data.error.startsWith("Username")) {
           setError("username", { type: "manual", message: msg });
         }
       }

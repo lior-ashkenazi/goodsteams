@@ -1,4 +1,4 @@
-import { Wishlist } from "../models/wishlist/Wishlist";
+import { Wishlist } from "../models/Wishlist";
 
 export type GetWishlistRequest = void;
 export type GetWishlistResponse = Wishlist;
