@@ -68,18 +68,20 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{bookId}")
-    public ResponseEntity<String> deleteReview(@RequestHeader("Authorization") String authHeader,
+    public Review deleteReview(@RequestHeader("Authorization") String authHeader,
                                                @PathVariable String bookId) {
         String token = authHeader.substring(7);
 
-        reviewService.deleteReviewByToken(token, Long.parseLong(bookId));
-
-        return ResponseEntity.ok("Resource was deleted.");
+        return reviewService.deleteReviewByToken(token, Long.parseLong(bookId));
     }
 
     @PostMapping("/{bookId}/{reviewId}/vote")
-    public ReviewVote addReviewVote(@PathVariable String reviewId, @RequestBody ReviewVoteDTO reviewVoteDTO) {
-        return reviewService.saveReviewVote(Long.parseLong(reviewId), reviewVoteDTO);
+    public ReviewVote addReviewVote(@RequestHeader("Authorization") String authHeader,
+                                    @PathVariable String reviewId,
+                                    @RequestBody ReviewVoteDTO reviewVoteDTO) {
+        String token = authHeader.substring(7);
+
+        return reviewService.saveReviewVote(token, Long.parseLong(reviewId), reviewVoteDTO);
     }
 
     @PutMapping("/{bookId}/{reviewId}/vote")

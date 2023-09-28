@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import { parseISO, compareAsc } from "date-fns";
 
 import { RootState } from "../../../store";
-import { Cart } from "../../../types/models/Cart";
-import { Wishlist } from "../../../types/models/Wishlist";
+import { Cart } from "../../../types/models/cart/Cart";
+import { Wishlist } from "../../../types/models/wishlist/Wishlist";
 import { WishlistItem } from "../../../types/models/WishlistItem";
 import WishlistItemsResult from "./WishlistItemsResult";
 

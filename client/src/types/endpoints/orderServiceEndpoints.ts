@@ -1,4 +1,4 @@
-import { Cart } from "../models/Cart";
+import { Cart } from "../models/cart/Cart";
 import { CartItem } from "../models/CartItem";
 
 export type GetCartRequest = void;

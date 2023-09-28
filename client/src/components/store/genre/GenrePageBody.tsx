@@ -1,4 +1,4 @@
-import { Book } from "../../../types/models/Book";
+import { Book } from "../../../types/models/book/Book";
 import GenreBookBox from "./GenreBookBox";
 
 interface GenrePageBodyProps {

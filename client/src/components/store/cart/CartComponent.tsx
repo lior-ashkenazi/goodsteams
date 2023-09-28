@@ -9,7 +9,7 @@ import {
   RootState,
   useDeleteCartItemMutation,
 } from "../../../store";
-import { Cart } from "../../../types/models/Cart";
+import { Cart } from "../../../types/models/cart/Cart";
 import { CartItem } from "../../../types/models/CartItem";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
 

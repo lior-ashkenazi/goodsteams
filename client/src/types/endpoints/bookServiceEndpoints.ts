@@ -1,5 +1,5 @@
-import { Page } from "../models/Page";
-import { Book } from "../models/Book";
+import { Page } from "../models/misc/Page";
+import { Book } from "../models/book/Book";
 
 export type GetBookByIdRequest = string;
 export type GetBookByIdResponse = Book;

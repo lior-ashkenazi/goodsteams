@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { Book } from "../../../types/models/Book";
+import { Book } from "../../../types/models/book/Book";
 import { Rating } from "@mui/material";
 
 import { formatDate } from "../../../utils/dateUtils";

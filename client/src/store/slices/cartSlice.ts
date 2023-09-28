@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Cart } from "../../types/models/Cart";
+import { Cart } from "../../types/models/cart/Cart";
 import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { orderServiceEndpoints } from "../apis/endpoints/orderServiceEndpoints";
 

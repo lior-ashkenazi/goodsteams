@@ -7,7 +7,7 @@ import {
   useCreatePaymentIntentMutation,
   useSubmitPaymentMutation,
 } from "../../../store";
-import { Cart } from "../../../types/models/Cart";
+import { Cart } from "../../../types/models/cart/Cart";
 import { mockStripeConfirmCardPayment } from "../../../utils/paymentUtils";
 
 const PaymentForm = () => {

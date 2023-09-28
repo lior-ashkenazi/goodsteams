@@ -144,7 +144,7 @@ public class ReviewService {
         return review;
     }
 
-    public void deleteReviewByToken(String token, Long bookId) {
+    public Review deleteReviewByToken(String token, Long bookId) {
         Long userId = authorizeToken(token);
 
         // We ensure that the user has a review on the book
@@ -153,9 +153,17 @@ public class ReviewService {
 
         reviewRepository.deleteById(review.getReviewId());
         kafkaService.produceReviewDeleteEvent(new ReviewDTO(bookId, review.getRating()));
+
+        return review;
     }
 
-    public ReviewVote saveReviewVote(Long reviewId, ReviewVoteDTO reviewVoteDTO) {
+    public ReviewVote saveReviewVote(String token, Long reviewId, ReviewVoteDTO reviewVoteDTO) {
+        Long userId = authorizeToken(token);
+
+        if (!userId.equals(reviewVoteDTO.userId())) {
+            throw new ReviewVoteUnauthorizedException();
+        }
+
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
 
         Optional<ReviewVote> existingReviewVote = reviewVoteRepository.findReviewVoteByReviewAndUserId(review, reviewVoteDTO.userId());
@@ -173,7 +181,11 @@ public class ReviewService {
     }
 
     public ReviewVote changeReviewVote(String token, Long reviewId, ReviewVoteDTO reviewVoteDTO) {
-        authorizeToken(token);
+        Long userId = authorizeToken(token);
+
+        if (!userId.equals(reviewVoteDTO.userId())) {
+            throw new ReviewVoteUnauthorizedException();
+        }
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
 
@@ -205,7 +217,11 @@ public class ReviewService {
     }
 
     public ReviewVote deleteReviewVote(String token, Long reviewId, ReviewVoteDTO reviewVoteDTO) {
-        authorizeToken(token);
+        Long userId = authorizeToken(token);
+
+        if (!userId.equals(reviewVoteDTO.userId())) {
+            throw new ReviewVoteUnauthorizedException();
+        }
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
 

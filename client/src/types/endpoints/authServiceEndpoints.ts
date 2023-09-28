@@ -1,4 +1,4 @@
-import { User } from "../models/User";
+import { User } from "../models/auth/User";
 
 export type RegisterUserRequest = {
   username: string;

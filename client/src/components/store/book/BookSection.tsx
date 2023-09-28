@@ -20,10 +20,10 @@ import {
   useAddWishlistItemMutation,
   useDeleteWishlistItemMutation,
 } from "../../../store";
-import { Book } from "../../../types/models/Book";
-import { Cart } from "../../../types/models/Cart";
-import { Library } from "../../../types/models/Library";
-import { Wishlist } from "../../../types/models/Wishlist";
+import { Book } from "../../../types/models/book/Book";
+import { Cart } from "../../../types/models/cart/Cart";
+import { Library } from "../../../types/models/library/Library";
+import { Wishlist } from "../../../types/models/wishlist/Wishlist";
 
 import { formatDate } from "../../../utils/dateUtils";
 import AddToCartComponent from "../../misc/AddToCartComponent";

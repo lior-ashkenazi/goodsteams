@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 
-import { Book } from "../../types/models/Book";
+import { Book } from "../../types/models/book/Book";
 import { WishlistItem } from "../../types/models/WishlistItem";
 import { calculatePriceAfterDiscount } from "../../utils/priceUtils";
 calculatePriceAfterDiscount;

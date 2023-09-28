@@ -14,6 +14,7 @@ import { bookServiceEndpoints } from "./apis/endpoints/bookServiceEndpoints";
 import { orderServiceEndpoints } from "./apis/endpoints/orderServiceEndpoints";
 import { libraryServiceEndpoints } from "./apis/endpoints/libraryServiceEndpoints";
 import { wishlistServiceEndpoints } from "./apis/endpoints/wishlistServiceEndpoints";
+import { reviewServiceEndpoints } from "./apis/endpoints/reviewServiceEndpoints";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -77,5 +78,17 @@ export const {
   useAddWishlistItemMutation,
   useDeleteWishlistItemMutation,
 } = wishlistServiceEndpoints;
+
+export const {
+  useGetReviewsQuery,
+  useGetReviewsAuthenticatedQuery,
+  useGetStarCountsQuery,
+  usePostReviewMutation,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
+  useAddReviewVoteMutation,
+  useChangeReviewVoteMutation,
+  useDeleteReviewVoteMutation,
+} = reviewServiceEndpoints;
 
 export { clearToast } from "./slices/cartSlice";

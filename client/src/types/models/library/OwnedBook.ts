@@ -1,4 +1,4 @@
-import { Book } from "./Book";
+import { Book } from "../book/Book";
 
 export type OwnedBook = Book & {
   ownedBookId: number;

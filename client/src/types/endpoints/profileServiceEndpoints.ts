@@ -1,4 +1,4 @@
-import { Profile } from "../models/Profile";
+import { Profile } from "../models/profile/Profile";
 
 export type CreateProfileRequest = void;
 export type CreateProfileResponse = Profile;

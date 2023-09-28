@@ -15,7 +15,7 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Avatar from "@mui/material/Avatar";
-import { Cart } from "../../types/models/Cart";
+import { Cart } from "../../types/models/cart/Cart";
 
 interface HeaderProps {
   headerRef: React.MutableRefObject<HTMLDivElement | null>;

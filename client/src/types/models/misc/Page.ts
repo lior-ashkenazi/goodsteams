@@ -2,7 +2,7 @@ export type Page<T> = {
   content: T[];
   pageable: {
     pageNumber: number;
-    pageSize: 10;
+    pageSize: number;
     sort: {
       empty: boolean;
       sorted: boolean;
@@ -12,14 +12,14 @@ export type Page<T> = {
   totalElements: number;
   totalPages: number;
   last: false;
-  size: 10;
-  number: 0;
+  size: number;
+  number: number;
   sort: {
     empty: boolean;
     sorted: boolean;
     unpaged: boolean;
   };
-  numberOfElements: 10;
+  numberOfElements: number;
   first: boolean;
   empty: boolean;
 

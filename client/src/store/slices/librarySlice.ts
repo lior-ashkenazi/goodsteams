@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Library } from "../../types/models/Library";
+import { Library } from "../../types/models/library/Library";
 import { authServiceEndpoints } from "../apis/endpoints/authServiceEndpoints";
 import { libraryServiceEndpoints } from "../apis/endpoints/libraryServiceEndpoints";
 
@@ -26,18 +26,19 @@ const librarySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      libraryServiceEndpoints.endpoints.getLibrary.matchFulfilled,
-      (state, action) => {
-        state.library = action.payload;
-      },
-    )
-    .addMatcher(
-      authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
-      (state) => {
-        state.library = null;
-      },
-    );
+    builder
+      .addMatcher(
+        libraryServiceEndpoints.endpoints.getLibrary.matchFulfilled,
+        (state, action) => {
+          state.library = action.payload;
+        },
+      )
+      .addMatcher(
+        authServiceEndpoints.endpoints.logoutUser.matchFulfilled,
+        (state) => {
+          state.library = null;
+        },
+      );
   },
 });
 
