@@ -43,6 +43,14 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    @GetMapping("/{bookId}/user-review")
+    public Review getUserReview(@RequestHeader(value = "Authorization") String authHeader,
+                                @PathVariable String bookId) {
+        String token = authHeader.substring(7);
+
+        return reviewService.getReviewByBookAndByToken(token, Long.parseLong(bookId));
+    }
+
     @GetMapping("/{bookId}/starcounts")
     public Map<Integer, Long> getStarCounts(@PathVariable String bookId) {
         return reviewService.getStarCounts(Long.parseLong(bookId));

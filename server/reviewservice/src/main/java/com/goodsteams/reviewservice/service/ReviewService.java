@@ -92,6 +92,12 @@ public class ReviewService {
         return new PageImpl<>(reviewVoteBundledReviewDTOs, pageable, reviews.getTotalElements());
     }
 
+    public Review getReviewByBookAndByToken(String token, Long bookId) {
+        Long userId = authorizeToken(token);
+
+        return reviewRepository.findByBookIdAndUserId(bookId, userId).orElse(null);
+    }
+
     public Map<Integer, Long> getStarCounts(Long bookId) {
         List<Object[]> counts = reviewRepository.countRatingsByBookId(bookId);
         Map<Integer, Long> starCounts = new HashMap<>();

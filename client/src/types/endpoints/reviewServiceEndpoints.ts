@@ -24,6 +24,9 @@ export type GetReviewsAuthenticatedRequest = {
 };
 export type GetReviewsAuthenticatedResponse = Page<ReviewVoteBundledReview>;
 
+export type GetUserReviewRequest = string;
+export type GetUserReviewResponse = Review | null;
+
 export type GetStarCountsRequest = string;
 export type GetStarCountsResponse = StarCounts;
 

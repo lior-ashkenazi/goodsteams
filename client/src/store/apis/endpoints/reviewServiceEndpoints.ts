@@ -4,6 +4,8 @@ import {
   GetReviewsResponse,
   GetReviewsAuthenticatedRequest,
   GetReviewsAuthenticatedResponse,
+  GetUserReviewResponse,
+  GetUserReviewRequest,
   GetStarCountsRequest,
   GetStarCountsResponse,
   PostReviewRequest,
@@ -53,8 +55,12 @@ export const reviewServiceEndpoints = apiSlice.injectEndpoints({
         }`,
       providesTags: ["Review"],
     }),
-    getStarCounts: builder.query<GetStarCountsResponse, GetStarCountsRequest>({
+    getUserReview: builder.query<GetUserReviewResponse, GetUserReviewRequest>({
       query: (bookId) => `review/${bookId}`,
+      providesTags: ["Review"],
+    }),
+    getStarCounts: builder.query<GetStarCountsResponse, GetStarCountsRequest>({
+      query: (bookId) => `review/${bookId}/starcounts`,
       providesTags: ["Review"],
     }),
     postReview: builder.mutation<PostReviewResponse, PostReviewRequest>({
