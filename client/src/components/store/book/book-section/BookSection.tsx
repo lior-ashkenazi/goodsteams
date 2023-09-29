@@ -21,7 +21,7 @@ const BookSection = ({ isFetching, book }: BookSectionProps) => {
   return (
     <>
       {!isFetching && book ? (
-        <section className="mx-6 my-12 grid grid-cols-2 gap-y-8">
+        <section className="mx-6 mt-12 grid grid-cols-2 gap-y-8">
           <button className="absolute -top-12 right-0 rounded-sm bg-gradient-to-l from-green-200 to-yellow-100 px-3 py-2 text-green-600 transition-colors hover:from-green-100 hover:to-yellow-50 hover:text-green-500">
             Community Hub
           </button>
