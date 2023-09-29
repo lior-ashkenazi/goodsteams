@@ -29,16 +29,17 @@ public class ReviewController {
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "") String sort
+            @RequestParam(defaultValue = "") String sort,
+            @RequestParam(required = false) Integer rating
     ) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             Page<ReviewVoteBundledReviewDTO> reviewVoteBundledReviewDTOs = reviewService
-                    .getReviewsByBookAndByToken(token, Long.parseLong(bookId), search, page, size, sort);
+                    .getReviewsByBookAndByToken(token, Long.parseLong(bookId), search, page, size, sort, rating);
             return ResponseEntity.ok(reviewVoteBundledReviewDTOs);
         }
 
-        Page<Review> reviews = reviewService.getReviewsByBook(Long.parseLong(bookId), search, page, size, sort);
+        Page<Review> reviews = reviewService.getReviewsByBook(Long.parseLong(bookId), search, page, size, sort, rating);
         return ResponseEntity.ok(reviews);
     }
 

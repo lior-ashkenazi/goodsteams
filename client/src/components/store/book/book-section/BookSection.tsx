@@ -19,14 +19,14 @@ import {
   useAddCartItemMutation,
   useAddWishlistItemMutation,
   useDeleteWishlistItemMutation,
-} from "../../../store";
-import { Book } from "../../../types/models/book/Book";
-import { Cart } from "../../../types/models/cart/Cart";
-import { Library } from "../../../types/models/library/Library";
-import { Wishlist } from "../../../types/models/wishlist/Wishlist";
+} from "../../../../store";
+import { Book } from "../../../../types/models/book/Book";
+import { Cart } from "../../../../types/models/cart/Cart";
+import { Library } from "../../../../types/models/library/Library";
+import { Wishlist } from "../../../../types/models/wishlist/Wishlist";
 
-import { formatDate } from "../../../utils/dateUtils";
-import AddToCartComponent from "../../misc/AddToCartComponent";
+import { formatDate } from "../../../../utils/dateUtils";
+import AddToCartComponent from "../../../misc/AddToCartComponent";
 
 interface BookSectionProps {
   isFetching: boolean;

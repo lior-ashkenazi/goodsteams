@@ -17,6 +17,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findByBookIdAndBodyTextContaining(Long bookId, String searchTerm, Pageable pageable);
 
+    Page<Review> findByBookIdAndRating(Long bookId, Integer rating, Pageable pageable);
+
+    Page<Review> findByBookIdAndRatingAndBodyTextContaining(Long bookId, Integer rating, String searchTerm, Pageable pageable);
+
     @Query("SELECT r.rating, COUNT(r) FROM Review r WHERE r.bookId = :bookId GROUP BY r.rating")
     List<Object[]> countRatingsByBookId(@Param("bookId") Long bookId);
 }

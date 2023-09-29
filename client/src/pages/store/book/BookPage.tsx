@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetBookByIdQuery } from "../../../store";
-import BookSection from "../../../components/store/book/BookSection";
+import BookSection from "../../../components/store/book/book-section/BookSection";
 
 const BookPage = () => {
   let { bookId } = useParams();

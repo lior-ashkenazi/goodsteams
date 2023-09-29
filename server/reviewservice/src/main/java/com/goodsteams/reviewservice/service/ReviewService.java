@@ -35,12 +35,22 @@ public class ReviewService {
         this.kafkaService = kafkaService;
     }
 
-    public Page<Review> getReviewsByBook(Long bookId, String searchTerm, int page, int size, String sortParam) {
+    public Page<Review> getReviewsByBook(Long bookId,
+                                         String searchTerm,
+                                         int page,
+                                         int size,
+                                         String sortParam,
+                                         Integer rating) {
         Sort sort = getSort(sortParam);
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        if (searchTerm == null || searchTerm.isEmpty()) {
+        // Integer can be null and int can't - this is why we use Integer for rating
+        if (rating != null && (searchTerm == null || searchTerm.isEmpty())) {
+            return reviewRepository.findByBookIdAndRating(bookId, rating, pageable);
+        } else if (rating != null) {
+            return reviewRepository.findByBookIdAndRatingAndBodyTextContaining(bookId, rating, searchTerm, pageable);
+        } else if (searchTerm == null || searchTerm.isEmpty()) {
             return reviewRepository.findByBookId(bookId, pageable);
         } else {
             return reviewRepository.findByBookIdAndBodyTextContaining(bookId, searchTerm, pageable);
@@ -52,7 +62,8 @@ public class ReviewService {
                                                                        String searchTerm,
                                                                        int page,
                                                                        int size,
-                                                                       String sortParam) {
+                                                                       String sortParam,
+                                                                       Integer rating) {
         Long userId = authorizeToken(token);
 
         Sort sort = getSort(sortParam);
@@ -60,7 +71,12 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<Review> reviews;
-        if (searchTerm == null || searchTerm.isEmpty()) {
+        // Integer can be null and int can't - this is why we use Integer for rating
+        if (rating != null && (searchTerm == null || searchTerm.isEmpty())) {
+            reviews = reviewRepository.findByBookIdAndRating(bookId, rating, pageable);
+        } else if (rating != null) {
+            reviews = reviewRepository.findByBookIdAndRatingAndBodyTextContaining(bookId, rating, searchTerm, pageable);
+        } else if (searchTerm == null || searchTerm.isEmpty()) {
             reviews = reviewRepository.findByBookId(bookId, pageable);
         } else {
             reviews = reviewRepository.findByBookIdAndBodyTextContaining(bookId, searchTerm, pageable);

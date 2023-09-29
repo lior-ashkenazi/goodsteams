@@ -23,16 +23,34 @@ import {
 export const reviewServiceEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getReviews: builder.query<GetReviewsResponse, GetReviewsRequest>({
-      query: ({ bookId, search = "", page = 0, size = 10, sort = "popular" }) =>
-        `review/${bookId}?search=${search}&page=${page}&size=${size}&sort=${sort}`,
+      query: ({
+        bookId,
+        search = "",
+        page = 0,
+        size = 10,
+        sort = "popular",
+        rating,
+      }) =>
+        `review/${bookId}?search=${search}&page=${page}&size=${size}&sort=${sort}${
+          rating && `&rating=${rating}`
+        }`,
       providesTags: ["Review"],
     }),
     getReviewsAuthenticated: builder.query<
       GetReviewsAuthenticatedResponse,
       GetReviewsAuthenticatedRequest
     >({
-      query: ({ bookId, search = "", page = 0, size = 10, sort = "popular" }) =>
-        `review/${bookId}?search=${search}&page=${page}&size=${size}&sort=${sort}`,
+      query: ({
+        bookId,
+        search = "",
+        page = 0,
+        size = 10,
+        sort = "popular",
+        rating,
+      }) =>
+        `review/${bookId}?search=${search}&page=${page}&size=${size}&sort=${sort}${
+          rating && `&rating=${rating}`
+        }`,
       providesTags: ["Review"],
     }),
     getStarCounts: builder.query<GetStarCountsResponse, GetStarCountsRequest>({

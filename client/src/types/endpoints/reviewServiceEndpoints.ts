@@ -10,6 +10,7 @@ export type GetReviewsRequest = {
   page?: number;
   size?: number;
   sort?: string;
+  rating?: number;
 };
 export type GetReviewsResponse = Page<Review>;
 
@@ -19,6 +20,7 @@ export type GetReviewsAuthenticatedRequest = {
   page?: number;
   size?: number;
   sort?: string;
+  rating?: number;
 };
 export type GetReviewsAuthenticatedResponse = Page<ReviewVoteBundledReview>;
 
