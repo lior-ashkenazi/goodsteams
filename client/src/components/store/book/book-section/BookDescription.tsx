@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
-  Rating,
   Button,
   IconButton,
   Popper,
@@ -24,6 +23,7 @@ import { Book } from "../../../../types/models/book/Book";
 import { Library } from "../../../../types/models/library/Library";
 import { Wishlist } from "../../../../types/models/wishlist/Wishlist";
 import { formatDate } from "../../../../utils/dateUtils";
+import BookRating from "../../../misc/BookRating";
 
 interface BookDescriptionProps {
   book: Book;
@@ -172,17 +172,7 @@ const BookDescription = ({ book }: BookDescriptionProps) => {
       </div>
       <div className="flex flex-col items-center gap-y-8 p-4">
         <span className="text-4xl font-medium italic">{book.author}</span>
-        <span className="flex items-center gap-x-4">
-          <Rating
-            className="text-5xl"
-            value={book.averageRating}
-            precision={0.5}
-            readOnly
-          />
-          {book.ratingCount > 0 && (
-            <span className="text-3xl font-semibold">{book.averageRating}</span>
-          )}
-        </span>
+        <BookRating book={book} />
         {book.ratingCount > 0 && (
           <span>
             <span>{book.ratingCount} ratings </span>

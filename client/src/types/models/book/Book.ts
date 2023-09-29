@@ -11,7 +11,6 @@ export type Book = {
   releaseDate: string;
   averageRating: number;
   ratingCount: number;
-  reviewCount: number;
   purchaseCount: number;
   publisher: string;
   pageCount: number;

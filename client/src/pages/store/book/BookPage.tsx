@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetBookByIdQuery } from "../../../store";
 import BookSection from "../../../components/store/book/book-section/BookSection";
+import ReviewsSection from "../../../components/store/book/review-section/ReviewsSection";
 
 const BookPage = () => {
   let { bookId } = useParams();
@@ -11,6 +12,7 @@ const BookPage = () => {
   return (
     <div className="relative mb-8 mt-10 flex w-full flex-col rounded-sm bg-green-200 text-green-900">
       <BookSection isFetching={isFetching} book={book} />
+      <ReviewsSection isFetching={isFetching} book={book} />
     </div>
   );
 };
