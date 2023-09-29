@@ -65,12 +65,9 @@ const App = () => {
   }, [headerRef]);
 
   return (
-    <div className="h-screen w-screen min-w-[75rem] bg-gradient-to-b from-emerald-600 to-amber-100 text-white">
+    <div className="flex min-h-screen w-full min-w-[75rem] flex-col bg-gradient-to-b from-emerald-600 to-amber-100 text-white">
       <Header headerRef={headerRef} />
-      <div
-        className="overflow-y-auto"
-        style={{ height: `calc(100% - ${headerHeight}px)` }}
-      >
+      <div className="flex-grow">
         <Outlet />
       </div>
     </div>
