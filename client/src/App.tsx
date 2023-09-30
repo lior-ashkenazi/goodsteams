@@ -8,6 +8,7 @@ import {
   useLazyGetWishlistQuery,
 } from "./store";
 import Header from "./components/misc/Header";
+import OutletWrapper from "./components/misc/OutletWrapper";
 
 const App = () => {
   const [authQuery] = useLazyAuthUserQuery();
@@ -67,9 +68,9 @@ const App = () => {
   return (
     <div className="flex min-h-screen w-full min-w-[75rem] flex-col bg-gradient-to-b from-emerald-600 to-amber-100 text-white">
       <Header headerRef={headerRef} />
-      <div className="flex-grow">
+      <OutletWrapper headerHeight={headerHeight}>
         <Outlet />
-      </div>
+      </OutletWrapper>
     </div>
   );
 };
