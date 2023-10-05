@@ -24,10 +24,10 @@ export type GetReviewsAuthenticatedRequest = {
 };
 export type GetReviewsAuthenticatedResponse = Page<ReviewVoteBundledReview>;
 
-export type GetUserReviewRequest = string;
+export type GetUserReviewRequest = { bookId: number; userId: number };
 export type GetUserReviewResponse = Review | null;
 
-export type GetStarCountsRequest = string;
+export type GetStarCountsRequest = number;
 export type GetStarCountsResponse = StarCounts;
 
 export type PostReviewRequest = {
@@ -46,7 +46,7 @@ export type UpdateReviewRequest = {
 };
 export type UpdateReviewResponse = Review;
 
-export type DeleteReviewRequest = string;
+export type DeleteReviewRequest = number;
 export type DeleteReviewResponse = Review;
 
 export type AddReviewVoteRequest = {

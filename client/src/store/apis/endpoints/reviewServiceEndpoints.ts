@@ -34,7 +34,7 @@ export const reviewServiceEndpoints = apiSlice.injectEndpoints({
         rating,
       }) =>
         `review/${bookId}?search=${search}&page=${page}&size=${size}&sort=${sort}${
-          rating && `&rating=${rating}`
+          rating ? `&rating=${rating}` : ""
         }`,
       providesTags: ["Review"],
     }),
@@ -51,12 +51,12 @@ export const reviewServiceEndpoints = apiSlice.injectEndpoints({
         rating,
       }) =>
         `review/${bookId}?search=${search}&page=${page}&size=${size}&sort=${sort}${
-          rating && `&rating=${rating}`
+          rating ? `&rating=${rating}` : ""
         }`,
       providesTags: ["Review"],
     }),
     getUserReview: builder.query<GetUserReviewResponse, GetUserReviewRequest>({
-      query: (bookId) => `review/${bookId}`,
+      query: ({ bookId, userId }) => `review/${bookId}/${userId}`,
       providesTags: ["Review"],
     }),
     getStarCounts: builder.query<GetStarCountsResponse, GetStarCountsRequest>({
@@ -69,6 +69,10 @@ export const reviewServiceEndpoints = apiSlice.injectEndpoints({
         method: "POST",
         body: reviewDTO,
       }),
+      invalidatesTags: (_result, _error, { bookId }) => [
+        "Review",
+        { type: "Book", id: bookId },
+      ],
     }),
     updateReview: builder.mutation<UpdateReviewResponse, UpdateReviewRequest>({
       query: ({ bookId, ...reviewDTO }) => ({
@@ -76,12 +80,20 @@ export const reviewServiceEndpoints = apiSlice.injectEndpoints({
         method: "PUT",
         body: reviewDTO,
       }),
+      invalidatesTags: (_result, _error, { bookId }) => [
+        "Review",
+        { type: "Book", id: bookId },
+      ],
     }),
     deleteReview: builder.mutation<DeleteReviewResponse, DeleteReviewRequest>({
       query: (bookId) => ({
         url: `review/${bookId}`,
         method: "DELETE",
       }),
+      invalidatesTags: (_result, _error, bookId) => [
+        "Review",
+        { type: "Book", id: bookId },
+      ],
     }),
     addReviewVote: builder.mutation<
       AddReviewVoteResponse,

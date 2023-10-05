@@ -1,8 +1,7 @@
-import { Button } from "@mui/material";
-
 import { Book } from "../../types/models/book/Book";
 import { WishlistItem } from "../../types/models/wishlist/WishlistItem";
 import { calculatePriceAfterDiscount } from "../../utils/priceUtils";
+import AddToCartButton from "./AddToCartButton";
 calculatePriceAfterDiscount;
 
 interface AddToCartComponentProps {
@@ -20,15 +19,11 @@ const AddToCartComponent = ({
 }: AddToCartComponentProps) => {
   return (
     <div className="flex flex-row-reverse items-center bg-yellow-300 p-1">
-      <Button
-        variant="contained"
-        className="bg-gradient-to-tl from-green-400 to-green-300 p-3 normal-case text-green-50 shadow-none transition-colors hover:from-green-500 hover:to-green-400 active:from-green-600 active:to-green-500"
-        disableRipple
-        onClick={handleAddCartItem}
-        disabled={itemInLibrary}
-      >
-        {itemInLibrary ? "In Library" : itemInCart ? "In Cart" : "Add to Cart"}
-      </Button>
+      <AddToCartButton
+        itemInLibrary={itemInLibrary}
+        itemInCart={itemInCart}
+        handleAddCartItem={handleAddCartItem}
+      />
       <div
         className={`mr-1 bg-yellow-200 ${
           item.discountPercent > 0 ? "px-4 py-1.5" : "px-4 py-3"

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
+  RootState,
   useLazyAuthUserQuery,
   useLazyGetCartQuery,
   useLazyGetLibraryQuery,
@@ -11,19 +13,25 @@ import Header from "./components/misc/Header";
 import OutletWrapper from "./components/misc/OutletWrapper";
 
 const App = () => {
+  const navigate = useNavigate();
+
   const [authQuery] = useLazyAuthUserQuery();
   const [getProfileSecure] = useLazyGetProfileSecureQuery();
   const [getCart] = useLazyGetCartQuery();
   const [getLibrary] = useLazyGetLibraryQuery();
   const [getWishlist] = useLazyGetWishlistQuery();
 
-  const navigate = useNavigate();
+  const token: string | null = useSelector(
+    (state: RootState) => state.auth.token,
+  );
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!token) return;
+
       try {
         await authQuery().unwrap();
 
@@ -38,7 +46,15 @@ const App = () => {
     };
 
     fetchData();
-  }, [authQuery, getProfileSecure, getCart, getLibrary, getWishlist, navigate]);
+  }, [
+    authQuery,
+    getProfileSecure,
+    getCart,
+    getLibrary,
+    getWishlist,
+    navigate,
+    token,
+  ]);
 
   useEffect(() => {
     // this is an edge case handling when web-app

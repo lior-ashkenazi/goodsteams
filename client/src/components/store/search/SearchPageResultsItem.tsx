@@ -37,8 +37,15 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
           <div className="truncate text-sm">
             <span className="flex items-center gap-x-1">
               <Rating value={book.averageRating} precision={0.5} readOnly />
-              <span className={`${book.ratingCount > 0 && "text-transparent"}`}>
-                - {book.averageRating.toFixed(2)} avg rating{" "}
+              <span
+                className={`${book.ratingCount === 0 && "text-transparent"}`}
+              >
+                {book.averageRating.toFixed(2)} avg rating{" "}
+              </span>
+              <span
+                className={`${book.ratingCount === 0 && "text-transparent"}`}
+              >
+                - {book.ratingCount} ratings
               </span>
             </span>
           </div>

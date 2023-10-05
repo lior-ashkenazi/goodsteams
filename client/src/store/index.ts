@@ -51,6 +51,7 @@ export const {
 export const {
   useGetProfileSecureQuery,
   useLazyGetProfileSecureQuery,
+  useGetProfilePublicQuery,
   useUpdateProfileMutation,
 } = profileServiceEndpoints;
 
@@ -81,7 +82,10 @@ export const {
 
 export const {
   useGetReviewsQuery,
+  useLazyGetReviewsQuery,
   useGetReviewsAuthenticatedQuery,
+  useLazyGetReviewsAuthenticatedQuery,
+  useGetUserReviewQuery,
   useGetStarCountsQuery,
   usePostReviewMutation,
   useUpdateReviewMutation,

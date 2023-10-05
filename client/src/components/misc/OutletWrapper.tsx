@@ -15,7 +15,7 @@ const OutletWrapper = ({ headerHeight, children }: OutletWrapperProps) => {
   );
 
   return (
-    <div
+    <main
       style={
         needsHeightCalculation
           ? { height: `calc(100% - ${headerHeight}px)` }
@@ -24,7 +24,7 @@ const OutletWrapper = ({ headerHeight, children }: OutletWrapperProps) => {
       className={`flex-grow ${needsHeightCalculation && "flex flex-col"}`}
     >
       {children}
-    </div>
+    </main>
   );
 };
 

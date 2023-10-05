@@ -73,13 +73,13 @@ public class ReviewService {
         Page<Review> reviews;
         // Integer can be null and int can't - this is why we use Integer for rating
         if (rating != null && (searchTerm == null || searchTerm.isEmpty())) {
-            reviews = reviewRepository.findByBookIdAndRating(bookId, rating, pageable);
+            reviews = reviewRepository.findByBookIdAndUserIdNotAndRating(bookId, userId, rating, pageable);
         } else if (rating != null) {
-            reviews = reviewRepository.findByBookIdAndRatingAndBodyTextContaining(bookId, rating, searchTerm, pageable);
+            reviews = reviewRepository.findByBookIdAndUserIdNotAndRatingAndBodyTextContaining(bookId, userId, rating, searchTerm, pageable);
         } else if (searchTerm == null || searchTerm.isEmpty()) {
-            reviews = reviewRepository.findByBookId(bookId, pageable);
+            reviews = reviewRepository.findByBookIdAndUserIdNot(bookId, userId, pageable);
         } else {
-            reviews = reviewRepository.findByBookIdAndBodyTextContaining(bookId, searchTerm, pageable);
+            reviews = reviewRepository.findByBookIdAndUserIdNotAndBodyTextContaining(bookId, userId, searchTerm, pageable);
         }
 
         List<ReviewVoteBundledReviewDTO> reviewVoteBundledReviewDTOs = new ArrayList<>();
@@ -92,9 +92,7 @@ public class ReviewService {
         return new PageImpl<>(reviewVoteBundledReviewDTOs, pageable, reviews.getTotalElements());
     }
 
-    public Review getReviewByBookAndByToken(String token, Long bookId) {
-        Long userId = authorizeToken(token);
-
+    public Review getReviewByBookAndByUserId(Long bookId, Long userId) {
         return reviewRepository.findByBookIdAndUserId(bookId, userId).orElse(null);
     }
 
@@ -103,7 +101,7 @@ public class ReviewService {
         Map<Integer, Long> starCounts = new HashMap<>();
 
         // Initialize the map with default values
-        for (int i = 0; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             starCounts.put(i, 0L);
         }
 
@@ -192,6 +190,12 @@ public class ReviewService {
 
         if (existingReviewVote.isPresent()) {
             throw new IllegalReviewVoteException();
+        }
+
+        switch (reviewVoteDTO.voteType()) {
+            case helpful -> review.setHelpfulCount(review.getHelpfulCount() + 1);
+            case not_helpful -> review.setNotHelpfulCount(review.getNotHelpfulCount() + 1);
+            case funny -> review.setFunnyCount(review.getFunnyCount() + 1);
         }
 
         ReviewVote reviewVote = new ReviewVote(review, reviewVoteDTO.userId(), reviewVoteDTO.voteType());
@@ -283,7 +287,7 @@ public class ReviewService {
 
     private Sort getSort(String sortString) {
         return switch (sortString) {
-            case "popular" -> Sort.by("helpfulCount").descending().and(Sort.by("funnyCount").descending());
+            case "popular" -> Sort.by("helpfulCount").descending().and(Sort.by("funnyCount").descending().and(Sort.by("notHelpfulCount")).ascending());
             case "newest" -> Sort.by("createdAt").descending();
             case "oldest" -> Sort.by("createdAt").ascending();
             default -> Sort.by("helpfulCount").descending().and(Sort.by("funnyCount").descending());

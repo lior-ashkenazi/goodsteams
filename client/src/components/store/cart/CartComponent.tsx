@@ -10,7 +10,7 @@ import {
   useDeleteCartItemMutation,
 } from "../../../store";
 import { Cart } from "../../../types/models/cart/Cart";
-import { CartItem } from "../../../types/models/CartItem";
+import { CartItem } from "../../../types/models/cart/CartItem";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
 
 const CartComponent = () => {
