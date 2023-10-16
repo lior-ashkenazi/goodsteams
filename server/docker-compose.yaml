@@ -48,4 +48,10 @@ services:
       context: ./reviewservice
       dockerfile: Dockerfile
     image: liorash7/goodsteams-review-service:latest
+
+  community-service:
+    build:
+      context: ./communityservice
+      dockerfile: Dockerfile
+    image: liorash7/goodsteams-community-service:latest
     

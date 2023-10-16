@@ -1,10 +1,7 @@
 package com.goodsteams.reviewservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @Entity
@@ -17,10 +14,7 @@ public class ReviewVote {
     @Column(name = "review_vote_id")
     private Long reviewVoteId;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
@@ -38,7 +32,8 @@ public class ReviewVote {
         funny
     }
 
-    public ReviewVote() {}
+    public ReviewVote() {
+    }
 
     public ReviewVote(Review review, Long userId, VoteType voteType) {
         this.review = review;

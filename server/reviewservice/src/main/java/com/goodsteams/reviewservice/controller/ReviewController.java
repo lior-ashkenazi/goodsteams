@@ -6,6 +6,7 @@ import com.goodsteams.reviewservice.dto.ReviewVoteDTO;
 import com.goodsteams.reviewservice.entity.Review;
 import com.goodsteams.reviewservice.entity.ReviewVote;
 import com.goodsteams.reviewservice.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @Autowired
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
