@@ -1,5 +1,5 @@
 import { Cart } from "../models/cart/Cart";
-import { CartItem } from "../models/CartItem";
+import { CartItem } from "../models/cart/CartItem";
 
 export type GetCartRequest = void;
 export type GetCartResponse = Cart;

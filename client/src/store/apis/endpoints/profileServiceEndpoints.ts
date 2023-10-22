@@ -1,4 +1,4 @@
-import { apiSlice } from "../apiSlice";
+import { reduxApiSlice } from "../reduxApiSlice";
 import {
   GetProfileSecureRequest,
   GetProfileSecureResponse,
@@ -8,7 +8,7 @@ import {
   UpdateProfileResponse,
 } from "../../../types/endpoints/profileServiceEndpoints";
 
-export const profileServiceEndpoints = apiSlice.injectEndpoints({
+export const profileServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProfileSecure: builder.query<
       GetProfileSecureResponse,

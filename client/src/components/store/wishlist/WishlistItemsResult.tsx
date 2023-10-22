@@ -7,7 +7,7 @@ import {
   useAddCartItemMutation,
   useDeleteWishlistItemMutation,
 } from "../../../store";
-import { WishlistItem } from "../../../types/models/WishlistItem";
+import { WishlistItem } from "../../../types/models/wishlist/WishlistItem";
 import AddToCartComponent from "../../misc/AddToCartComponent";
 import { formatDate } from "../../../utils/dateUtils";
 import { Cart } from "../../../types/models/cart/Cart";

@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { Divider, Chip } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+import { RootState } from "../../../../store";
 import {
-  RootState,
   useGetReviewsQuery,
   useGetReviewsAuthenticatedQuery,
-} from "../../../../store";
+} from "../../../../apis/reviewServiceApi";
 import { Review } from "../../../../types/models/review/Review";
 import { ReviewVoteBundledReview } from "../../../../types/models/review/ReviewVoteBundledReview";
 import ReviewResult from "./ReviewResult";
@@ -43,26 +43,39 @@ const ReviewResults = ({ book, rating, search, sort }: ReviewResultsProps) => {
     ...(rating != null && { rating }),
   };
 
-  const { data: userReviews } = useGetReviewsAuthenticatedQuery(requestBody, {
-    skip: !isAuthenticated,
-  });
+  const { data: fetchedUserReviewsResponse } = useGetReviewsAuthenticatedQuery(
+    requestBody,
+    {
+      enabled: isAuthenticated,
+    },
+  );
 
-  const { data: guestReviews } = useGetReviewsQuery(requestBody, {
-    skip: isAuthenticated,
-  });
+  const { data: fetchedGuestReviewsResponse } = useGetReviewsQuery(
+    requestBody,
+    {
+      enabled: !isAuthenticated,
+    },
+  );
 
-  const fetchedData = isAuthenticated ? userReviews : guestReviews;
+  const fetchedData = isAuthenticated
+    ? fetchedUserReviewsResponse?.data
+    : fetchedGuestReviewsResponse?.data;
+
+  console.log("reviews");
+  console.log(reviews);
+  console.log();
 
   useEffect(() => {
     setPage(0);
   }, [search, sort, rating]);
 
   useEffect(() => {
+    if (!fetchedData) return;
+
     if (
-      !fetchedData ||
-      (fetchedData.content &&
-        fetchedData.content.length === 0 &&
-        fetchedData.pageable.pageNumber === 0)
+      fetchedData.content &&
+      fetchedData.content.length === 0 &&
+      fetchedData.pageable.pageNumber === 0
     )
       setReviews([]);
     else if (fetchedData.pageable.pageNumber != page) return;

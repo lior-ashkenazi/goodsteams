@@ -13,12 +13,11 @@ import {
   isReviewVoteBundledReview,
 } from "../../../../types/models/review/ReviewVoteBundledReview";
 import { ReviewVote } from "../../../../types/models/review/ReviewVote";
+import { RootState, useGetProfilePublicQuery } from "../../../../store";
 import {
-  RootState,
   useChangeReviewVoteMutation,
   useDeleteReviewVoteMutation,
-  useGetProfilePublicQuery,
-} from "../../../../store";
+} from "../../../../apis/reviewServiceApi";
 import { formatDate } from "../../../../utils/dateUtils";
 import { Book } from "../../../../types/models/book/Book";
 
@@ -37,8 +36,8 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
 
   const { data: profile } = useGetProfilePublicQuery(review.userId.toString());
 
-  const [deleteReviewVote] = useDeleteReviewVoteMutation();
-  const [changeReviewVote] = useChangeReviewVoteMutation();
+  const deleteReviewVote = useDeleteReviewVoteMutation;
+  const changeReviewVote = useChangeReviewVoteMutation;
 
   const userId: number | null = useSelector(
     (state: RootState) => state.profile.userId,
@@ -94,7 +93,7 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
         reviewId,
         userId,
       };
-      await deleteReviewVote(requestBody).unwrap();
+      await deleteReviewVote(requestBody).mutateAsync();
       setReviewVoteType("");
     } else {
       const requestBody = {
@@ -103,7 +102,7 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
         userId,
         voteType,
       };
-      await changeReviewVote(requestBody).unwrap();
+      await changeReviewVote(requestBody).mutateAsync();
       setReviewVoteType(voteType);
     }
   };

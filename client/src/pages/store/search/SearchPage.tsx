@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { useGetBooksByTermQuery } from "../../../store";
+import { useGetBooksByTermQuery } from "../../../apis/bookServiceApi";
 import SearchPageHeader from "../../../components/store/search/SearchPageHeader";
 import SearchPageFooter from "../../../components/store/search/SearchPageFooter";
 import SearchPageMain from "../../../components/store/search/SearchPageMain";
@@ -25,21 +25,21 @@ const SearchPage = () => {
   return (
     <div className="h-full w-full text-green-900">
       <SearchPageHeader term={term} type={type} sort={sort} />
-      {!isFetching && data ? (
+      {!isFetching && data && data.data ? (
         <>
           <SearchPageMain
-            books={data.content}
+            books={data.data.content}
             page={page}
-            totalElements={data.totalElements}
+            totalElements={data.data.totalElements}
           />
-          {data.totalElements > 0 && (
+          {data.data.totalElements > 0 && (
             <SearchPageFooter
               term={term}
               type={type}
               page={page}
               size={size}
               sort={sort}
-              totalPages={data.totalPages}
+              totalPages={data.data.totalPages}
             />
           )}
         </>

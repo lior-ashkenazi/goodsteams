@@ -105,10 +105,10 @@ public class ReviewController {
     @DeleteMapping("/{bookId}/{reviewId}/vote")
     public ReviewVote deleteReviewVote(@RequestHeader("Authorization") String authHeader,
                                        @PathVariable String reviewId,
-                                       @RequestBody ReviewVoteDTO reviewVoteDTO) {
+                                       @RequestParam Long userid) {
         String token = authHeader.substring(7);
 
-        return reviewService.deleteReviewVote(token, Long.parseLong(reviewId), reviewVoteDTO);
+        return reviewService.deleteReviewVote(token, Long.parseLong(reviewId), userid);
     }
 
 }

@@ -25,14 +25,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import { RootState, useAddCartItemMutation } from "../../../../store";
 import {
-  RootState,
   usePostReviewMutation,
   useUpdateReviewMutation,
   useDeleteReviewMutation,
   useGetUserReviewQuery,
-  useAddCartItemMutation,
-} from "../../../../store";
+} from "../../../../apis/reviewServiceApi";
 import { Library } from "../../../../types/models/library/Library";
 import { Book } from "../../../../types/models/book/Book";
 import { Cart } from "../../../../types/models/cart/Cart";
@@ -89,15 +88,16 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
   const cart: Cart | null = useSelector((state: RootState) => state.cart.cart);
 
   const bookId = book.bookId;
-  const { data: userReview, refetch: refetchUserReview } =
-    useGetUserReviewQuery(
-      { bookId, userId: userId ?? 0 },
-      { skip: !isAuthenticated },
-    );
+  const { data, refetch: refetchUserReview } = useGetUserReviewQuery(
+    { bookId, userId: userId ?? 0 },
+    { enabled: isAuthenticated },
+  );
 
-  const [postReview] = usePostReviewMutation();
-  const [updateReview] = useUpdateReviewMutation();
-  const [deleteReview] = useDeleteReviewMutation();
+  const userReview = data?.data;
+
+  const postReview = usePostReviewMutation;
+  const updateReview = useUpdateReviewMutation;
+  const deleteReview = useDeleteReviewMutation;
   const [addCartItem] = useAddCartItemMutation();
 
   const [bookInLibrary, setBookInLibrary] = useState<boolean>(false);
@@ -134,8 +134,8 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
   };
 
   const handleDeleteReviewClick = async () => {
-    await deleteReview(book.bookId).unwrap();
-    await refetchUserReview().unwrap();
+    await deleteReview(book.bookId).mutateAsync();
+    await refetchUserReview();
   };
 
   const {
@@ -191,13 +191,13 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
     const userReviewCredentials = { bookId, userId, rating, bodyText };
 
     if (!isUserReviewUpdate) {
-      await postReview(userReviewCredentials).unwrap();
+      await postReview(userReviewCredentials).mutateAsync();
     } else {
       // isUserReviewUpdate === true
-      await updateReview(userReviewCredentials).unwrap();
+      await updateReview(userReviewCredentials).mutateAsync();
       setIsUserReviewUpdate(false);
     }
-    await refetchUserReview().unwrap();
+    await refetchUserReview();
   };
 
   const renderUserReview = () => {
@@ -238,9 +238,6 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
       </div>
     );
   };
-
-  console.log("Rating");
-  console.log(rating);
 
   const renderEditMode = () => {
     return (

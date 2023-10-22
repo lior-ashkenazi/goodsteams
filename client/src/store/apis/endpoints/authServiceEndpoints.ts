@@ -1,4 +1,4 @@
-import { apiSlice } from "../apiSlice";
+import { reduxApiSlice } from "../reduxApiSlice";
 import {
   RegisterUserRequest,
   RegisterUserResponse,
@@ -10,7 +10,7 @@ import {
   LogoutUserResponse,
 } from "../../../types/endpoints/authServiceEndpoints";
 
-export const authServiceEndpoints = apiSlice.injectEndpoints({
+export const authServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>({
       query: (userCredentials) => ({

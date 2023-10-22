@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { Page } from "../models/misc/Page";
 import { Review } from "../models/review/Review";
 import { ReviewVote } from "../models/review/ReviewVote";
@@ -12,7 +13,7 @@ export type GetReviewsRequest = {
   sort?: string;
   rating?: number;
 };
-export type GetReviewsResponse = Page<Review>;
+export type GetReviewsResponse = AxiosResponse<Page<Review>>;
 
 export type GetReviewsAuthenticatedRequest = {
   bookId: number;
@@ -22,13 +23,15 @@ export type GetReviewsAuthenticatedRequest = {
   sort?: string;
   rating?: number;
 };
-export type GetReviewsAuthenticatedResponse = Page<ReviewVoteBundledReview>;
+export type GetReviewsAuthenticatedResponse = AxiosResponse<
+  Page<ReviewVoteBundledReview>
+>;
 
 export type GetUserReviewRequest = { bookId: number; userId: number };
-export type GetUserReviewResponse = Review | null;
+export type GetUserReviewResponse = AxiosResponse<Review | null>;
 
 export type GetStarCountsRequest = number;
-export type GetStarCountsResponse = StarCounts;
+export type GetStarCountsResponse = AxiosResponse<StarCounts>;
 
 export type PostReviewRequest = {
   bookId: number;
@@ -36,7 +39,7 @@ export type PostReviewRequest = {
   rating: number;
   bodyText: string;
 };
-export type PostReviewResponse = Review;
+export type PostReviewResponse = AxiosResponse<Review>;
 
 export type UpdateReviewRequest = {
   bookId: number;
@@ -44,10 +47,10 @@ export type UpdateReviewRequest = {
   rating: number;
   bodyText: string;
 };
-export type UpdateReviewResponse = Review;
+export type UpdateReviewResponse = AxiosResponse<Review>;
 
 export type DeleteReviewRequest = number;
-export type DeleteReviewResponse = Review;
+export type DeleteReviewResponse = AxiosResponse<Review>;
 
 export type AddReviewVoteRequest = {
   bookId: number;
@@ -55,7 +58,7 @@ export type AddReviewVoteRequest = {
   userId: number;
   voteType: string;
 };
-export type AddReviewVoteResponse = ReviewVote;
+export type AddReviewVoteResponse = AxiosResponse<ReviewVote>;
 
 export type ChangeReviewVoteRequest = {
   bookId: number;
@@ -63,11 +66,11 @@ export type ChangeReviewVoteRequest = {
   userId: number;
   voteType: string;
 };
-export type ChangeReviewVoteResponse = ReviewVote;
+export type ChangeReviewVoteResponse = AxiosResponse<ReviewVote>;
 
 export type DeleteReviewVoteRequest = {
   bookId: number;
   reviewId: number;
   userId: number;
 };
-export type DeleteReviewVoteResponse = ReviewVote;
+export type DeleteReviewVoteResponse = AxiosResponse<ReviewVote>;

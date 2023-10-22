@@ -3,8 +3,8 @@ import { parseISO, compareAsc } from "date-fns";
 
 import { RootState } from "../../../store";
 import { Cart } from "../../../types/models/cart/Cart";
-import { Wishlist } from "../../../types/models/Wishlist";
-import { WishlistItem } from "../../../types/models/WishlistItem";
+import { Wishlist } from "../../../types/models/wishlist/Wishlist";
+import { WishlistItem } from "../../../types/models/wishlist/WishlistItem";
 import WishlistItemsResult from "./WishlistItemsResult";
 
 interface WishlistItemsResultsProps {

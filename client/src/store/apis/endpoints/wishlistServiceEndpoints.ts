@@ -1,3 +1,4 @@
+import { reduxApiSlice } from "../reduxApiSlice";
 import {
   GetWishlistRequest,
   GetWishlistResponse,
@@ -6,9 +7,8 @@ import {
   DeleteWishlistItemResponse,
   DeleteWishlistItemRequest,
 } from "../../../types/endpoints/wishlistServiceEndpoints";
-import { apiSlice } from "../apiSlice";
 
-export const wishlistServiceEndpoints = apiSlice.injectEndpoints({
+export const wishlistServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getWishlist: builder.query<GetWishlistResponse, GetWishlistRequest>({
       query: () => `wishlist/`,

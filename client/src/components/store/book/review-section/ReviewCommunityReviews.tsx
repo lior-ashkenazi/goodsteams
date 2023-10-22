@@ -1,6 +1,6 @@
 import { LinearProgress, ThemeProvider, createTheme } from "@mui/material";
 
-import { useGetStarCountsQuery } from "../../../../store";
+import { useGetStarCountsQuery } from "../../../../apis/reviewServiceApi";
 import { Book } from "../../../../types/models/book/Book";
 import BookRating from "../../../misc/BookRating";
 
@@ -23,9 +23,11 @@ const ReviewCommunityReviews = ({
   rating,
   setRating,
 }: ReviewCommunityReviewsProps) => {
-  const { data: starCounts } = useGetStarCountsQuery(book.bookId, {
-    skip: !book,
+  const { data } = useGetStarCountsQuery(book.bookId, {
+    enabled: !!book,
   });
+
+  const starCounts = data?.data;
 
   const onClickLinearProgress = (key: string) => {
     if (rating) setRating(null);

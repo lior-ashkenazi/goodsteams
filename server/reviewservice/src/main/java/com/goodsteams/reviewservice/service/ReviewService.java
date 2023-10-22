@@ -242,17 +242,17 @@ public class ReviewService {
         return reviewVote;
     }
 
-    public ReviewVote deleteReviewVote(String token, Long reviewId, ReviewVoteDTO reviewVoteDTO) {
-        Long userId = authorizeToken(token);
+    public ReviewVote deleteReviewVote(String token, Long reviewId, Long userId) {
+        Long authenticatedUserId = authorizeToken(token);
 
-        if (!userId.equals(reviewVoteDTO.userId())) {
+        if (!authenticatedUserId.equals(userId)) {
             throw new ReviewVoteUnauthorizedException();
         }
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
 
         ReviewVote reviewVote = reviewVoteRepository
-                .findReviewVoteByReviewAndUserId(review, reviewVoteDTO.userId())
+                .findReviewVoteByReviewAndUserId(review, authenticatedUserId)
                 .orElseThrow(ReviewVoteNotFoundException::new);
 
         ReviewVote.VoteType reviewVoteType = reviewVote.getVoteType();

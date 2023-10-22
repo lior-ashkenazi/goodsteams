@@ -1,4 +1,4 @@
-import { apiSlice } from "../apiSlice";
+import { reduxApiSlice } from "../reduxApiSlice";
 
 import {
   GetCartRequest,
@@ -13,7 +13,7 @@ import {
   SubmitPaymentResponse,
 } from "../../../types/endpoints/orderServiceEndpoints";
 
-export const orderServiceEndpoints = apiSlice.injectEndpoints({
+export const orderServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCart: builder.query<GetCartResponse, GetCartRequest>({
       query: () => `order/cart/`,

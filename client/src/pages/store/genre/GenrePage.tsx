@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetBooksByGenreQuery } from "../../../store";
+import { useGetBooksByGenreQuery } from "../../../apis/bookServiceApi";
 import { capitalizeWords } from "../../../utils/letteringUtils";
 import GenrePageBody from "../../../components/store/genre/GenrePageBody";
 import GenrePageSkeleton from "../../../components/store/genre/GenrePageSkeleton";
@@ -23,7 +23,7 @@ const GenrePage = () => {
       </div>
       <div className="rounded text-yellow-900">
         {!isFetching && data ? (
-          <GenrePageBody books={data.content} />
+          <GenrePageBody books={data.data.content} />
         ) : (
           <GenrePageSkeleton />
         )}
