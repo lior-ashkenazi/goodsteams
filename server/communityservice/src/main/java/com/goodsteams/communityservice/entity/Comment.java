@@ -1,5 +1,6 @@
 package com.goodsteams.communityservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "comment")
 public class Comment {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discussionId", insertable = false, updatable = false)
     private Discussion discussion;
@@ -22,12 +24,6 @@ public class Comment {
 
     @Column(nullable = false)
     private Long userId;
-
-    @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String avatarUrl;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -40,27 +36,19 @@ public class Comment {
 
     public Comment(Discussion discussion,
                    Long userId,
-                   String username,
-                   String avatarUrl,
                    String content) {
         this.discussion = discussion;
         this.userId = userId;
-        this.username = username;
-        this.avatarUrl = avatarUrl;
         this.content = content;
     }
 
     public Comment(Discussion discussion,
                    Long userId,
-                   String username,
-                   String avatarUrl,
                    String content,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this.discussion = discussion;
         this.userId = userId;
-        this.username = username;
-        this.avatarUrl = avatarUrl;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

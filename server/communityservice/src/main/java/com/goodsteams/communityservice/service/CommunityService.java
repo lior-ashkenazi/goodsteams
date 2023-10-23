@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class CommunityService {
@@ -118,11 +117,10 @@ public class CommunityService {
         Comment originalPost = new Comment(
                 discussion,
                 userId,
-                discussionDTO.username(),
-                discussionDTO.avatarUrl(),
                 discussionDTO.content(),
                 discussion.getCreatedAt(),
-                discussion.getUpdatedAt());
+                discussion.getUpdatedAt()
+        );
 
         discussion.setOriginalPost(originalPost);
 
@@ -146,11 +144,7 @@ public class CommunityService {
 
         Discussion discussion = discussionRepository.findById(discussionId).orElseThrow(DiscussionNotFoundException::new);
 
-        Comment comment = new Comment(discussion,
-                userId,
-                commentDTO.username(),
-                commentDTO.avatarUrl(),
-                commentDTO.content());
+        Comment comment = new Comment(discussion, userId, commentDTO.content());
 
         discussion.getComments().add(comment);
         discussion.setLastPost(comment);
@@ -208,15 +202,13 @@ public class CommunityService {
         }
     }
 
-    private Long authorizeToken(String token, Comment comment) {
+    private void authorizeToken(String token, Comment comment) {
         Jwt jwt = tokenService.decodeToken(token);
         Long userId = tokenService.extractTokenUserId(jwt);
 
         if (!userId.equals(comment.getUserId())) {
             throw new CommentUnauthorizedException();
         }
-
-        return userId;
     }
 
 }

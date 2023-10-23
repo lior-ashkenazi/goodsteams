@@ -24,6 +24,8 @@ import {
   DeleteReviewVoteResponse,
 } from "../types/apis/reviewServiceApi";
 
+const queryClient = new QueryClient();
+
 export const useGetReviewsQuery = (
   {
     bookId,
@@ -46,8 +48,6 @@ export const useGetReviewsQuery = (
     enabled,
   });
 };
-
-const queryClient = new QueryClient();
 
 export const useGetReviewsAuthenticatedQuery = (
   {
@@ -96,10 +96,10 @@ export const useGetStarCountsQuery = (
 
 export const usePostReviewMutation = ({
   bookId,
-  ...reviewDTO
+  ...reviewDto
 }: PostReviewRequest) => {
   return useMutation<PostReviewResponse, Error>({
-    mutationFn: () => apiClient.post(`review/${bookId}`, reviewDTO),
+    mutationFn: () => apiClient.post(`review/${bookId}`, reviewDto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["Review", bookId] });
       queryClient.invalidateQueries({ queryKey: ["Book", bookId] });
@@ -109,10 +109,10 @@ export const usePostReviewMutation = ({
 
 export const useUpdateReviewMutation = ({
   bookId,
-  ...reviewDTO
+  ...reviewDto
 }: UpdateReviewRequest) => {
   return useMutation<UpdateReviewResponse, Error>({
-    mutationFn: () => apiClient.put(`review/${bookId}`, reviewDTO),
+    mutationFn: () => apiClient.put(`review/${bookId}`, reviewDto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["Review", bookId] });
       queryClient.invalidateQueries({ queryKey: ["Book", bookId] });

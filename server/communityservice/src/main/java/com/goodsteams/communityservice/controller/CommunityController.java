@@ -26,10 +26,10 @@ public class CommunityController {
 
     @GetMapping("/")
     public List<CommunityDTO> getCommunities(
-            @RequestParam(required = false) String searchTerm,
-            @RequestParam(required = false) List<Long> bookIds
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) List<Long> bookid
     ) {
-        return communityService.getCommunitiesList(Optional.ofNullable(searchTerm), Optional.ofNullable(bookIds));
+        return communityService.getCommunitiesList(Optional.ofNullable(search), Optional.ofNullable(bookid));
     }
 
     @GetMapping("/{bookId}")
@@ -63,13 +63,13 @@ public class CommunityController {
         return communityService.saveDiscussionByToken(token, Long.parseLong(bookId), discussionDTO);
     }
 
-    @DeleteMapping("/{bookId}/{discussionId}")
+    @DeleteMapping("/{bookId}")
     public Discussion deleteDiscussion(@RequestHeader("Authorization") String authHeader,
                                        @PathVariable String bookId,
-                                       @PathVariable String discussionId) {
+                                       @RequestParam String discussionid) {
         String token = authHeader.substring(7);
 
-        return communityService.deleteDiscussion(token, Long.parseLong(discussionId));
+        return communityService.deleteDiscussion(token, Long.parseLong(discussionid));
     }
 
     @PostMapping("/{bookId}/{discussionId}")
@@ -84,12 +84,12 @@ public class CommunityController {
         return communityService.saveCommentByToken(token, Long.parseLong(discussionId), commentDTO);
     }
 
-    @PutMapping("/{bookId}/{discussionId}/{commentId}")
+    @PutMapping("/{bookId}/{discussionId}")
     public Comment editComment(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable String bookId,
             @PathVariable String discussionId,
-            @PathVariable String commentId,
+            @RequestParam String commentid,
             @RequestBody CommentDTO commentDTO
     ) {
         String token = authHeader.substring(7);
@@ -97,23 +97,23 @@ public class CommunityController {
         return communityService.updateCommentByToken(
                 token,
                 Long.parseLong(discussionId),
-                Long.parseLong(commentId),
+                Long.parseLong(commentid),
                 commentDTO);
     }
 
-    @DeleteMapping("/{bookId}/{discussionId}/{commentId}")
+    @DeleteMapping("/{bookId}/{discussionId}")
     public Comment deleteComment(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable String bookId,
             @PathVariable String discussionId,
-            @PathVariable String commentId
+            @RequestParam String commentid
     ) {
         String token = authHeader.substring(7);
 
         return communityService.deleteCommentByToken(
                 token,
                 Long.parseLong(discussionId),
-                Long.parseLong(commentId)
+                Long.parseLong(commentid)
         );
     }
 
