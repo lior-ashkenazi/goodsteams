@@ -2,6 +2,8 @@ import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 import apiClient from "./apiClient";
 
 import {
+  DeleteCommentRequest,
+  DeleteCommentResponse,
   DeleteDiscussionRequest,
   DeleteDiscussionResponse,
   EditCommentRequest,
@@ -155,11 +157,12 @@ export const usePostCommentMutation = ({
 export const useEditCommentMutation = ({
   bookId,
   discussionId,
+  commentId,
   ...commentDto
 }: EditCommentRequest) => {
   return useMutation<EditCommentResponse, Error>({
     mutationFn: () =>
-      apiClient.post(`community/${bookId}/${discussionId}`, commentDto),
+      apiClient.post(`community/${bookId}/${discussionId}?commentid=${commentId}`, commentDto),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["Discussion", bookId, discussionId],
@@ -167,3 +170,20 @@ export const useEditCommentMutation = ({
     },
   });
 };
+
+export const useDeleteCommentMutation = ({
+  bookId,
+  discussionId,
+  commentId,
+}: DeleteCommentRequest) => {
+  return useMutation<DeleteCommentResponse, Error>({
+    mutationFn: () =>
+      apiClient.post(`community/${bookId}/${discussionId}?commentid=${commentId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["Discussion", bookId, discussionId],
+      });
+    },
+  });
+};
+

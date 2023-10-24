@@ -30,7 +30,8 @@ const ReviewCommunityReviews = ({
   const starCounts = data?.data;
 
   const onClickLinearProgress = (key: string) => {
-    if (rating) setRating(null);
+    const prevRating: number = +key;
+    if (rating == prevRating) setRating(null);
     else setRating(+key);
   };
 
