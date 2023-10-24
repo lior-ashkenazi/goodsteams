@@ -26,7 +26,6 @@ const ReviewResults = ({ book, rating, search, sort }: ReviewResultsProps) => {
     [],
   );
   const [page, setPage] = useState<number>(0);
-  const size = 2;
 
   const isAuthenticated: boolean | null = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
@@ -38,7 +37,6 @@ const ReviewResults = ({ book, rating, search, sort }: ReviewResultsProps) => {
     bookId,
     search,
     page,
-    size,
     sort,
     ...(rating != null && { rating }),
   };
