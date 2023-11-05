@@ -1,12 +1,12 @@
 import { Button } from "@mui/material";
 
-interface BookDiscussionsNewDiscussionButtonInterface {
+interface BookCommunityNewDiscussionButtonInterface {
   openNewDiscussion: () => void;
 }
 
-const BookDiscussionsNewDiscussionButton = ({
+const BookCommunityNewDiscussionButton = ({
   openNewDiscussion,
-}: BookDiscussionsNewDiscussionButtonInterface) => {
+}: BookCommunityNewDiscussionButtonInterface) => {
   return (
     <div className="flex items-center justify-center bg-gradient-to-l from-green-800 to-green-700 p-8">
       <Button
@@ -22,4 +22,4 @@ const BookDiscussionsNewDiscussionButton = ({
   );
 };
 
-export default BookDiscussionsNewDiscussionButton;
+export default BookCommunityNewDiscussionButton;

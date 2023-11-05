@@ -11,15 +11,15 @@ import { useGetProfilePublicQuery } from "../../../store";
 import { formatDate } from "../../../utils/dateUtils";
 import { highlightTerm } from "../../../utils/highlightUtils";
 
-interface BookDiscussionsResultInterface {
+interface BookCommunityResultInterface {
   discussion: Discussion;
   search: string;
 }
 
-const BookDiscussionsResult = ({
+const BookCommunityResult = ({
   discussion,
   search,
-}: BookDiscussionsResultInterface) => {
+}: BookCommunityResultInterface) => {
   const popupState = usePopupState({
     variant: "popover",
     popupId: `discussionPopover-${discussion.discussionId}`,
@@ -108,4 +108,4 @@ const BookDiscussionsResult = ({
   );
 };
 
-export default BookDiscussionsResult;
+export default BookCommunityResult;

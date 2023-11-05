@@ -27,7 +27,7 @@ import PaymentPage from "./pages/store/payment/PaymentPage.tsx";
 import PostPaymentPage from "./pages/store/payment/PostPaymentPage.tsx";
 import CommunityPage from "./pages/community/CommunityPage.tsx";
 import CommunityHomePage from "./pages/community/home/CommunityHomePage.tsx";
-import BookDiscussionsPage from "./pages/community/book/BookDiscussionsPage.tsx";
+import BookCommunityPage from "./pages/community/book/BookCommunityPage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -48,7 +48,9 @@ const router = createMemoryRouter(
       </Route>
       <Route path="community" element={<CommunityPage />}>
         <Route index element={<CommunityHomePage />} />
-        <Route path=":bookId" element={<BookDiscussionsPage />} />
+        <Route path=":bookId" element={<BookCommunityPage />}>
+          <Route path="discussion/:discussionId" element={<BookDiscussion />} />
+        </Route>
       </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />

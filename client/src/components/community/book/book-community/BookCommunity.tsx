@@ -1,25 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useGetBookByIdQuery } from "../../../apis/bookServiceApi";
-import BookDiscussionsResults from "./BookDiscussionsResults";
-import BookDiscussionsSearchBar from "./BookDiscussionsSearchBar";
-import BookDiscussionsNewDiscussionButton from "./BookDiscussionsNewDiscussionButton";
-import BookDiscussionsPostDiscussionDiv from "./BookDiscussionsPostDiscussionDiv";
+import { useGetBookByIdQuery } from "../../../../apis/bookServiceApi";
+import BookCommunityResults from "./BookCommunityResults";
+import BookCommunitySearchBar from "./BookCommunitySearchBar";
+import BookCommunityNewDiscussionButton from "./BookCommunityNewDiscussionButton";
+import BookCommunityPostDiscussionDiv from "./BookCommunityPostDiscussionDiv";
 
-interface BookDiscussionsInterface {
+interface BookCommunityInterface {
   bookId: number;
   page: number;
   size: number;
   search: string;
 }
 
-const BookDiscussions = ({
+const BookCommunity = ({
   bookId,
   page,
   size,
   search,
-}: BookDiscussionsInterface) => {
+}: BookCommunityInterface) => {
   const navigate = useNavigate();
 
   const { data, isFetching } = useGetBookByIdQuery(bookId.toString());
@@ -45,11 +45,11 @@ const BookDiscussions = ({
           </div>
           <div className="flex">
             <div className="flex w-full flex-col">
-              <BookDiscussionsPostDiscussionDiv
+              <BookCommunityPostDiscussionDiv
                 book={book}
                 open={isNewDiscussionOpen}
               />
-              <BookDiscussionsResults
+              <BookCommunityResults
                 book={book}
                 page={page}
                 size={size}
@@ -57,8 +57,8 @@ const BookDiscussions = ({
               />
             </div>
             <div className="ml-4 w-96">
-              <BookDiscussionsSearchBar book={book} search={search} community />
-              <BookDiscussionsNewDiscussionButton
+              <BookCommunitySearchBar book={book} search={search} community />
+              <BookCommunityNewDiscussionButton
                 openNewDiscussion={openNewDiscussion}
               />
             </div>
@@ -71,4 +71,4 @@ const BookDiscussions = ({
   );
 };
 
-export default BookDiscussions;
+export default BookCommunity;

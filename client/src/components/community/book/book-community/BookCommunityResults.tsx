@@ -1,23 +1,23 @@
 import { Book } from "../../../types/models/book/Book";
 import { useGetCommunityQuery } from "../../../apis/communityServiceApi";
 import { Discussion } from "../../../types/models/community/Discussion";
-import BookDiscussionsResult from "./BookDiscussionsResult";
-import BookDiscussionsPagination from "./BookDiscussionsPagination";
-import BookDiscussionsFooter from "./BookDiscussionsFooter";
+import BookCommunityResult from "./BookCommunityResult";
+import BookCommunityPagination from "./BookCommunityPagination";
+import BookCommunityFooter from "./BookCommunityFooter";
 
-interface BookDiscussionsResultsInterface {
+interface BookCommunityResultsInterface {
   book: Book;
   page: number;
   size: number;
   search: string;
 }
 
-const BookDiscussionsResults = ({
+const BookCommunityResults = ({
   book,
   page,
   size,
   search,
-}: BookDiscussionsResultsInterface) => {
+}: BookCommunityResultsInterface) => {
   const { data, isFetching: isFetchingResults } = useGetCommunityQuery({
     bookId: book.bookId,
     page,
@@ -31,7 +31,7 @@ const BookDiscussionsResults = ({
     <>
       {!isFetchingResults && discussionsResults ? (
         <div className="flex w-full flex-col">
-          <BookDiscussionsPagination
+          <BookCommunityPagination
             bookId={book.bookId}
             page={page}
             size={size}
@@ -44,7 +44,7 @@ const BookDiscussionsResults = ({
             {discussionsResults.content.map(
               (discussion: Discussion, index: number) => {
                 return (
-                  <BookDiscussionsResult
+                  <BookCommunityResult
                     key={index}
                     discussion={discussion}
                     search={search}
@@ -53,7 +53,7 @@ const BookDiscussionsResults = ({
               },
             )}
           </ul>
-          <BookDiscussionsPagination
+          <BookCommunityPagination
             bookId={book.bookId}
             page={page}
             size={size}
@@ -62,7 +62,7 @@ const BookDiscussionsResults = ({
             totalElements={discussionsResults.totalElements}
             numberOfElements={discussionsResults.numberOfElements}
           />
-          <BookDiscussionsFooter
+          <BookCommunityFooter
             bookId={book.bookId}
             page={page}
             size={size}
@@ -76,4 +76,4 @@ const BookDiscussionsResults = ({
   );
 };
 
-export default BookDiscussionsResults;
+export default BookCommunityResults;

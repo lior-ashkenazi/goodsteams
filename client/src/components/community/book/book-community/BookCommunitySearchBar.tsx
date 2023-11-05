@@ -11,7 +11,7 @@ import {
 import PageviewIcon from "@mui/icons-material/Pageview";
 import { Book } from "../../../types/models/book/Book";
 
-interface BookDiscussionsSearchBarInterface {
+interface BookCommunitySearchBarInterface {
   book: Book;
   search: string;
   community?: boolean;
@@ -39,12 +39,12 @@ const searchBarTheme = createTheme({
   },
 });
 
-const BookDiscussionsSearchBar = ({
+const BookCommunitySearchBar = ({
   book,
   search,
   community,
   discussion,
-}: BookDiscussionsSearchBarInterface) => {
+}: BookCommunitySearchBarInterface) => {
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState<string>(search);
@@ -86,4 +86,4 @@ const BookDiscussionsSearchBar = ({
   );
 };
 
-export default BookDiscussionsSearchBar;
+export default BookCommunitySearchBar;

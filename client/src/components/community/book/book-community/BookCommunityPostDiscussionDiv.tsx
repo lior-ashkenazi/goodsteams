@@ -10,7 +10,7 @@ import { RootState } from "../../../store";
 import { usePostDiscussionMutation } from "../../../apis/communityServiceApi";
 import { Book } from "../../../types/models/book/Book";
 
-interface BookDiscussionsPostDiscussionDivInterface {
+interface BookCommunityPostDiscussionDivInterface {
   book: Book;
   open: boolean;
 }
@@ -45,10 +45,10 @@ const textFieldTheme = createTheme({
   },
 });
 
-const BookDiscussionsPostDiscussionDiv = ({
+const BookCommunityPostDiscussionDiv = ({
   book,
   open,
-}: BookDiscussionsPostDiscussionDivInterface) => {
+}: BookCommunityPostDiscussionDivInterface) => {
   const navigate = useNavigate();
 
   const postDiscussion = usePostDiscussionMutation();
@@ -166,4 +166,4 @@ const BookDiscussionsPostDiscussionDiv = ({
   );
 };
 
-export default BookDiscussionsPostDiscussionDiv;
+export default BookCommunityPostDiscussionDiv;

@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 
-interface BookDiscussionsFooterInterface {
+interface BookCommunityFooterInterface {
   bookId: number;
   page: number;
   size: number;
   search: string;
 }
 
-const BookDiscussionsFooter = ({
+const BookCommunityFooter = ({
   bookId,
   size,
-}: BookDiscussionsFooterInterface) => {
+}: BookCommunityFooterInterface) => {
   const navigate = useNavigate();
 
   const handlePageSizeSmall = () =>
@@ -47,4 +47,4 @@ const BookDiscussionsFooter = ({
   );
 };
 
-export default BookDiscussionsFooter;
+export default BookCommunityFooter;

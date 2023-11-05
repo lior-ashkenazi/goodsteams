@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Pagination from "@mui/material/Pagination";
 
-interface BookDiscussionsPaginationInterface {
+interface BookCommunityPaginationInterface {
   bookId: number;
   page: number;
   size: number;
@@ -13,7 +13,7 @@ interface BookDiscussionsPaginationInterface {
   numberOfElements: number;
 }
 
-const BookDiscussionsPagination = ({
+const BookCommunityPagination = ({
   bookId,
   page,
   size,
@@ -21,7 +21,7 @@ const BookDiscussionsPagination = ({
   totalPages,
   totalElements,
   numberOfElements,
-}: BookDiscussionsPaginationInterface) => {
+}: BookCommunityPaginationInterface) => {
   const navigate = useNavigate();
 
   const [pageRangeStart, setPageRangeStart] = useState<number>(0);
@@ -52,4 +52,4 @@ const BookDiscussionsPagination = ({
   );
 };
 
-export default BookDiscussionsPagination;
+export default BookCommunityPagination;

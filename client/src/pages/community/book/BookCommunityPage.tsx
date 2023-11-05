@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import BookDiscussions from "../../../components/community/book/BookDiscussions";
+import BookCommunity from "../../../components/community/book/book-community/BookCommunity";
 
-const BookDiscussionsPage = () => {
+const BookCommunityPage = () => {
   let { bookId } = useParams();
   const [searchParams] = useSearchParams();
 
@@ -13,14 +13,9 @@ const BookDiscussionsPage = () => {
 
   return (
     <div className="w-full rounded-sm text-green-50">
-      <BookDiscussions
-        bookId={+bookId}
-        page={page}
-        size={size}
-        search={search}
-      />
+      <BookCommunity bookId={+bookId} page={page} size={size} search={search} />
     </div>
   );
 };
 
-export default BookDiscussionsPage;
+export default BookCommunityPage;
