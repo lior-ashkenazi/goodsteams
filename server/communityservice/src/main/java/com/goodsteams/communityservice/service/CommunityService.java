@@ -83,7 +83,7 @@ public class CommunityService {
         return communities;
     }
 
-    public Page<Discussion> getCommunityPageByBookId(long bookId, String searchTerm, int page, int size) {
+    public Page<Discussion> getCommunityByBookId(long bookId, String searchTerm, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         if (searchTerm == null || searchTerm.isEmpty()) {
@@ -123,6 +123,7 @@ public class CommunityService {
         );
 
         discussion.setOriginalPost(originalPost);
+        discussion.setLastPost(originalPost);
 
         discussionRepository.save(discussion);
 

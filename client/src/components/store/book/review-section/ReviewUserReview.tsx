@@ -95,9 +95,9 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
 
   const userReview = data?.data;
 
-  const postReview = usePostReviewMutation;
-  const updateReview = useUpdateReviewMutation;
-  const deleteReview = useDeleteReviewMutation;
+  const postReview = usePostReviewMutation();
+  const updateReview = useUpdateReviewMutation();
+  const deleteReview = useDeleteReviewMutation();
   const [addCartItem] = useAddCartItemMutation();
 
   const [bookInLibrary, setBookInLibrary] = useState<boolean>(false);
@@ -134,7 +134,7 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
   };
 
   const handleDeleteReviewClick = async () => {
-    await deleteReview(book.bookId).mutateAsync();
+    await deleteReview.mutateAsync(book.bookId);
     await refetchUserReview();
   };
 
@@ -191,10 +191,10 @@ const ReviewUserReview = ({ book }: ReviewUserReviewProps) => {
     const userReviewCredentials = { bookId, userId, rating, bodyText };
 
     if (!isUserReviewUpdate) {
-      await postReview(userReviewCredentials).mutateAsync();
+      await postReview.mutateAsync(userReviewCredentials);
     } else {
       // isUserReviewUpdate === true
-      await updateReview(userReviewCredentials).mutateAsync();
+      await updateReview.mutateAsync(userReviewCredentials);
       setIsUserReviewUpdate(false);
     }
     await refetchUserReview();

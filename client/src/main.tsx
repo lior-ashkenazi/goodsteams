@@ -10,6 +10,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App.tsx";
 import StorePage from "./pages/store/StorePage.tsx";
 import "./index.css";
@@ -24,6 +25,9 @@ import CartPage from "./pages/store/cart/CartPage.tsx";
 import WishlistPage from "./pages/store/wishlist/WishlistPage.tsx";
 import PaymentPage from "./pages/store/payment/PaymentPage.tsx";
 import PostPaymentPage from "./pages/store/payment/PostPaymentPage.tsx";
+import CommunityPage from "./pages/community/CommunityPage.tsx";
+import CommunityHomePage from "./pages/community/home/CommunityHomePage.tsx";
+import BookDiscussionsPage from "./pages/community/book/BookDiscussionsPage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -42,6 +46,10 @@ const router = createMemoryRouter(
         <Route path="payment" element={<PaymentPage />} />
         <Route path="post-payment" element={<PostPaymentPage />} />
       </Route>
+      <Route path="community" element={<CommunityPage />}>
+        <Route index element={<CommunityHomePage />} />
+        <Route path=":bookId" element={<BookDiscussionsPage />} />
+      </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
     </Route>,
@@ -56,6 +64,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <StyledEngineProvider injectFirst>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </StyledEngineProvider>
     </React.StrictMode>

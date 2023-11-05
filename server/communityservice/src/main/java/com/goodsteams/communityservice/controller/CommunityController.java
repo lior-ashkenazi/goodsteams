@@ -33,13 +33,13 @@ public class CommunityController {
     }
 
     @GetMapping("/{bookId}")
-    public Page<Discussion> getCommunityPage(
+    public Page<Discussion> getCommunity(
             @PathVariable String bookId,
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size
     ) {
-        return communityService.getCommunityPageByBookId(Long.parseLong(bookId), search, page, size);
+        return communityService.getCommunityByBookId(Long.parseLong(bookId), search, page, size);
     }
 
     @GetMapping("/{bookId}/{discussionId}")

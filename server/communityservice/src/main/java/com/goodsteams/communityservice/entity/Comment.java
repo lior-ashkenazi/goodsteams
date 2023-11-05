@@ -15,7 +15,7 @@ public class Comment {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "discussionId", insertable = false, updatable = false)
+    @JoinColumn(name = "discussionId")
     private Discussion discussion;
 
     @Id

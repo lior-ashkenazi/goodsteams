@@ -28,9 +28,8 @@ export type GetDiscussionRequest = {
 export type GetDiscussionResponse = AxiosResponse<Page<Comment>>;
 
 export type PostDiscussionRequest = {
-  bookId: string;
+  bookId: number;
   title: string;
-  userId: number;
   content: string;
 };
 export type PostDiscussionResponse = AxiosResponse<Discussion>;
@@ -44,7 +43,6 @@ export type DeleteDiscussionResponse = AxiosResponse<Discussion>;
 export type PostCommentRequest = {
   bookId: number;
   discussionId: number;
-  userId: string;
   content: string;
 };
 export type PostCommentResponse = AxiosResponse<Comment>;
@@ -53,7 +51,6 @@ export type EditCommentRequest = {
   bookId: number;
   discussionId: number;
   commentId: number;
-  userId: number;
   content: string;
 };
 export type EditCommentResponse = AxiosResponse<Comment>;

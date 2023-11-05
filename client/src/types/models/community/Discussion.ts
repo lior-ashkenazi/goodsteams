@@ -9,4 +9,5 @@ export type Discussion = {
   createdAt: string;
   updatedAt: string;
   comments?: Comment[];
+  commentCount: number;
 };

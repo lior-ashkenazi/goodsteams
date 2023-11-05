@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -27,11 +28,11 @@ public class Discussion {
     @Column(nullable = false)
     private String title;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "original_post_id", referencedColumnName = "commentId")
     private Comment originalPost;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "last_post_id", referencedColumnName = "commentId")
     private Comment lastPost;
 
@@ -46,6 +47,9 @@ public class Discussion {
     @JsonIgnore
     @OneToMany(mappedBy = "discussion", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
+
+    @Formula("(SELECT COUNT(c.comment_id) FROM comment c WHERE c.discussion_id = discussion_id)")
+    private int commentCount;
 
     public Discussion(Long bookId, String title) {
         this.bookId = bookId;

@@ -36,8 +36,8 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
 
   const { data: profile } = useGetProfilePublicQuery(review.userId.toString());
 
-  const deleteReviewVote = useDeleteReviewVoteMutation;
-  const changeReviewVote = useChangeReviewVoteMutation;
+  const deleteReviewVote = useDeleteReviewVoteMutation();
+  const changeReviewVote = useChangeReviewVoteMutation();
 
   const userId: number | null = useSelector(
     (state: RootState) => state.profile.userId,
@@ -93,7 +93,7 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
         reviewId,
         userId,
       };
-      await deleteReviewVote(requestBody).mutateAsync();
+      await deleteReviewVote.mutateAsync(requestBody);
       setReviewVoteType("");
     } else {
       const requestBody = {
@@ -102,7 +102,7 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
         userId,
         voteType,
       };
-      await changeReviewVote(requestBody).mutateAsync();
+      await changeReviewVote.mutateAsync(requestBody);
       setReviewVoteType(voteType);
     }
   };

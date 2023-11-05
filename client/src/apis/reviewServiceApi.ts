@@ -94,71 +94,55 @@ export const useGetStarCountsQuery = (
   });
 };
 
-export const usePostReviewMutation = ({
-  bookId,
-  ...reviewDto
-}: PostReviewRequest) => {
-  return useMutation<PostReviewResponse, Error>({
-    mutationFn: () => apiClient.post(`review/${bookId}`, reviewDto),
-    onSuccess: () => {
+export const usePostReviewMutation = () => {
+  return useMutation<PostReviewResponse, Error, PostReviewRequest>({
+    mutationFn: ({ bookId, ...reviewDto }) =>
+      apiClient.post(`review/${bookId}`, reviewDto),
+    onSuccess: (_, { bookId }) => {
       queryClient.invalidateQueries({ queryKey: ["Review", bookId] });
       queryClient.invalidateQueries({ queryKey: ["Book", bookId] });
     },
   });
 };
 
-export const useUpdateReviewMutation = ({
-  bookId,
-  ...reviewDto
-}: UpdateReviewRequest) => {
-  return useMutation<UpdateReviewResponse, Error>({
-    mutationFn: () => apiClient.put(`review/${bookId}`, reviewDto),
-    onSuccess: () => {
+export const useUpdateReviewMutation = () => {
+  return useMutation<UpdateReviewResponse, Error, UpdateReviewRequest>({
+    mutationFn: ({ bookId, ...reviewDto }) =>
+      apiClient.put(`review/${bookId}`, reviewDto),
+    onSuccess: (_, { bookId }) => {
       queryClient.invalidateQueries({ queryKey: ["Review", bookId] });
       queryClient.invalidateQueries({ queryKey: ["Book", bookId] });
     },
   });
 };
 
-export const useDeleteReviewMutation = (bookId: DeleteReviewRequest) => {
-  return useMutation<DeleteReviewResponse, Error>({
-    mutationFn: () => apiClient.delete(`review/${bookId}`),
-    onSuccess: () => {
+export const useDeleteReviewMutation = () => {
+  return useMutation<DeleteReviewResponse, Error, DeleteReviewRequest>({
+    mutationFn: (bookId) => apiClient.delete(`review/${bookId}`),
+    onSuccess: (_, bookId) => {
       queryClient.invalidateQueries({ queryKey: ["Review", bookId] });
       queryClient.invalidateQueries({ queryKey: ["Book", bookId] });
     },
   });
 };
 
-export const useAddReviewVoteMutation = ({
-  bookId,
-  reviewId,
-  ...reviewVoteDTO
-}: AddReviewVoteRequest) => {
-  return useMutation<AddReviewVoteResponse, Error>({
-    mutationFn: () =>
-      apiClient.post(`review/${bookId}/${reviewId}/vote`, reviewVoteDTO),
+export const useAddReviewVoteMutation = () => {
+  return useMutation<AddReviewVoteResponse, Error, AddReviewVoteRequest>({
+    mutationFn: ({ bookId, reviewId, ...reviewVoteDto }) =>
+      apiClient.post(`review/${bookId}/${reviewId}/vote`, reviewVoteDto),
   });
 };
 
-export const useChangeReviewVoteMutation = ({
-  bookId,
-  reviewId,
-  ...reviewVoteDTO
-}: ChangeReviewVoteRequest) => {
-  return useMutation<ChangeReviewVoteResponse, Error>({
-    mutationFn: () =>
-      apiClient.put(`review/${bookId}/${reviewId}/vote`, reviewVoteDTO),
+export const useChangeReviewVoteMutation = () => {
+  return useMutation<ChangeReviewVoteResponse, Error, ChangeReviewVoteRequest>({
+    mutationFn: ({ bookId, reviewId, ...reviewVoteDto }) =>
+      apiClient.put(`review/${bookId}/${reviewId}/vote`, reviewVoteDto),
   });
 };
 
-export const useDeleteReviewVoteMutation = ({
-  bookId,
-  reviewId,
-  userId,
-}: DeleteReviewVoteRequest) => {
-  return useMutation<DeleteReviewVoteResponse, Error>({
-    mutationFn: () =>
+export const useDeleteReviewVoteMutation = () => {
+  return useMutation<DeleteReviewVoteResponse, Error, DeleteReviewVoteRequest>({
+    mutationFn: ({ bookId, reviewId, userId }) =>
       apiClient.delete(`review/${bookId}/${reviewId}/vote?userid=${userId}`),
   });
 };

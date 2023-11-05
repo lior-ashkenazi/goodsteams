@@ -22,6 +22,8 @@ import {
 
 const queryClient = new QueryClient();
 
+const DUMMY_BASE_URL = "https://dummy";
+
 export const useGetCommunitiesQuery = ({
   search = "",
   bookIds = [],
@@ -48,16 +50,16 @@ export const useGetCommunitiesQuery = ({
   });
 };
 
-export const useGetCommunityPageQuery = ({
+export const useGetCommunityQuery = ({
   bookId,
   search,
   page,
-  size,
+  size = 15,
 }: GetCommunityPageRequest) => {
   return useQuery<GetCommunityPageResponse, Error>({
     queryKey: ["Community", bookId, search, page],
     queryFn: () => {
-      const url = new URL("community");
+      const url = new URL(`community/${bookId}`, DUMMY_BASE_URL);
 
       const params = new URLSearchParams();
 
@@ -75,7 +77,9 @@ export const useGetCommunityPageQuery = ({
 
       url.search = params.toString();
 
-      return apiClient.get(url.toString());
+      const pathWithQuery = `${url.pathname}${url.search}`;
+
+      return apiClient.get(pathWithQuery);
     },
   });
 };
@@ -113,40 +117,33 @@ export const useGetDiscussionQuery = ({
   });
 };
 
-export const usePostDiscussionMutation = ({
-  bookId,
-  ...discussionDto
-}: PostDiscussionRequest) => {
-  return useMutation<PostDiscussionResponse, Error>({
-    mutationFn: () => apiClient.post(`community/${bookId}`, discussionDto),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Community", bookId] });
+export const usePostDiscussionMutation = () => {
+  return useMutation<PostDiscussionResponse, Error, PostDiscussionRequest>({
+    mutationFn: ({ bookId, ...discussionDto }) =>
+      apiClient.post(`community/${bookId}`, discussionDto),
+    onSuccess: (_, { bookId }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["Community", bookId],
+      });
     },
   });
 };
 
-export const useDeleteDiscussionMutation = ({
-  bookId,
-  discussionId,
-}: DeleteDiscussionRequest) => {
-  return useMutation<DeleteDiscussionResponse, Error>({
-    mutationFn: () =>
+export const useDeleteDiscussionMutation = () => {
+  return useMutation<DeleteDiscussionResponse, Error, DeleteDiscussionRequest>({
+    mutationFn: ({ bookId, discussionId }) =>
       apiClient.post(`community/${bookId}?discussionid=${discussionId}`),
-    onSuccess: () => {
+    onSuccess: (_, { bookId }) => {
       queryClient.invalidateQueries({ queryKey: ["Community", bookId] });
     },
   });
 };
 
-export const usePostCommentMutation = ({
-  bookId,
-  discussionId,
-  ...commentDto
-}: PostCommentRequest) => {
-  return useMutation<PostCommentResponse, Error>({
-    mutationFn: () =>
+export const usePostCommentMutation = () => {
+  return useMutation<PostCommentResponse, Error, PostCommentRequest>({
+    mutationFn: ({ bookId, discussionId, ...commentDto }) =>
       apiClient.post(`community/${bookId}/${discussionId}`, commentDto),
-    onSuccess: () => {
+    onSuccess: (_, { bookId, discussionId }) => {
       queryClient.invalidateQueries({
         queryKey: ["Discussion", bookId, discussionId],
       });
@@ -154,16 +151,14 @@ export const usePostCommentMutation = ({
   });
 };
 
-export const useEditCommentMutation = ({
-  bookId,
-  discussionId,
-  commentId,
-  ...commentDto
-}: EditCommentRequest) => {
-  return useMutation<EditCommentResponse, Error>({
-    mutationFn: () =>
-      apiClient.post(`community/${bookId}/${discussionId}?commentid=${commentId}`, commentDto),
-    onSuccess: () => {
+export const useEditCommentMutation = () => {
+  return useMutation<EditCommentResponse, Error, EditCommentRequest>({
+    mutationFn: ({ bookId, discussionId, commentId, ...commentDto }) =>
+      apiClient.post(
+        `community/${bookId}/${discussionId}?commentid=${commentId}`,
+        commentDto,
+      ),
+    onSuccess: (_, { bookId, discussionId }) => {
       queryClient.invalidateQueries({
         queryKey: ["Discussion", bookId, discussionId],
       });
@@ -171,19 +166,16 @@ export const useEditCommentMutation = ({
   });
 };
 
-export const useDeleteCommentMutation = ({
-  bookId,
-  discussionId,
-  commentId,
-}: DeleteCommentRequest) => {
-  return useMutation<DeleteCommentResponse, Error>({
-    mutationFn: () =>
-      apiClient.post(`community/${bookId}/${discussionId}?commentid=${commentId}`),
-    onSuccess: () => {
+export const useDeleteCommentMutation = () => {
+  return useMutation<DeleteCommentResponse, Error, DeleteCommentRequest>({
+    mutationFn: ({ bookId, discussionId, commentId }) =>
+      apiClient.post(
+        `community/${bookId}/${discussionId}?commentid=${commentId}`,
+      ),
+    onSuccess: (_, { bookId, discussionId }) => {
       queryClient.invalidateQueries({
         queryKey: ["Discussion", bookId, discussionId],
       });
     },
   });
 };
-

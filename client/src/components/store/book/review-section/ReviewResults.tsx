@@ -59,10 +59,6 @@ const ReviewResults = ({ book, rating, search, sort }: ReviewResultsProps) => {
     ? fetchedUserReviewsResponse?.data
     : fetchedGuestReviewsResponse?.data;
 
-  console.log("reviews");
-  console.log(reviews);
-  console.log();
-
   useEffect(() => {
     setPage(0);
   }, [search, sort, rating]);
