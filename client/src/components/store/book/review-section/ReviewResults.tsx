@@ -44,7 +44,7 @@ const ReviewResults = ({ book, rating, search, sort }: ReviewResultsProps) => {
   const { data: fetchedUserReviewsResponse } = useGetReviewsAuthenticatedQuery(
     requestBody,
     {
-      enabled: isAuthenticated,
+      enabled: isAuthenticated || false,
     },
   );
 
@@ -95,7 +95,7 @@ const ReviewResults = ({ book, rating, search, sort }: ReviewResultsProps) => {
     <div className="flex flex-col gap-y-6 text-yellow-900">
       {reviews && reviews.length > 0 ? (
         reviews.map((review, index) => (
-          <ReviewResult key={index} data={review} book={book} />
+          <ReviewResult key={index} data={review} book={book} search={search} />
         ))
       ) : (
         <span className="self-center text-green-900">

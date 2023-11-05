@@ -44,7 +44,8 @@ const BookDiscussionsPagination = ({
   return (
     <div className="my-0.5 flex items-center justify-between bg-gradient-to-l from-green-800 to-green-700 px-2 text-green-600">
       <span>
-        Showing {pageRangeStart}-{pageRangeEnd} of {totalElements} active topics
+        Showing {pageRangeStart}-{pageRangeEnd} of {totalElements} active{" "}
+        {!search ? "topics" : "entries"}
       </span>
       <Pagination page={page + 1} count={totalPages} onChange={handleChange} />
     </div>

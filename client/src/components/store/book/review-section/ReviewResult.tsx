@@ -19,14 +19,16 @@ import {
   useDeleteReviewVoteMutation,
 } from "../../../../apis/reviewServiceApi";
 import { formatDate } from "../../../../utils/dateUtils";
+import { highlightTerm } from "../../../../utils/highlightUtils";
 import { Book } from "../../../../types/models/book/Book";
 
 interface ReviewResultProps {
   data: Review | ReviewVoteBundledReview;
   book: Book;
+  search: string;
 }
 
-const ReviewResult = ({ data, book }: ReviewResultProps) => {
+const ReviewResult = ({ data, book, search }: ReviewResultProps) => {
   const navigate = useNavigate();
 
   const review: Review = isReview(data) ? data : data.review;
@@ -144,7 +146,7 @@ const ReviewResult = ({ data, book }: ReviewResultProps) => {
                 isBodyTextExpanded ? "" : "max-h-36"
               }`}
             >
-              {review.bodyText}
+              {highlightTerm(review.bodyText, search)}
             </p>
             {isBodyTextOverflow && (
               <div className="absolute top-32 h-6 w-full bg-gradient-to-b from-transparent to-yellow-100 to-60% opacity-90"></div>

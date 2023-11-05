@@ -35,6 +35,7 @@ const BookDiscussionsResults = ({
             bookId={book.bookId}
             page={page}
             size={size}
+            search={search}
             totalPages={discussionsResults.totalPages}
             totalElements={discussionsResults.totalElements}
             numberOfElements={discussionsResults.numberOfElements}
@@ -43,7 +44,11 @@ const BookDiscussionsResults = ({
             {discussionsResults.content.map(
               (discussion: Discussion, index: number) => {
                 return (
-                  <BookDiscussionsResult key={index} discussion={discussion} />
+                  <BookDiscussionsResult
+                    key={index}
+                    discussion={discussion}
+                    search={search}
+                  />
                 );
               },
             )}
@@ -52,6 +57,7 @@ const BookDiscussionsResults = ({
             bookId={book.bookId}
             page={page}
             size={size}
+            search={search}
             totalPages={discussionsResults.totalPages}
             totalElements={discussionsResults.totalElements}
             numberOfElements={discussionsResults.numberOfElements}

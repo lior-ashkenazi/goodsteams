@@ -9,9 +9,13 @@ import {
   InputAdornment,
 } from "@mui/material";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import { Book } from "../../../types/models/book/Book";
 
 interface BookDiscussionsSearchBarInterface {
+  book: Book;
   search: string;
+  community?: boolean;
+  discussion?: boolean;
 }
 
 const searchBarTheme = createTheme({
@@ -36,11 +40,22 @@ const searchBarTheme = createTheme({
 });
 
 const BookDiscussionsSearchBar = ({
+  book,
   search,
+  community,
+  discussion,
 }: BookDiscussionsSearchBarInterface) => {
+  const navigate = useNavigate();
+
   const [searchTerm, setSearchTerm] = useState<string>(search);
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    if (community) {
+      navigate(`/community/${book.bookId}?search=${searchTerm}`);
+    } else if (discussion) {
+      navigate(`/community/${book.bookId}?search=${searchTerm}`);
+    }
+  };
 
   return (
     <div className="mb-6 flex flex-grow items-center justify-center rounded-md border-[1px] border-green-900 bg-green-400 p-2">

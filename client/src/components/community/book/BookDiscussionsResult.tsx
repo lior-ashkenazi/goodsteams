@@ -9,13 +9,16 @@ import {
 import { Discussion } from "../../../types/models/community/Discussion";
 import { useGetProfilePublicQuery } from "../../../store";
 import { formatDate } from "../../../utils/dateUtils";
+import { highlightTerm } from "../../../utils/highlightUtils";
 
 interface BookDiscussionsResultInterface {
   discussion: Discussion;
+  search: string;
 }
 
 const BookDiscussionsResult = ({
   discussion,
+  search,
 }: BookDiscussionsResultInterface) => {
   const popupState = usePopupState({
     variant: "popover",
@@ -38,7 +41,9 @@ const BookDiscussionsResult = ({
             className="flex w-full items-center justify-between rounded-sm bg-green-500 bg-opacity-80 px-4 py-2 transition-colors hover:bg-green-400 active:bg-green-300"
           >
             <div className="flex flex-col items-start truncate">
-              <span className="text-lg font-bold">{discussion.title}</span>
+              <span className="text-lg font-bold">
+                {highlightTerm(discussion.title, search)}
+              </span>
               <span className="text-green-200">
                 {originalPostProfile.username}
               </span>

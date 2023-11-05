@@ -57,7 +57,7 @@ const BookDiscussions = ({
               />
             </div>
             <div className="ml-4 w-96">
-              <BookDiscussionsSearchBar search={search} />
+              <BookDiscussionsSearchBar book={book} search={search} community />
               <BookDiscussionsNewDiscussionButton
                 openNewDiscussion={openNewDiscussion}
               />
