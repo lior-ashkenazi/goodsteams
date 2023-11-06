@@ -9,7 +9,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import PageviewIcon from "@mui/icons-material/Pageview";
-import { Book } from "../../../types/models/book/Book";
+import { Book } from "../../../../types/models/book/Book";
 
 interface BookCommunitySearchBarInterface {
   book: Book;

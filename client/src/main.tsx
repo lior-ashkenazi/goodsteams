@@ -16,6 +16,7 @@ import StorePage from "./pages/store/StorePage.tsx";
 import "./index.css";
 import { StyledEngineProvider } from "@mui/material";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
+import { Outlet } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage.tsx";
 import RegisterPage from "./pages/register/RegisterPage.tsx";
 import SearchPage from "./pages/store/search/SearchPage.tsx";
@@ -27,7 +28,9 @@ import PaymentPage from "./pages/store/payment/PaymentPage.tsx";
 import PostPaymentPage from "./pages/store/payment/PostPaymentPage.tsx";
 import CommunityPage from "./pages/community/CommunityPage.tsx";
 import CommunityHomePage from "./pages/community/home/CommunityHomePage.tsx";
-import BookCommunityPage from "./pages/community/book/BookCommunityPage.tsx";
+import BookCommunityOutlet from "./components/community/book/BookCommunityOutlet.tsx";
+import BookCommunityPage from "./pages/community/book/book-community/BookCommunityPage.tsx";
+import BookDiscussionPage from "./pages/community/book/book-discussion/BookDiscussionPage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -48,8 +51,12 @@ const router = createMemoryRouter(
       </Route>
       <Route path="community" element={<CommunityPage />}>
         <Route index element={<CommunityHomePage />} />
-        <Route path=":bookId" element={<BookCommunityPage />}>
-          <Route path="discussion/:discussionId" element={<BookDiscussion />} />
+        <Route path="book" element={<BookCommunityOutlet />}>
+          <Route path=":bookId" element={<BookCommunityPage />} />
+          <Route
+            path=":bookId/discussion/:discussionId"
+            element={<BookDiscussionPage />}
+          />
         </Route>
       </Route>
       <Route path="login" element={<LoginPage />} />

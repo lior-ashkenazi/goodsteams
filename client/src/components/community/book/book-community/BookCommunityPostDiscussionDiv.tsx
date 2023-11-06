@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { TextField, Button, ThemeProvider, createTheme } from "@mui/material";
 
-import { RootState } from "../../../store";
-import { usePostDiscussionMutation } from "../../../apis/communityServiceApi";
-import { Book } from "../../../types/models/book/Book";
+import { RootState } from "../../../../store";
+import { usePostDiscussionMutation } from "../../../../apis/communityServiceApi";
+import { Book } from "../../../../types/models/book/Book";
 
 interface BookCommunityPostDiscussionDivInterface {
   book: Book;

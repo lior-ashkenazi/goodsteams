@@ -1,6 +1,6 @@
-import { Book } from "../../../types/models/book/Book";
-import { useGetCommunityQuery } from "../../../apis/communityServiceApi";
-import { Discussion } from "../../../types/models/community/Discussion";
+import { Book } from "../../../../types/models/book/Book";
+import { useGetCommunityQuery } from "../../../../apis/communityServiceApi";
+import { Discussion } from "../../../../types/models/community/Discussion";
 import BookCommunityResult from "./BookCommunityResult";
 import BookCommunityPagination from "./BookCommunityPagination";
 import BookCommunityFooter from "./BookCommunityFooter";
@@ -46,6 +46,7 @@ const BookCommunityResults = ({
                 return (
                   <BookCommunityResult
                     key={index}
+                    book={book}
                     discussion={discussion}
                     search={search}
                   />

@@ -52,12 +52,12 @@ export const useGetCommunitiesQuery = ({
 
 export const useGetCommunityQuery = ({
   bookId,
-  search,
-  page,
+  search = "",
+  page = 0,
   size = 15,
 }: GetCommunityPageRequest) => {
   return useQuery<GetCommunityPageResponse, Error>({
-    queryKey: ["Community", bookId, search, page],
+    queryKey: ["Community", bookId, search, page, size],
     queryFn: () => {
       const url = new URL(`community/${bookId}`, DUMMY_BASE_URL);
 

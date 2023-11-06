@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import Popover from "@mui/material/Popover";
 import CommentIcon from "@mui/icons-material/Comment";
 import {
@@ -6,20 +8,25 @@ import {
   bindPopover,
 } from "material-ui-popup-state/hooks";
 
-import { Discussion } from "../../../types/models/community/Discussion";
-import { useGetProfilePublicQuery } from "../../../store";
-import { formatDate } from "../../../utils/dateUtils";
-import { highlightTerm } from "../../../utils/highlightUtils";
+import { Discussion } from "../../../../types/models/community/Discussion";
+import { Book } from "../../../../types/models/book/Book";
+import { useGetProfilePublicQuery } from "../../../../store";
+import { formatDate } from "../../../../utils/dateUtils";
+import { highlightTerm } from "../../../../utils/highlightUtils";
 
 interface BookCommunityResultInterface {
+  book: Book;
   discussion: Discussion;
   search: string;
 }
 
 const BookCommunityResult = ({
+  book,
   discussion,
   search,
 }: BookCommunityResultInterface) => {
+  const navigate = useNavigate();
+
   const popupState = usePopupState({
     variant: "popover",
     popupId: `discussionPopover-${discussion.discussionId}`,
@@ -39,6 +46,11 @@ const BookCommunityResult = ({
           <button
             {...bindHover(popupState)}
             className="flex w-full items-center justify-between rounded-sm bg-green-500 bg-opacity-80 px-4 py-2 transition-colors hover:bg-green-400 active:bg-green-300"
+            onClick={() =>
+              navigate(
+                `/community/book/${book.bookId}/discussion/${discussion.discussionId}`,
+              )
+            }
           >
             <div className="flex flex-col items-start truncate">
               <span className="text-lg font-bold">

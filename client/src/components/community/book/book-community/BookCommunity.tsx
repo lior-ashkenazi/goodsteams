@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { useGetBookByIdQuery } from "../../../../apis/bookServiceApi";
 import BookCommunityResults from "./BookCommunityResults";
@@ -20,8 +19,6 @@ const BookCommunity = ({
   size,
   search,
 }: BookCommunityInterface) => {
-  const navigate = useNavigate();
-
   const { data, isFetching } = useGetBookByIdQuery(bookId.toString());
   const book = data?.data;
 
@@ -34,15 +31,6 @@ const BookCommunity = ({
     <>
       {!isFetching && book ? (
         <section className="flex w-full flex-col text-green-100">
-          <div className="mb-4 flex justify-between">
-            <h1 className="truncate text-3xl">{book.title}</h1>
-            <button
-              className="rounded-sm bg-gradient-to-l from-green-200 to-yellow-100 px-3 py-2 text-green-600 transition-colors hover:from-green-100 hover:to-yellow-50 hover:text-green-500"
-              onClick={() => navigate(`/store/book/${book.bookId}`)}
-            >
-              Store Page
-            </button>
-          </div>
           <div className="flex">
             <div className="flex w-full flex-col">
               <BookCommunityPostDiscussionDiv
