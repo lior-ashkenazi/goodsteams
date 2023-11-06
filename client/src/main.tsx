@@ -16,7 +16,6 @@ import StorePage from "./pages/store/StorePage.tsx";
 import "./index.css";
 import { StyledEngineProvider } from "@mui/material";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
-import { Outlet } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage.tsx";
 import RegisterPage from "./pages/register/RegisterPage.tsx";
 import SearchPage from "./pages/store/search/SearchPage.tsx";
