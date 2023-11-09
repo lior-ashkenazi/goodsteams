@@ -8,23 +8,23 @@ import {
   bindPopover,
 } from "material-ui-popup-state/hooks";
 
-import { Discussion } from "../../../../types/models/community/Discussion";
-import { Book } from "../../../../types/models/book/Book";
-import { useGetProfilePublicQuery } from "../../../../store";
-import { formatDate } from "../../../../utils/dateUtils";
-import { highlightText } from "../../../../utils/highlightUtils";
+import { Discussion } from "../../types/models/community/Discussion";
+import { Book } from "../../types/models/book/Book";
+import { useGetProfilePublicQuery } from "../../store";
+import { formatDate } from "../../utils/dateUtils";
+import { highlightText } from "../../utils/highlightUtils";
 
-interface BookCommunityDiscussionProps {
+interface CommunityDiscussionProps {
   book: Book;
   discussion: Discussion;
   search: string;
 }
 
-const BookCommunityDiscussion = ({
+const CommunityDiscussion = ({
   book,
   discussion,
   search,
-}: BookCommunityDiscussionProps) => {
+}: CommunityDiscussionProps) => {
   const navigate = useNavigate();
 
   const popupState = usePopupState({
@@ -120,4 +120,4 @@ const BookCommunityDiscussion = ({
   );
 };
 
-export default BookCommunityDiscussion;
+export default CommunityDiscussion;

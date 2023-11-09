@@ -18,14 +18,19 @@ export const useGetBookByIdQuery = (bookId: GetBookByIdRequest) => {
 
 export const useGetBooksByTermQuery = ({
   term,
+  type = "title",
   page = 0,
   size = 10,
-  sort = "title,asc",
+  sort = "name,asc",
+  enabled = true,
 }: GetBooksByTermRequest) => {
   return useQuery<GetBooksByTermResponse, Error>({
-    queryKey: ["Book", term, page, sort],
+    queryKey: ["Book", term, type, page, sort],
     queryFn: () =>
-      apiClient.get(`book/search`, { params: { term, page, size, sort } }),
+      apiClient.get(`book/search`, {
+        params: { term, type, page, size, sort },
+      }),
+    enabled,
   });
 };
 

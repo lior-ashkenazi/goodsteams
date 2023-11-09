@@ -12,15 +12,13 @@ const BookDiscussionPage = () => {
   const search = searchParams.get("search") || ""; // get the term or default to an empty string
 
   return (
-    <div>
-      <BookDiscussion
-        bookId={+bookId}
-        discussionId={+discussionId}
-        page={page}
-        size={size}
-        search={search}
-      />
-    </div>
+    <BookDiscussion
+      bookId={+bookId}
+      discussionId={+discussionId}
+      page={page}
+      size={size}
+      search={search}
+    />
   );
 };
 

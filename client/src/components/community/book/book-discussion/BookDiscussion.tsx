@@ -4,7 +4,7 @@ import BookDiscussionNavigation from "./BookDiscussionNavigation";
 import BookDiscussionOriginalPost from "./BookDiscussionOriginalPost";
 import BookDiscussionPosts from "./BookDiscussionPosts";
 import { formatDate } from "../../../../utils/dateUtils";
-import BookCommunitySearchBar from "../BookCommunitySearchBar";
+import CommunitySearchBar from "../../CommunitySearchBar";
 import BookDiscussionRecommended from "./BookDiscussionRecommended";
 
 interface BookDiscussionProps {
@@ -76,7 +76,7 @@ const BookDiscussion = ({
               <span className="text-green-200">{discussion.commentCount}</span>
             </div>
           </div>
-          <BookCommunitySearchBar
+          <CommunitySearchBar
             book={book}
             discussion={discussion}
             search={search}

@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 public class CommunityDTO {
+    private Long bookId;
     private String title;
     private String coverImageUrl;
     private Integer discussionCount;
-    private List<Discussion> recentDiscussions;
 }

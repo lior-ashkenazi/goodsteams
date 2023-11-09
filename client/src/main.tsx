@@ -49,7 +49,7 @@ const router = createMemoryRouter(
         <Route path="post-payment" element={<PostPaymentPage />} />
       </Route>
       <Route path="community" element={<CommunityPage />}>
-        <Route index element={<CommunityHomePage />} />
+        <Route path="home" element={<CommunityHomePage />} />
         <Route path="book" element={<BookCommunityOutlet />}>
           <Route path=":bookId" element={<BookCommunityPage />} />
           <Route

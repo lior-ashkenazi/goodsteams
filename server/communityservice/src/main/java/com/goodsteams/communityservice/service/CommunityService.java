@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CommunityService {
@@ -39,44 +40,38 @@ public class CommunityService {
         this.commentRepository = commentRepository;
     }
 
-    public List<CommunityDTO> getCommunitiesList(Optional<String> searchTerm, Optional<List<Long>> bookIds) {
+    public List<CommunityDTO> getCommunitiesList(Optional<List<Long>> bookIds) {
         List<CommunityDTO> communities = new ArrayList<>();
 
-        // Fetch book keys from Redis using the RedisService
-        Set<String> bookKeys = searchTerm.isPresent() ?
-                redisService.getKeysByPattern("*" + searchTerm.get() + "*") :
-                redisService.getKeysByPattern("*");
-
-        for (String key : bookKeys) {
-            BookDTO book = redisService.getBook(key);
-
-            if (bookIds.isPresent() && !bookIds.get().contains(Long.valueOf(key))) {
-                continue;
+        if (bookIds.isPresent() && !bookIds.get().isEmpty()) {
+            // If we have book IDs, fetch details for these books directly
+            for (Long bookId : bookIds.get()) {
+                BookDTO book = redisService.getBook(bookId.toString());
+                if (book != null) {
+                    CommunityDTO dto = createCommunityDTO(book);
+                    communities.add(dto);
+                }
+                // Break if we have enough communities
+                if (communities.size() == 6) {
+                    break;
+                }
             }
-
-            CommunityDTO dto = new CommunityDTO();
-            dto.setTitle(book.getTitle());
-            dto.setCoverImageUrl(book.getCoverImageUrl());
-
-            // Fetch the top 3 discussions using Pageable
-            Pageable topThree = PageRequest.of(0, 3);
-            List<Discussion> discussions = discussionRepository.findByBookIdOrderByUpdatedAtDesc(Long.valueOf(key), topThree);
-            dto.setRecentDiscussions(discussions);
-
-            // Set total discussion count
-            Long totalDiscussions = discussionRepository.countByBookId(Long.parseLong(key));
-            dto.setDiscussionCount(totalDiscussions.intValue());
-
-            communities.add(dto);
-
-            // If we already have 6 communities, we can break out of the loop
-            if (communities.size() == 6) {
-                break;
+        } else {
+            // If no book IDs provided, return 6 random CommunityDTOs
+            Set<String> bookKeys = redisService.getKeysByPattern("*");
+            List<String> randomKeys = pickRandomKeys(bookKeys, 6);
+            for (String key : randomKeys) {
+                BookDTO book = redisService.getBook(key);
+                if (book != null) {
+                    CommunityDTO dto = createCommunityDTO(book);
+                    communities.add(dto);
+                }
             }
         }
 
         return communities;
     }
+
 
     public Page<Discussion> getCommunityByBookId(long bookId,
                                                  String searchTerm,
@@ -227,6 +222,25 @@ public class CommunityService {
         if (!userId.equals(comment.getUserId())) {
             throw new CommentUnauthorizedException();
         }
+    }
+
+    private CommunityDTO createCommunityDTO(BookDTO book) {
+        CommunityDTO dto = new CommunityDTO();
+        dto.setBookId(book.getBookId());
+        dto.setTitle(book.getTitle());
+        dto.setCoverImageUrl(book.getCoverImageUrl());
+
+        // Set the total discussion count for this book
+        Long totalDiscussions = discussionRepository.countByBookId(book.getBookId());
+        dto.setDiscussionCount(totalDiscussions.intValue());
+
+        return dto;
+    }
+
+    private List<String> pickRandomKeys(Set<String> bookKeys, int count) {
+        List<String> randomKeys = new ArrayList<>(bookKeys);
+        Collections.shuffle(randomKeys);
+        return randomKeys.stream().limit(count).collect(Collectors.toList());
     }
 
 }

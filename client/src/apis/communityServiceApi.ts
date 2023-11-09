@@ -25,28 +25,26 @@ const queryClient = new QueryClient();
 const DUMMY_BASE_URL = "https://dummy";
 
 export const useGetCommunitiesQuery = ({
-  search = "",
   bookIds = [],
 }: GetCommunitiesRequest) => {
   return useQuery<GetCommunitiesResponse, Error>({
-    queryKey: ["Community", search, ...bookIds],
+    queryKey: ["Community", ...bookIds],
     queryFn: () => {
-      const url = new URL("community");
+      const url = new URL("community/", DUMMY_BASE_URL);
 
       const params = new URLSearchParams();
 
-      if (search) {
-        params.append("search", search);
-      }
-
       for (const bookId of bookIds) {
-        params.append("book", bookId.toString());
+        params.append("bookid", bookId.toString());
       }
 
       url.search = params.toString();
 
-      return apiClient.get(url.toString());
+      const pathWithQuery = `${url.pathname}${url.search}`;
+
+      return apiClient.get(pathWithQuery);
     },
+    refetchOnWindowFocus: false,
   });
 };
 

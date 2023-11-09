@@ -170,7 +170,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      navigate("/");
+                      navigate("/community/home");
                       setOpenCommunityMenu(false);
                     }}
                     disableRipple

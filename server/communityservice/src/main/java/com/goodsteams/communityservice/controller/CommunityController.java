@@ -26,11 +26,8 @@ public class CommunityController {
     }
 
     @GetMapping("/")
-    public List<CommunityDTO> getCommunities(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) List<Long> bookid
-    ) {
-        return communityService.getCommunitiesList(Optional.ofNullable(search), Optional.ofNullable(bookid));
+    public List<CommunityDTO> getCommunities(            @RequestParam(required = false) List<Long> bookid    ) {
+        return communityService.getCommunitiesList(Optional.ofNullable(bookid));
     }
 
     @GetMapping("/{bookId}")

@@ -22,6 +22,7 @@ const BookDiscussionRecommended = ({
   const recommendedDiscussions = data?.data.content;
 
   return (
+    !isFetching &&
     recommendedDiscussions && (
       <div>
         <span>More discussions</span>

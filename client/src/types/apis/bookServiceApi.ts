@@ -11,6 +11,7 @@ export type GetBooksByTermRequest = {
   page?: number;
   size?: number;
   sort?: string;
+  enabled?: boolean;
 };
 export type GetBooksByTermResponse = AxiosResponse<Page<Book>>;
 

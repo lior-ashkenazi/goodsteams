@@ -6,7 +6,6 @@ import { Discussion } from "../models/community/Discussion";
 import { Comment } from "../models/community/Comment";
 
 export type GetCommunitiesRequest = {
-  search?: string;
   bookIds?: number[];
 };
 export type GetCommunitiesResponse = AxiosResponse<Community[]>;

@@ -82,7 +82,7 @@ const App = () => {
   }, [headerRef]);
 
   return (
-    <div className="flex min-h-screen w-full min-w-[75rem] flex-col bg-gradient-to-b from-emerald-600 to-amber-100 text-white">
+    <div className="flex min-h-screen w-full min-w-[75rem] flex-col bg-gradient-to-b from-emerald-600 to-amber-100 text-green-50">
       <Header headerRef={headerRef} />
       <OutletWrapper headerHeight={headerHeight}>
         <Outlet />

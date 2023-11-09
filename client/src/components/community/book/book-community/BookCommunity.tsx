@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { useGetBookByIdQuery } from "../../../../apis/bookServiceApi";
-import BookCommunityDiscussions from "./BookCommunityDiscussions";
-import BookCommunitySearchBar from "../BookCommunitySearchBar";
+import CommunityDiscussions from "../../CommunityDiscussions";
+import CommunitySearchBar from "../../CommunitySearchBar";
 import BookCommunityNewDiscussionButton from "./BookCommunityNewDiscussionButton";
 import BookCommunityPostDiscussionDiv from "./BookCommunityPostDiscussionDiv";
 
@@ -32,7 +32,7 @@ const BookCommunity = ({ bookId, page, size, search }: BookCommunityProps) => {
                 book={book}
                 open={isNewDiscussionOpen}
               />
-              <BookCommunityDiscussions
+              <CommunityDiscussions
                 book={book}
                 page={page}
                 size={size}
@@ -40,7 +40,7 @@ const BookCommunity = ({ bookId, page, size, search }: BookCommunityProps) => {
               />
             </div>
             <div className="ml-4 w-96">
-              <BookCommunitySearchBar book={book} search={search} isCommunity />
+              <CommunitySearchBar book={book} search={search} isCommunity />
               <BookCommunityNewDiscussionButton
                 openNewDiscussion={openNewDiscussion}
               />
