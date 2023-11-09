@@ -19,7 +19,7 @@ import {
   useDeleteReviewVoteMutation,
 } from "../../../../apis/reviewServiceApi";
 import { formatDate } from "../../../../utils/dateUtils";
-import { highlightTerm } from "../../../../utils/highlightUtils";
+import { highlightText } from "../../../../utils/highlightUtils";
 import { Book } from "../../../../types/models/book/Book";
 
 interface ReviewResultProps {
@@ -146,7 +146,7 @@ const ReviewResult = ({ data, book, search }: ReviewResultProps) => {
                 isBodyTextExpanded ? "" : "max-h-36"
               }`}
             >
-              {highlightTerm(review.bodyText, search)}
+              {highlightText(review.bodyText, search)}
             </p>
             {isBodyTextOverflow && (
               <div className="absolute top-32 h-6 w-full bg-gradient-to-b from-transparent to-yellow-100 to-60% opacity-90"></div>

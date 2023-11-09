@@ -10,7 +10,7 @@ import { RootState } from "../../../../store";
 import { usePostDiscussionMutation } from "../../../../apis/communityServiceApi";
 import { Book } from "../../../../types/models/book/Book";
 
-interface BookCommunityPostDiscussionDivInterface {
+interface BookCommunityPostDiscussionDivProps {
   book: Book;
   open: boolean;
 }
@@ -48,7 +48,7 @@ const textFieldTheme = createTheme({
 const BookCommunityPostDiscussionDiv = ({
   book,
   open,
-}: BookCommunityPostDiscussionDivInterface) => {
+}: BookCommunityPostDiscussionDivProps) => {
   const navigate = useNavigate();
 
   const postDiscussion = usePostDiscussionMutation();
@@ -75,7 +75,14 @@ const BookCommunityPostDiscussionDiv = ({
     const discussionDto = data;
     const bookId = book.bookId;
 
-    await postDiscussion.mutateAsync({ bookId, ...discussionDto });
+    const response = await postDiscussion.mutateAsync({
+      bookId,
+      ...discussionDto,
+    });
+    const discussion = response.data.discussion;
+    const discussionId = discussion.discussionId;
+
+    navigate(`community/book/${bookId}/discussion/${discussionId}`);
   };
 
   return (

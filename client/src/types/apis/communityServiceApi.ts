@@ -1,8 +1,9 @@
 import { AxiosResponse } from "axios";
 
+import { Page } from "../models/misc/Page";
 import { Community } from "../models/community/Community";
 import { Discussion } from "../models/community/Discussion";
-import { Page } from "../models/misc/Page";
+import { Comment } from "../models/community/Comment";
 
 export type GetCommunitiesRequest = {
   search?: string;
@@ -25,20 +26,29 @@ export type GetDiscussionRequest = {
   page?: number;
   size?: number;
 };
-export type GetDiscussionResponse = AxiosResponse<Page<Comment>>;
+export type GetDiscussionResponse = AxiosResponse<{
+  discussion: Discussion;
+  comments: Page<Comment>;
+}>;
 
 export type PostDiscussionRequest = {
   bookId: number;
   title: string;
   content: string;
 };
-export type PostDiscussionResponse = AxiosResponse<Discussion>;
+export type PostDiscussionResponse = AxiosResponse<{
+  discussion: Discussion;
+  comments: Page<Comment>;
+}>;
 
 export type DeleteDiscussionRequest = {
   bookId: number;
   discussionId: number;
 };
-export type DeleteDiscussionResponse = AxiosResponse<Discussion>;
+export type DeleteDiscussionResponse = AxiosResponse<{
+  discussion: Discussion;
+  comments: Page<Comment>;
+}>;
 
 export type PostCommentRequest = {
   bookId: number;

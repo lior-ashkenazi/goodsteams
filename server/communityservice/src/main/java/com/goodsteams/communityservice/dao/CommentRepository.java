@@ -10,4 +10,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findByDiscussion(Discussion discussion, Pageable pageable);
 
     Page<Comment> findByDiscussionAndContentContaining(Discussion discussion, String content, Pageable pageable);
+
+    Page<Comment> findByDiscussionAndCommentIdNot(Discussion discussion, Long commentId, Pageable pageable);
+
+    Page<Comment> findByDiscussionAndCommentIdNotAndContentContaining(Discussion discussion, Long commentId, String searchTerm, Pageable pageable);
 }

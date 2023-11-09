@@ -11,7 +11,7 @@ import {
   CreatePaymentIntentResponse,
   SubmitPaymentRequest,
   SubmitPaymentResponse,
-} from "../../../types/endpoints/orderServiceEndpoints";
+} from "../../../types/apis/orderServiceEndpoints";
 
 export const orderServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({

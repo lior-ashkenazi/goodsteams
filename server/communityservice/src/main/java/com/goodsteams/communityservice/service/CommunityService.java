@@ -2,10 +2,7 @@ package com.goodsteams.communityservice.service;
 
 import com.goodsteams.communityservice.dao.CommentRepository;
 import com.goodsteams.communityservice.dao.DiscussionRepository;
-import com.goodsteams.communityservice.dto.BookDTO;
-import com.goodsteams.communityservice.dto.CommentDTO;
-import com.goodsteams.communityservice.dto.CommunityDTO;
-import com.goodsteams.communityservice.dto.DiscussionDTO;
+import com.goodsteams.communityservice.dto.*;
 import com.goodsteams.communityservice.entity.Comment;
 import com.goodsteams.communityservice.entity.Discussion;
 import com.goodsteams.communityservice.exception.CommentNotFoundException;
@@ -16,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CommunityService {
@@ -83,8 +78,20 @@ public class CommunityService {
         return communities;
     }
 
-    public Page<Discussion> getCommunityByBookId(long bookId, String searchTerm, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Discussion> getCommunityByBookId(long bookId,
+                                                 String searchTerm,
+                                                 int page,
+                                                 int size,
+                                                 String sortTerm) {
+        Sort sort;
+        if (Objects.equals(sortTerm, "count")) {
+            sort = Sort.by("commentCount").descending();
+        } else {
+            // Objects.equals(sortTerm, "recent")
+            sort = Sort.by("updatedAt").descending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         if (searchTerm == null || searchTerm.isEmpty()) {
             return discussionRepository.findByBookId(bookId, pageable);
@@ -93,19 +100,21 @@ public class CommunityService {
         }
     }
 
-    public Page<Comment> getDiscussion(long discussionId, String searchTerm, int page, int size) {
+    public CommentsBundledDiscussionDTO getDiscussion(long discussionId, String searchTerm, int page, int size) {
         Discussion discussion = discussionRepository.findById(discussionId).orElseThrow(DiscussionNotFoundException::new);
 
+        Long originalPostId = discussion.getOriginalPost().getCommentId();
         Pageable pageable = PageRequest.of(page, size);
-
+        Page<Comment> comments;
         if (searchTerm == null || searchTerm.isEmpty()) {
-            return commentRepository.findByDiscussion(discussion, pageable);
+            comments = commentRepository.findByDiscussionAndCommentIdNot(discussion, originalPostId, pageable);
         } else {
-            return commentRepository.findByDiscussionAndContentContaining(discussion, searchTerm, pageable);
+            comments = commentRepository.findByDiscussionAndCommentIdNotAndContentContaining(discussion, originalPostId, searchTerm, pageable);
         }
+        return new CommentsBundledDiscussionDTO(discussion, comments);
     }
 
-    public Discussion saveDiscussionByToken(String token, long bookId, DiscussionDTO discussionDTO) {
+    public CommentsBundledDiscussionDTO saveDiscussionByToken(String token, long bookId, DiscussionDTO discussionDTO) {
         Long userId = authorizeToken(token);
 
         Discussion discussion = new Discussion(bookId, discussionDTO.title());
@@ -127,17 +136,25 @@ public class CommunityService {
 
         discussionRepository.save(discussion);
 
-        return discussion;
+        Long originalPostId = discussion.getOriginalPost().getCommentId();
+        Pageable pageable = PageRequest.of(0, 15);
+        Page<Comment> comments = commentRepository.findByDiscussionAndCommentIdNot(discussion, originalPostId, pageable);
+
+        return new CommentsBundledDiscussionDTO(discussion, comments);
     }
 
-    public Discussion deleteDiscussion(String token, long discussionId) {
+    public CommentsBundledDiscussionDTO deleteDiscussion(String token, long discussionId) {
         Discussion discussion = discussionRepository.findById(discussionId).orElseThrow(DiscussionNotFoundException::new);
 
         authorizeToken(token, discussion);
 
+        Long originalPostId = discussion.getOriginalPost().getCommentId();
+        Pageable pageable = PageRequest.of(0, 15);
+        Page<Comment> comments = commentRepository.findByDiscussionAndCommentIdNot(discussion, originalPostId, pageable);
+
         discussionRepository.delete(discussion);
 
-        return discussion;
+        return new CommentsBundledDiscussionDTO(discussion, comments);
     }
 
     public Comment saveCommentByToken(String token, long discussionId, CommentDTO commentDTO) {

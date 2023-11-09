@@ -18,6 +18,7 @@ import java.util.Set;
 @Table(name = "discussion")
 public class Discussion {
 
+    @EqualsAndHashCode.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long discussionId;

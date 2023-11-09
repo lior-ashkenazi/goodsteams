@@ -8,7 +8,7 @@ import {
   AuthUserResponse,
   LogoutUserRequest,
   LogoutUserResponse,
-} from "../../../types/endpoints/authServiceEndpoints";
+} from "../../../types/apis/authServiceEndpoints";
 
 export const authServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({

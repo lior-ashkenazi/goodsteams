@@ -87,14 +87,17 @@ export const useGetCommunityQuery = ({
 export const useGetDiscussionQuery = ({
   bookId,
   discussionId,
-  search,
-  page,
-  size,
+  search = "",
+  page = 0,
+  size = 15,
 }: GetDiscussionRequest) => {
   return useQuery<GetDiscussionResponse, Error>({
     queryKey: ["Discussion", bookId, discussionId, search, page],
     queryFn: () => {
-      const url = new URL("community");
+      const url = new URL(
+        `community/${bookId}/${discussionId}`,
+        DUMMY_BASE_URL,
+      );
 
       const params = new URLSearchParams();
 
@@ -112,7 +115,9 @@ export const useGetDiscussionQuery = ({
 
       url.search = params.toString();
 
-      return apiClient.get(url.toString());
+      const pathWithQuery = `${url.pathname}${url.search}`;
+
+      return apiClient.get(pathWithQuery);
     },
   });
 };
@@ -145,6 +150,9 @@ export const usePostCommentMutation = () => {
       apiClient.post(`community/${bookId}/${discussionId}`, commentDto),
     onSuccess: (_, { bookId, discussionId }) => {
       queryClient.invalidateQueries({
+        queryKey: ["Discussion", bookId, discussionId],
+      });
+      queryClient.refetchQueries({
         queryKey: ["Discussion", bookId, discussionId],
       });
     },

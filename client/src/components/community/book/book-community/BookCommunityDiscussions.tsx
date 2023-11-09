@@ -1,23 +1,23 @@
 import { Book } from "../../../../types/models/book/Book";
 import { useGetCommunityQuery } from "../../../../apis/communityServiceApi";
 import { Discussion } from "../../../../types/models/community/Discussion";
-import BookCommunityResult from "./BookCommunityResult";
-import BookCommunityPagination from "./BookCommunityPagination";
-import BookCommunityFooter from "./BookCommunityFooter";
+import BookCommunityDiscussion from "./BookCommunityDiscussion";
+import BookCommunityPagination from "../BookCommunityPagination";
+import BookCommunitySizeDiv from "../BookCommunitySizeDiv";
 
-interface BookCommunityResultsInterface {
+interface BookCommunityDiscussionsProps {
   book: Book;
   page: number;
   size: number;
   search: string;
 }
 
-const BookCommunityResults = ({
+const BookCommunityDiscussions = ({
   book,
   page,
   size,
   search,
-}: BookCommunityResultsInterface) => {
+}: BookCommunityDiscussionsProps) => {
   const { data, isFetching: isFetchingResults } = useGetCommunityQuery({
     bookId: book.bookId,
     page,
@@ -32,19 +32,20 @@ const BookCommunityResults = ({
       {!isFetchingResults && discussionsResults ? (
         <div className="flex w-full flex-col">
           <BookCommunityPagination
-            bookId={book.bookId}
+            book={book}
             page={page}
             size={size}
             search={search}
             totalPages={discussionsResults.totalPages}
             totalElements={discussionsResults.totalElements}
             numberOfElements={discussionsResults.numberOfElements}
+            isCommunity
           />
           <ul className="flex flex-col gap-y-1">
             {discussionsResults.content.map(
               (discussion: Discussion, index: number) => {
                 return (
-                  <BookCommunityResult
+                  <BookCommunityDiscussion
                     key={index}
                     book={book}
                     discussion={discussion}
@@ -55,20 +56,16 @@ const BookCommunityResults = ({
             )}
           </ul>
           <BookCommunityPagination
-            bookId={book.bookId}
+            book={book}
             page={page}
             size={size}
             search={search}
             totalPages={discussionsResults.totalPages}
             totalElements={discussionsResults.totalElements}
             numberOfElements={discussionsResults.numberOfElements}
+            isCommunity
           />
-          <BookCommunityFooter
-            bookId={book.bookId}
-            page={page}
-            size={size}
-            search={search}
-          />
+          <BookCommunitySizeDiv book={book} size={size} isCommunity />
         </div>
       ) : (
         <ul></ul>
@@ -77,4 +74,4 @@ const BookCommunityResults = ({
   );
 };
 
-export default BookCommunityResults;
+export default BookCommunityDiscussions;

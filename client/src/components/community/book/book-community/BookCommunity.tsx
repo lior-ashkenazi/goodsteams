@@ -1,24 +1,19 @@
 import { useState } from "react";
 
 import { useGetBookByIdQuery } from "../../../../apis/bookServiceApi";
-import BookCommunityResults from "./BookCommunityResults";
-import BookCommunitySearchBar from "./BookCommunitySearchBar";
+import BookCommunityDiscussions from "./BookCommunityDiscussions";
+import BookCommunitySearchBar from "../BookCommunitySearchBar";
 import BookCommunityNewDiscussionButton from "./BookCommunityNewDiscussionButton";
 import BookCommunityPostDiscussionDiv from "./BookCommunityPostDiscussionDiv";
 
-interface BookCommunityInterface {
+interface BookCommunityProps {
   bookId: number;
   page: number;
   size: number;
   search: string;
 }
 
-const BookCommunity = ({
-  bookId,
-  page,
-  size,
-  search,
-}: BookCommunityInterface) => {
+const BookCommunity = ({ bookId, page, size, search }: BookCommunityProps) => {
   const { data, isFetching } = useGetBookByIdQuery(bookId.toString());
   const book = data?.data;
 
@@ -37,7 +32,7 @@ const BookCommunity = ({
                 book={book}
                 open={isNewDiscussionOpen}
               />
-              <BookCommunityResults
+              <BookCommunityDiscussions
                 book={book}
                 page={page}
                 size={size}
@@ -45,7 +40,7 @@ const BookCommunity = ({
               />
             </div>
             <div className="ml-4 w-96">
-              <BookCommunitySearchBar book={book} search={search} community />
+              <BookCommunitySearchBar book={book} search={search} isCommunity />
               <BookCommunityNewDiscussionButton
                 openNewDiscussion={openNewDiscussion}
               />

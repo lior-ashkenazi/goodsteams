@@ -1,6 +1,7 @@
 package com.goodsteams.communityservice.controller;
 
 import com.goodsteams.communityservice.dto.CommentDTO;
+import com.goodsteams.communityservice.dto.CommentsBundledDiscussionDTO;
 import com.goodsteams.communityservice.dto.CommunityDTO;
 import com.goodsteams.communityservice.dto.DiscussionDTO;
 import com.goodsteams.communityservice.entity.Comment;
@@ -37,13 +38,14 @@ public class CommunityController {
             @PathVariable String bookId,
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "15") int size
+            @RequestParam(defaultValue = "15") int size,
+            @RequestParam(defaultValue = "recent") String sort
     ) {
-        return communityService.getCommunityByBookId(Long.parseLong(bookId), search, page, size);
+        return communityService.getCommunityByBookId(Long.parseLong(bookId), search, page, size, sort);
     }
 
     @GetMapping("/{bookId}/{discussionId}")
-    public Page<Comment> getDiscussion(
+    public CommentsBundledDiscussionDTO getDiscussion(
             @PathVariable String bookId,
             @PathVariable String discussionId,
             @RequestParam(defaultValue = "") String search,
@@ -54,7 +56,7 @@ public class CommunityController {
     }
 
     @PostMapping("/{bookId}")
-    public Discussion postDiscussion(
+    public CommentsBundledDiscussionDTO postDiscussion(
             @PathVariable String bookId,
             @RequestHeader("Authorization") String authHeader,
             @RequestBody DiscussionDTO discussionDTO) {
@@ -64,7 +66,7 @@ public class CommunityController {
     }
 
     @DeleteMapping("/{bookId}")
-    public Discussion deleteDiscussion(@RequestHeader("Authorization") String authHeader,
+    public CommentsBundledDiscussionDTO deleteDiscussion(@RequestHeader("Authorization") String authHeader,
                                        @PathVariable String bookId,
                                        @RequestParam String discussionid) {
         String token = authHeader.substring(7);

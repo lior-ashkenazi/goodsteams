@@ -12,19 +12,19 @@ import { Discussion } from "../../../../types/models/community/Discussion";
 import { Book } from "../../../../types/models/book/Book";
 import { useGetProfilePublicQuery } from "../../../../store";
 import { formatDate } from "../../../../utils/dateUtils";
-import { highlightTerm } from "../../../../utils/highlightUtils";
+import { highlightText } from "../../../../utils/highlightUtils";
 
-interface BookCommunityResultInterface {
+interface BookCommunityDiscussionProps {
   book: Book;
   discussion: Discussion;
   search: string;
 }
 
-const BookCommunityResult = ({
+const BookCommunityDiscussion = ({
   book,
   discussion,
   search,
-}: BookCommunityResultInterface) => {
+}: BookCommunityDiscussionProps) => {
   const navigate = useNavigate();
 
   const popupState = usePopupState({
@@ -54,7 +54,7 @@ const BookCommunityResult = ({
           >
             <div className="flex flex-col items-start truncate">
               <span className="text-lg font-bold">
-                {highlightTerm(discussion.title, search)}
+                {highlightText(discussion.title, search)}
               </span>
               <span className="text-green-200">
                 {originalPostProfile.username}
@@ -120,4 +120,4 @@ const BookCommunityResult = ({
   );
 };
 
-export default BookCommunityResult;
+export default BookCommunityDiscussion;

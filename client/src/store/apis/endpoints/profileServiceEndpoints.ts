@@ -6,7 +6,7 @@ import {
   GetProfilePublicResponse,
   UpdateProfileRequest,
   UpdateProfileResponse,
-} from "../../../types/endpoints/profileServiceEndpoints";
+} from "../../../types/apis/profileServiceEndpoints";
 
 export const profileServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({

@@ -3,7 +3,7 @@ import { reduxApiSlice } from "../reduxApiSlice";
 import {
   GetLibraryRequest,
   GetLibraryResponse,
-} from "../../../types/endpoints/libraryServiceEndpoints";
+} from "../../../types/apis/libraryServiceEndpoints";
 
 export const libraryServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({

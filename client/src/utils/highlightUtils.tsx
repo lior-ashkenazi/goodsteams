@@ -1,4 +1,4 @@
-export const highlightTerm = (term: string, search: string) => {
+export const highlightText = (term: string, search: string) => {
   if (!search) return term; // If no search term is provided, return the title as is.
 
   const regex = new RegExp(`(${search})`, "gi"); // The 'i' flag is for case-insensitive matching.
@@ -8,7 +8,7 @@ export const highlightTerm = (term: string, search: string) => {
     <>
       {parts.map((part: string, index: number) =>
         regex.test(part) ? (
-          <span key={index} className="bg-yellow-300">
+          <span key={index} className="bg-yellow-500">
             {part}
           </span>
         ) : (

@@ -6,7 +6,7 @@ import {
   AddWishlistItemResponse,
   DeleteWishlistItemResponse,
   DeleteWishlistItemRequest,
-} from "../../../types/endpoints/wishlistServiceEndpoints";
+} from "../../../types/apis/wishlistServiceEndpoints";
 
 export const wishlistServiceEndpoints = reduxApiSlice.injectEndpoints({
   endpoints: (builder) => ({
