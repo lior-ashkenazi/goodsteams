@@ -3,10 +3,12 @@ import BookDiscussionPost from "./BookDiscussionPost";
 
 interface BookDiscussionOriginalPostProps {
   discussion: Discussion;
+  search: string;
 }
 
 const BookDiscussionOriginalPost = ({
   discussion,
+  search,
 }: BookDiscussionOriginalPostProps) => {
   return (
     <div className="mb-2">
@@ -14,6 +16,7 @@ const BookDiscussionOriginalPost = ({
         post={discussion.originalPost}
         isOriginalPost
         discussion={discussion}
+        search={search}
       />
     </div>
   );

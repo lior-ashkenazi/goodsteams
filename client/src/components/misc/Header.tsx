@@ -31,6 +31,9 @@ const Header = ({ headerRef }: HeaderProps) => {
   const isAuthenticated: boolean | null = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
+  const userId: number | null = useSelector(
+    (state: RootState) => state.profile.userId,
+  );
   const username: string | null = useSelector(
     (state: RootState) => state.profile.username,
   );
@@ -271,7 +274,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                       </MenuItem>
                       <MenuItem
                         onClick={() => {
-                          navigate("/");
+                          navigate(`/profile/${userId}`);
                           setOpenProfileMenu(false);
                         }}
                         disableRipple
@@ -374,7 +377,7 @@ const Header = ({ headerRef }: HeaderProps) => {
                   <MenuList>
                     <MenuItem
                       onClick={() => {
-                        navigate("/");
+                        navigate(`/profile/${userId}`);
                         setOpenLoginMenu(false);
                       }}
                       disableRipple

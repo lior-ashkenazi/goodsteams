@@ -30,6 +30,10 @@ import CommunityHomePage from "./pages/community/home/CommunityHomePage.tsx";
 import BookCommunityOutlet from "./components/community/book/BookCommunityOutlet.tsx";
 import BookCommunityPage from "./pages/community/book/book-community/BookCommunityPage.tsx";
 import BookDiscussionPage from "./pages/community/book/book-discussion/BookDiscussionPage.tsx";
+import ProfilePage from "./pages/profile/ProfilePage.tsx";
+import ProfilePublicPage from "./pages/profile/public/ProfilePublicPage.tsx";
+import ProtectedRoute from "./pages/ProtectedRoute.tsx";
+import ProfileEditPage from "./pages/profile/edit/ProfileEditPage.tsx";
 
 const NODE_ENV = import.meta.env.VITE_NODE_ENV as string;
 
@@ -39,6 +43,17 @@ const router = createMemoryRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Navigate replace to="/store" />} />
+      <Route path="profile" element={<ProfilePage />}>
+        <Route path=":userId" element={<ProfilePublicPage />} />
+        <Route
+          path="edit"
+          element={
+            <ProtectedRoute>
+              <ProfileEditPage />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
       <Route path="store" element={<StorePage />}>
         <Route path="search" element={<SearchPage />} />
         <Route path="book/:bookId" element={<BookPage />} />

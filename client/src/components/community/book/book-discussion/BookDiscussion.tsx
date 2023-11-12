@@ -51,7 +51,7 @@ const BookDiscussion = ({
       <div className="flex">
         <div className="flex w-full flex-col">
           <BookDiscussionNavigation book={book} discussion={discussion} />
-          <BookDiscussionOriginalPost discussion={discussion} />
+          <BookDiscussionOriginalPost discussion={discussion} search={search} />
           <BookDiscussionPosts
             book={book}
             posts={posts}

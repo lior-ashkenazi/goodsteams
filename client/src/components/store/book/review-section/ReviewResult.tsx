@@ -118,6 +118,9 @@ const ReviewResult = ({ data, book, search }: ReviewResultProps) => {
             variant="text"
             className="truncate p-0 text-base normal-case text-current hover:bg-transparent"
             disableRipple
+            onClick={() => {
+              navigate(`/profile/${profile.userId}`);
+            }}
           >
             {profile.username}
           </Button>

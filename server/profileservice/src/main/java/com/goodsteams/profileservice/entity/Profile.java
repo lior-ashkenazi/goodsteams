@@ -44,6 +44,9 @@ public class Profile {
     @Column(name = "avatar_url", nullable = false)
     private String avatarUrl = DEFAULT_AVATAR;
 
+    @Column(name = "summary", nullable = false)
+    private String summary = EMPTY_STRING;
+
     public Profile() {
     }
 

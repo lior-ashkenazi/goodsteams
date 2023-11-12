@@ -25,11 +25,13 @@ const BookDiscussionPostHeader = ({
 
   return (
     <header className="flex items-center gap-x-5">
-      <img
-        src={profile.avatarUrl}
-        className="w-10"
-        aria-aria-label="original-post-user-avatar"
-      />
+      <button onClick={() => navigate(`/profile/${profile.userId}`)}>
+        <img
+          src={profile.avatarUrl}
+          className="w-10"
+          aria-aria-label="original-post-user-avatar"
+        />
+      </button>
       <Button
         ref={profileButtonRef}
         variant="text"
@@ -63,7 +65,7 @@ const BookDiscussionPostHeader = ({
               <MenuList>
                 <MenuItem
                   onClick={() => {
-                    navigate("/store");
+                    navigate(`/profile/${profile.userId}`);
                     setIsProfileMenuOpen(false);
                   }}
                   disableRipple

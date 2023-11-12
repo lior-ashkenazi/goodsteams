@@ -28,10 +28,11 @@ export const profileServiceEndpoints = reduxApiSlice.injectEndpoints({
       UpdateProfileRequest
     >({
       query: (profile) => ({
-        url: "profile/",
+        url: "profile/secure",
         method: "PUT",
         body: profile,
       }),
+      invalidatesTags: ["Profile"],
     }),
   }),
 });
