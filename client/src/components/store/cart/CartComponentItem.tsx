@@ -21,8 +21,8 @@ const CartComponentItem = ({ cartItem }: CartComponentItemProps) => {
   };
 
   return (
-    <li className="flex justify-between rounded-sm bg-green-400">
-      <div className="flex">
+    <li className="flex items-center justify-between rounded-sm bg-green-400">
+      <div className="flex items-center">
         <button onClick={() => navigate(`/store/book/${cartItem.bookId}`)}>
           <img
             src={cartItem.coverImageUrl}
@@ -37,7 +37,9 @@ const CartComponentItem = ({ cartItem }: CartComponentItemProps) => {
           >
             {cartItem.title}
           </button>
-          <span className="truncate text-lg italic">by {cartItem.author}</span>
+          <span className="truncate text-base italic">
+            by {cartItem.author}
+          </span>
         </span>
       </div>
       <div className="flex flex-col items-center p-2">
