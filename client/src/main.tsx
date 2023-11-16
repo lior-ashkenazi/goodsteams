@@ -18,6 +18,7 @@ import { StyledEngineProvider } from "@mui/material";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import LoginPage from "./pages/login/LoginPage.tsx";
 import RegisterPage from "./pages/register/RegisterPage.tsx";
+import StoreHomePage from "./pages/store/home/StoreHomePage.tsx";
 import SearchPage from "./pages/store/search/SearchPage.tsx";
 import GenrePage from "./pages/store/genre/GenrePage.tsx";
 import BookPage from "./pages/store/book/BookPage.tsx";
@@ -55,6 +56,7 @@ const router = createMemoryRouter(
         />
       </Route>
       <Route path="store" element={<StorePage />}>
+        <Route index element={<StoreHomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="book/:bookId" element={<BookPage />} />
         <Route path="genre/:genreName" element={<GenrePage />} />

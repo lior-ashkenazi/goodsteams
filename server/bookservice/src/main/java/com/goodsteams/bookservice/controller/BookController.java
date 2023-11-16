@@ -26,7 +26,9 @@ public class BookController {
                 Map.entry("release-date", "releaseDate"),
                 Map.entry("name", "name"),
                 Map.entry("price", "price"),
-                Map.entry("average-rating", "averageRating")
+                Map.entry("average-rating", "averageRating"),
+                Map.entry("purchase-count", "purchaseCount"),
+                Map.entry("discount-percent", "discountPercent")
         );
     }
 

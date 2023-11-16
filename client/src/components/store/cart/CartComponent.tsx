@@ -3,15 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
-import {
-  AppDispatch,
-  clearToast,
-  RootState,
-  useDeleteCartItemMutation,
-} from "../../../store";
+import { AppDispatch, clearToast, RootState } from "../../../store";
 import { Cart } from "../../../types/models/cart/Cart";
 import { CartItem } from "../../../types/models/cart/CartItem";
 import { calculatePriceAfterDiscount } from "../../../utils/priceUtils";
+import CartComponentItem from "./CartComponentItem";
 
 const CartComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,8 +22,6 @@ const CartComponent = () => {
   const showToast: boolean | null = useSelector(
     (state: RootState) => state.cart.showToast,
   );
-
-  const [deleteCartItem] = useDeleteCartItemMutation();
 
   useEffect(() => {
     return () => {
@@ -50,11 +44,6 @@ const CartComponent = () => {
     );
   };
 
-  const handleDeleteCartItem = async (cartItemId: number) => {
-    await deleteCartItem(cartItemId.toString()).unwrap;
-    navigate("/store/cart");
-  };
-
   return (
     <>
       {cart ? (
@@ -75,63 +64,9 @@ const CartComponent = () => {
               .sort((a, b) => {
                 return a.addedDate.localeCompare(b.addedDate);
               })
-              .map((cartItem: CartItem, index: number) => (
-                <li
-                  key={index}
-                  className="flex justify-between rounded-sm bg-green-400"
-                >
-                  <div className="flex">
-                    <button
-                      onClick={() => navigate(`/store/book/${cartItem.bookId}`)}
-                    >
-                      <img
-                        src={cartItem.coverImageUrl}
-                        className="w-20 rounded-sm"
-                        aria-label={`${cartItem.title} cover image`}
-                      />
-                    </button>
-                    <span className="flex flex-col p-2 text-green-50">
-                      <button
-                        className="truncate text-lg"
-                        onClick={() =>
-                          navigate(`/store/book/${cartItem.bookId}`)
-                        }
-                      >
-                        {cartItem.title}
-                      </button>
-                      <span className="truncate text-lg italic">
-                        by {cartItem.author}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center p-2">
-                    {cartItem.discountPercent > 0 ? (
-                      <span className="flex flex-col text-right">
-                        <span className="text-xs text-green-700 line-through">
-                          {cartItem.price}$
-                        </span>
-                        <span>
-                          {calculatePriceAfterDiscount(
-                            cartItem.price,
-                            cartItem.discountPercent,
-                          )}
-                          $
-                        </span>
-                      </span>
-                    ) : (
-                      <span>{cartItem.price}$</span>
-                    )}
-                    <Button
-                      variant="text"
-                      className="bg-transparent text-xs text-green-700 underline"
-                      disableRipple
-                      onClick={() => handleDeleteCartItem(cartItem.cartItemId)}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                </li>
-              ))}
+              .map((cartItem: CartItem, index: number) => {
+                return <CartComponentItem key={index} cartItem={cartItem} />;
+              })}
           </ul>
           <div className="flex flex-col rounded-sm bg-green-400 p-4 font-medium">
             <span className="mb-10 flex justify-between text-lg text-green-50">

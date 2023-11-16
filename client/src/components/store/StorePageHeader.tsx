@@ -57,22 +57,26 @@ const StorePageHeader = () => {
   const firstGenresColumn = [
     "Adventure",
     "Biography",
-    "Cuisine",
+    "Business",
     "Crime",
+    "Cuisine",
     "Epic Fantasy",
     "Fantasy",
     "Historical Fiction",
     "History",
+    "Horror",
   ];
   const secondGenresColumn = [
-    "Horror",
     "Mystery",
-    "Self Help",
     "Philosophy",
+    "Poetry",
     "Romance",
     "Science",
     "Science Fiction",
+    "Self Help",
+    "Sports",
     "Thriller",
+    "Travel",
   ];
 
   return (
