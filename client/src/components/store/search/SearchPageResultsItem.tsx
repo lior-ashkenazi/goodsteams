@@ -60,7 +60,7 @@ const SearchPageResultsItem = ({ book }: SearchPageResultsItemProps) => {
             <span className="h-auto rounded-sm bg-green-300 p-1 text-yellow-50">
               -{book.discountPercent}%
             </span>
-            <span>
+            <span className="flex flex-col items-end">
               <span className="block text-xs text-gray-400 line-through">
                 {book.price}$
               </span>

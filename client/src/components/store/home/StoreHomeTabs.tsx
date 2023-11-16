@@ -16,7 +16,7 @@ const tabTheme = createTheme({
         // The "indicator" is the line that appears under the active tab
         indicator: {
           // Set the background color you want for the indicator here
-          backgroundColor: "#fef08a",
+          backgroundColor: "#22c55e",
         },
       },
     },
@@ -32,22 +32,22 @@ const StoreHomeTabs = () => {
 
   return (
     <ThemeProvider theme={tabTheme}>
-      <Box sx={{ width: "48rem", typography: "body1" }}>
+      <Box sx={{ width: "42rem", typography: "body1" }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="store-home-tabs">
               <Tab
-                className="normal-case text-yellow-200"
+                className="normal-case text-green-500"
                 label="New & Trending"
                 value="1"
               />
               <Tab
-                className="normal-case text-yellow-200"
+                className="normal-case text-green-500"
                 label="Top Sellers"
                 value="2"
               />
               <Tab
-                className="normal-case text-yellow-200"
+                className="normal-case text-green-500"
                 label="Specials"
                 value="3"
               />
