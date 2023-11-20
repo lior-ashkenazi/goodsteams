@@ -14,4 +14,7 @@ certs/
 ### PEM files ***
 *.pem
 
+### Maven Projects Resources ###
+resources/
+
 security fix
