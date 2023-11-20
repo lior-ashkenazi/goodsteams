@@ -82,7 +82,7 @@ const BookCommunityPostDiscussionDiv = ({
     const discussion = response.data.discussion;
     const discussionId = discussion.discussionId;
 
-    navigate(`community/book/${bookId}/discussion/${discussionId}`);
+    navigate(`/community/book/${bookId}/discussion/${discussionId}`);
   };
 
   return (

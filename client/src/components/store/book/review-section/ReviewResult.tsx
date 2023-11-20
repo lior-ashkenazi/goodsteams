@@ -15,6 +15,7 @@ import {
 import { ReviewVote } from "../../../../types/models/review/ReviewVote";
 import { RootState, useGetProfilePublicQuery } from "../../../../store";
 import {
+  useAddReviewVoteMutation,
   useChangeReviewVoteMutation,
   useDeleteReviewVoteMutation,
 } from "../../../../apis/reviewServiceApi";
@@ -38,6 +39,7 @@ const ReviewResult = ({ data, book, search }: ReviewResultProps) => {
 
   const { data: profile } = useGetProfilePublicQuery(review.userId.toString());
 
+  const addReviewVote = useAddReviewVoteMutation();
   const deleteReviewVote = useDeleteReviewVoteMutation();
   const changeReviewVote = useChangeReviewVoteMutation();
 
@@ -89,6 +91,7 @@ const ReviewResult = ({ data, book, search }: ReviewResultProps) => {
     const reviewId = review.reviewId;
 
     const bookId = book.bookId;
+
     if (voteType === reviewVoteType) {
       const requestBody = {
         bookId,
@@ -104,7 +107,12 @@ const ReviewResult = ({ data, book, search }: ReviewResultProps) => {
         userId,
         voteType,
       };
-      await changeReviewVote.mutateAsync(requestBody);
+
+      if (!reviewVoteType) {
+        await addReviewVote.mutateAsync(requestBody);
+      } else {
+        await changeReviewVote.mutateAsync(requestBody);
+      }
       setReviewVoteType(voteType);
     }
   };

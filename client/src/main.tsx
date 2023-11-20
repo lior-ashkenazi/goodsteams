@@ -70,7 +70,7 @@ const router = createMemoryRouter(
         <Route path="book" element={<BookCommunityOutlet />}>
           <Route path=":bookId" element={<BookCommunityPage />} />
           <Route
-            path=":bookId/discussion/:discussionId"
+            path="discussion/:discussionId"
             element={<BookDiscussionPage />}
           />
         </Route>
@@ -89,7 +89,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <StyledEngineProvider injectFirst>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
-          <ReactQueryDevtools />
+          {/* <ReactQueryDevtools /> */}
         </QueryClientProvider>
       </StyledEngineProvider>
     </React.StrictMode>
