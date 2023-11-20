@@ -11,4 +11,7 @@ certs/
 ### SQL Scripts ###
 *.sql
 
+### PEM files ***
+*.pem
+
 security fix

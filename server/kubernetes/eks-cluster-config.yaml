@@ -1,0 +1,11 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: goodsteams-eks-cluster
+  region: us-east-1
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.medium  # Choose the instance type that fits your workload
+    desiredCapacity: 1  # Set the desired amount of nodes
