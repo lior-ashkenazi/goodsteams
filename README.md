@@ -1,15 +1,14 @@
 ﻿# GoodSteams
 
-![2023-11-20_19-30-10](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/d340386c-1e89-4dd9-ae36-540b6a230718)
-![2023-11-20_19-30-54](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/b81ec6f9-29d9-4b00-b0e7-3e0b5a415d15)
-![2023-11-20_19-35-37](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/d2df387c-5401-4476-b1f9-75f5897eecc9)
-![2023-11-20_20-16-58](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/9482b76a-4cf0-4f81-9933-17f9db18a9f1)
-![2023-11-20_20-17-55](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/9994d951-51d9-4a3b-b969-96bad4d7b085)
-![2023-11-20_20-32-21](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/f0478e4a-1576-4d14-b4d5-7d1854461591)
-![2023-11-20_20-46-18](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/1a480ed2-a2e3-468e-acbb-de65e9a84df6)
-![2023-11-20_20-46-50](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/07305a1b-17a2-449b-ac18-6f29c2178b24)
-![2023-11-20_20-47-40](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/528be778-8a6e-4a6b-888d-303131c29b70)
-![2023-11-20_20-47-54](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/c89c05d4-6123-4faf-8956-42d7a0f51560)
+![2023-11-20_20-32-21](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/92fda782-9bf7-46df-a056-078c6adc9047)
+![2023-11-20_19-30-54](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/28d33571-d8f3-47bd-ae30-1a11028026c7)
+![2023-11-20_19-35-37](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/48b15c1f-2200-4855-8b03-c0ad109a619f)
+![2023-11-20_20-16-58](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/8831da3f-b75b-4e01-9cc2-a117f0017876)
+![2023-11-20_20-17-55](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/c843d9e1-c7f4-4ceb-bcef-1dd8abebb1ec)
+![2023-11-20_20-46-18](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/eac694af-bffa-40a0-a9ad-84981e3a5940)
+![2023-11-20_20-46-50](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/41a46168-d40a-4744-83c6-eb6d9f71eff9)
+![2023-11-20_20-47-40](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/c3c20907-6c62-4c24-841e-e99c679e6a65)
+![2023-11-20_20-47-54](https://github.com/lior-ashkenazi/goodsteams/assets/72506071/27e90775-d15e-473e-9d84-4ac83313cb93)
 
 GoodSteams is a Java Spring Boot and React-based e-commerce platform for book enthusiasts, blending features of Steam and GoodReads. It employs a microservices architecture with an intuitive frontend, leveraging Redux Toolkit, Vite.js, and Material UI, and is bolstered by Docker and Kubernetes for robust deployment on AWS.
 
